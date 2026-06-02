@@ -20,7 +20,10 @@ import {
   BookOpen,
   ChevronRight,
 } from "lucide-react";
-import { useRef, useState, useCallback, useEffect } from "react";
+import { useRef, useCallback, useEffect } from "react";
+import { Link } from "wouter";
+import { Nav } from "@/components/layout/nav";
+import { Footer } from "@/components/layout/footer";
 
 /* ─── Fade-up wrapper ────────────────────────────────────────────── */
 function FadeUp({
@@ -207,79 +210,9 @@ export default function Home() {
   const heroOpacity = useTransform(scrollY, [0, 400], [1, 0]);
   const heroY = useTransform(scrollY, [0, 400], [0, 80]);
 
-  const [mobileOpen, setMobileOpen] = useState(false);
-
   return (
     <div className="min-h-[100dvh] bg-background text-foreground selection:bg-primary/25 overflow-x-hidden">
-      {/* ── Nav ── */}
-      <nav
-        className="fixed top-0 left-0 right-0 z-50 border-b border-border/30 bg-background/70 backdrop-blur-xl"
-        data-testid="nav-main"
-      >
-        <div className="max-w-6xl mx-auto px-5 h-14 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-6 h-6 rounded bg-primary flex items-center justify-center flex-shrink-0">
-              <Search className="w-3.5 h-3.5 text-white" />
-            </div>
-            <span className="font-semibold text-sm tracking-tight">
-              OmniScout
-            </span>
-          </div>
-
-          <div className="hidden md:flex items-center gap-7 text-sm text-muted-foreground">
-            {["Features", "Architecture", "Use Cases", "Docs"].map((item) => (
-              <a
-                key={item}
-                href={`#${item.toLowerCase().replace(" ", "-")}`}
-                className="hover:text-foreground transition-colors duration-200"
-              >
-                {item}
-              </a>
-            ))}
-          </div>
-
-          <div className="flex items-center gap-3">
-            <a
-              href="https://github.com/omniscout"
-              target="_blank"
-              rel="noreferrer"
-              className="text-muted-foreground hover:text-foreground transition-colors"
-              data-testid="link-github-nav"
-            >
-              <Github className="w-4.5 h-4.5" />
-            </a>
-            <a
-              href="#"
-              className="hidden sm:inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-md bg-primary text-white hover:bg-primary/90 transition-colors"
-              data-testid="button-nav-cta"
-            >
-              Get started
-            </a>
-            <button
-              className="md:hidden text-muted-foreground"
-              onClick={() => setMobileOpen(!mobileOpen)}
-              data-testid="button-mobile-menu"
-            >
-              <Layers className="w-5 h-5" />
-            </button>
-          </div>
-        </div>
-
-        {mobileOpen && (
-          <div className="md:hidden border-t border-border/30 px-5 py-4 flex flex-col gap-3 text-sm text-muted-foreground bg-background/90 backdrop-blur-xl">
-            {["Features", "Architecture", "Use Cases", "Docs"].map((item) => (
-              <a
-                key={item}
-                href={`#${item.toLowerCase().replace(" ", "-")}`}
-                className="hover:text-foreground transition-colors"
-                onClick={() => setMobileOpen(false)}
-              >
-                {item}
-              </a>
-            ))}
-          </div>
-        )}
-      </nav>
+      <Nav />
 
       {/* ── Hero ── */}
       <section
@@ -822,82 +755,7 @@ export default function Home() {
         </FadeUp>
       </section>
 
-      {/* ── Footer ── */}
-      <footer className="border-t border-border/30 bg-card/20 py-16">
-        <div className="max-w-6xl mx-auto px-5">
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-10 mb-12">
-            <div className="col-span-2">
-              <div className="flex items-center gap-2 mb-4">
-                <div className="w-5 h-5 rounded bg-primary flex items-center justify-center flex-shrink-0">
-                  <Search className="w-3 h-3 text-white" />
-                </div>
-                <span className="font-semibold text-sm">OmniScout</span>
-              </div>
-              <p className="text-xs text-muted-foreground leading-relaxed max-w-xs font-mono">
-                The open-source, local-first runtime
-                <br />
-                for autonomous AI research agents.
-              </p>
-            </div>
-            {[
-              {
-                heading: "Product",
-                links: ["Features", "Architecture", "Roadmap", "Changelog"],
-              },
-              {
-                heading: "Resources",
-                links: ["Documentation", "GitHub", "Discord", "Examples"],
-              },
-              {
-                heading: "Legal",
-                links: ["Privacy", "Terms", "License"],
-              },
-            ].map(({ heading, links }) => (
-              <div key={heading}>
-                <div className="text-xs font-semibold text-foreground mb-4 uppercase tracking-wider">
-                  {heading}
-                </div>
-                <ul className="space-y-2.5">
-                  {links.map((link) => (
-                    <li key={link}>
-                      <a
-                        href="#"
-                        className="text-xs text-muted-foreground hover:text-foreground transition-colors"
-                      >
-                        {link}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-
-          <div className="gradient-divider mb-8" />
-
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-muted-foreground font-mono">
-            <span>© 2025 OmniScout. Apache 2.0 License.</span>
-            <div className="flex items-center gap-5">
-              <a
-                href="https://github.com/omniscout"
-                target="_blank"
-                rel="noreferrer"
-                className="hover:text-foreground transition-colors flex items-center gap-1.5"
-                data-testid="link-footer-github"
-              >
-                <Github className="w-3.5 h-3.5" />
-                GitHub
-              </a>
-              <a href="#" className="hover:text-foreground transition-colors">
-                Discord
-              </a>
-              <a href="#" className="hover:text-foreground transition-colors">
-                Twitter
-              </a>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }
