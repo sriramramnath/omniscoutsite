@@ -1,5 +1,7 @@
 import { Link } from "wouter";
-import { Search, Github } from "lucide-react";
+import { Github, Package } from "lucide-react";
+
+const PYPI_URL = "https://pypi.org/project/omniscout/";
 
 export function Footer() {
   return (
@@ -7,16 +9,20 @@ export function Footer() {
       <div className="max-w-6xl mx-auto px-5">
         <div className="grid grid-cols-2 md:grid-cols-5 gap-10 mb-12">
           <div className="col-span-2">
-            <Link href="/" className="flex items-center gap-2 mb-4 w-fit">
-              <div className="w-5 h-5 rounded bg-primary flex items-center justify-center flex-shrink-0">
-                <Search className="w-3 h-3 text-white" />
-              </div>
+            <Link href="/" className="flex items-center gap-2 mb-4 w-fit" aria-label="OmniScout home">
+              <img
+                src="/favicon.svg"
+                alt=""
+                width={20}
+                height={20}
+                className="h-5 w-5 flex-shrink-0"
+              />
               <span className="font-semibold text-sm">OmniScout</span>
             </Link>
             <p className="text-xs text-muted-foreground leading-relaxed max-w-xs font-mono">
-              The open-source, local-first runtime
+              Local-first browser automation and research
               <br />
-              for autonomous AI research agents.
+              infrastructure for AI agents. CLI in, JSON out.
             </p>
           </div>
           {[
@@ -32,9 +38,9 @@ export function Footer() {
             {
               heading: "Resources",
               links: [
-                { label: "Documentation", href: "#" },
-                { label: "GitHub", href: "https://github.com/omniscout" },
-                { label: "Discord", href: "#" },
+                { label: "Documentation", href: "https://github.com/sriramramnath/omniscout/tree/main/docs" },
+                { label: "PyPI", href: PYPI_URL },
+                { label: "GitHub", href: "https://github.com/sriramramnath/omniscout" },
                 { label: "Examples", href: "#" },
               ],
             },
@@ -81,10 +87,20 @@ export function Footer() {
         <div className="gradient-divider mb-8" />
 
         <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-muted-foreground font-mono">
-          <span>© 2025 OmniScout. Apache 2.0 License.</span>
-          <div className="flex items-center gap-5">
+          <span>© 2025 OmniScout. Modified MIT License.</span>
+          <div className="flex flex-wrap items-center gap-5">
             <a
-              href="https://github.com/omniscout"
+              href={PYPI_URL}
+              target="_blank"
+              rel="noreferrer"
+              className="hover:text-foreground transition-colors flex items-center gap-1.5"
+              data-testid="link-footer-pypi"
+            >
+              <Package className="w-3.5 h-3.5" />
+              PyPI
+            </a>
+            <a
+              href="https://github.com/sriramramnath/omniscout"
               target="_blank"
               rel="noreferrer"
               className="hover:text-foreground transition-colors flex items-center gap-1.5"
@@ -93,10 +109,13 @@ export function Footer() {
               <Github className="w-3.5 h-3.5" />
               GitHub
             </a>
-            <a href="#" className="hover:text-foreground transition-colors">
-              Discord
-            </a>
-            <a href="#" className="hover:text-foreground transition-colors">
+            <a
+              href="https://x.com/r__sriram"
+              target="_blank"
+              rel="noreferrer"
+              className="hover:text-foreground transition-colors"
+              data-testid="link-footer-twitter"
+            >
               Twitter
             </a>
           </div>

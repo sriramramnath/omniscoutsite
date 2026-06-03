@@ -18,16 +18,19 @@ import {
 } from "lucide-react";
 import { Nav } from "@/components/layout/nav";
 import { Footer } from "@/components/layout/footer";
+import { PageHeroGlow } from "@/components/layout/page-hero-glow";
 import { Link } from "wouter";
 
 function FadeUp({
   children,
   delay = 0,
   className = "",
+  style,
 }: {
   children: React.ReactNode;
   delay?: number;
   className?: string;
+  style?: React.CSSProperties;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
@@ -38,6 +41,7 @@ function FadeUp({
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.55, delay, ease: [0.25, 0.1, 0.25, 1] }}
       className={className}
+      style={style}
     >
       {children}
     </motion.div>
@@ -162,13 +166,8 @@ export default function Features() {
       <Nav />
 
       {/* Hero */}
-      <section className="relative pt-32 pb-20 overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-0 left-1/3 w-[600px] h-[400px] rounded-full bg-primary/7 blur-[120px]" />
-          <div className="absolute top-20 right-0 w-[400px] h-[300px] rounded-full bg-violet-500/6 blur-[100px]" />
-        </div>
-        <div className="dot-grid absolute inset-0 opacity-60 pointer-events-none" />
-        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background to-transparent pointer-events-none" />
+      <section className="relative overflow-hidden pt-28 pb-20 sm:pt-32">
+        <PageHeroGlow />
 
         <div className="relative z-10 max-w-6xl mx-auto px-5 text-center">
           <FadeUp>
@@ -183,8 +182,9 @@ export default function Features() {
               </span>
             </h1>
             <p className="text-muted-foreground max-w-xl mx-auto leading-relaxed text-lg">
-              OmniScout is designed around a single principle: give AI agents
-              reliable, composable tools for understanding the live web.
+              Atomic CLI commands for browser control, semantic search, extraction,
+              and research — designed for Claude Code, Cursor, Codex, and any
+              shell-capable agent.
             </p>
           </FadeUp>
         </div>
@@ -195,19 +195,16 @@ export default function Features() {
         tag="Web Search"
         title="Search the live web."
         subtitle="Real-time retrieval, not training data."
-        description="OmniScout aggregates multiple search providers, cleans noisy HTML into readable markdown, deduplicates results, and filters irrelevant content before any token hits an LLM. Agents get signal, not noise."
+        description="DuckDuckGo HTML retrieval with optional local embedding rerank. Search sources: ddg, index, memory, or hybrid. Use --answer for one-sentence answers with fast, balanced, or deep depth."
         bullets={[
-          "Multi-provider search aggregation (Brave, Serper, DuckDuckGo)",
-          "Clean markdown output — strips nav, ads, and boilerplate",
-          "Configurable ranking and freshness filters",
-          "Retry logic and rate-limit handling built in",
+          "Default source: DuckDuckGo (multi-provider search is on the roadmap)",
+          "Local embeddings via sentence-transformers/all-MiniLM-L6-v2",
+          "omniscout warmup preloads the embed model in the daemon",
+          "Domain and freshness filters; duplicate detection",
         ]}
-        code={`<span class="text-violet-400">result</span> = client.search(
-  query=<span class="text-emerald-300">"YC W25 AI agent startups"</span>,
-  providers=[<span class="text-emerald-300">"brave"</span>, <span class="text-emerald-300">"serper"</span>],
-  top_k=<span class="text-sky-300">5</span>,
-  clean=<span class="text-sky-300">True</span>
-)`}
+        code={`<span class="text-zinc-300">omniscout search </span><span class="text-emerald-300">"browser agents 2026"</span>
+<span class="text-zinc-300">omniscout search </span><span class="text-emerald-300">"who is the president"</span> <span class="text-zinc-300">--answer</span>
+<span class="text-zinc-300">omniscout search </span><span class="text-emerald-300">"taskgroup"</span> <span class="text-zinc-300">--source memory</span>`}
         imageUrl="https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=900&q=80"
         imageAlt="Data visualization and search"
         icon={<Search className="w-5 h-5" />}
@@ -217,12 +214,12 @@ export default function Features() {
         tag="Browser Automation"
         title="Navigate like a human."
         subtitle="Playwright-powered headless browser."
-        description="Dynamic web pages, JavaScript-rendered content, login-gated resources — OmniScout handles them all. Agents can click, scroll, fill forms, and extract data from any page a human could visit."
+        description="A long-lived daemon holds browser sessions open for sub-second actions. Playwright launches persistent Chrome profiles by default; opt into the extension backend to drive your real Chrome with existing logins."
         bullets={[
-          "Full Playwright integration for JS-heavy SPAs",
-          "Handles authentication flows and session state",
-          "Intercepts network requests for faster extraction",
-          "Screenshot and PDF export at any step",
+          "navigate, snapshot, click, fill, scroll, key, hover, screenshot, pdf, eval, wait",
+          "@eN refs from the accessibility tree (preferred over CSS)",
+          "browser login and captcha with local handoff by default",
+          "browser network start/stop/list/detail for CDP capture",
         ]}
         imageUrl="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=900&q=80"
         imageAlt="Developer working at terminal"
@@ -234,22 +231,16 @@ export default function Features() {
         tag="Structured Extraction"
         title="Turn any page into typed data."
         subtitle="Schema-driven, LLM-assisted extraction."
-        description="Define a Zod or Pydantic schema, point OmniScout at a URL, and get strongly-typed JSON back. The extraction pipeline handles pagination, partial data, and schema validation automatically."
+        description="omniscout extract fetches a URL and returns markdown, plain text, or JSON with metadata and links. trafilatura and markdownify power clean output; a content-hashed page cache avoids redundant work."
         bullets={[
-          "Zod (TypeScript) and Pydantic (Python) schema support",
-          "Handles multi-page extraction and pagination",
-          "LLM-assisted fallback for unstructured content",
-          "Output includes confidence scores and source citations",
+          "Formats: markdown, text, json",
+          "Works on URLs or @eN refs from workflow state",
+          "Content cached under $OMNISCOUT_DATA_DIR/cache/pages/",
+          "Smart NL extract (e.g. \"pricing table\") is planned — not shipped",
         ]}
-        code={`<span class="text-violet-400">class</span> <span class="text-sky-300">Startup</span>(BaseModel):
-  name: <span class="text-sky-300">str</span>
-  funding: <span class="text-sky-300">Optional[str]</span>
-  model: <span class="text-sky-300">Literal["local", "cloud"]</span>
-
-<span class="text-violet-400">results</span> = client.extract(
-  url=<span class="text-emerald-300">"https://ycombinator.com/companies"</span>,
-  schema=Startup
-)`}
+        code={`<span class="text-zinc-300">omniscout extract </span><span class="text-emerald-300">https://example.com</span>
+<span class="text-zinc-300">omniscout extract </span><span class="text-emerald-300">https://example.com</span> <span class="text-zinc-300">--format markdown</span>
+<span class="text-zinc-300">omniscout extract @e42</span>  <span class="text-zinc-600"># from latest snapshot</span>`}
         imageUrl="https://images.unsplash.com/photo-1518770660439-4636190af475?w=900&q=80"
         imageAlt="Data extraction visualization"
         icon={<Code2 className="w-5 h-5" />}
@@ -259,12 +250,12 @@ export default function Features() {
         tag="Semantic Memory"
         title="Agents that remember."
         subtitle="Local vector database. Cross-session knowledge."
-        description="OmniScout ships with a local vector store (Chroma) that gives agents persistent memory across sessions. Research accumulates. Past findings inform future queries. Deduplication happens automatically."
+        description="Memory is explicit: omniscout remember indexes a URL; memory list, show, note, delete, and stats manage visits and notes. Vectors live in embedded Qdrant; rows in memory.sqlite."
         bullets={[
-          "Built-in Chroma vector DB — no external service needed",
-          "Automatic chunking and embedding on ingest",
-          "Semantic search across all prior research",
-          "Memory namespaces for project isolation",
+          "Browsing does not auto-index — you call remember intentionally",
+          "Search with --source memory to query past research",
+          "omniscout research also embeds passages into the index",
+          "Deletion removes both SQLite rows and Qdrant vectors",
         ]}
         imageUrl="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=900&q=80"
         imageAlt="Abstract network visualization"
@@ -287,42 +278,42 @@ export default function Features() {
             <SmallFeature
               icon={<HardDrive className="w-4 h-4" />}
               title="Local-First Execution"
-              desc="Runs entirely on your machine. Zero telemetry. BYO API keys or use Ollama for fully offline operation."
+              desc="Profiles, Qdrant index, and caches on disk. No hosted browser sessions. Search hits DDG; pages work offline after fetch."
             />
             <SmallFeature
               icon={<Cpu className="w-4 h-4" />}
-              title="MCP API"
-              desc="Model Context Protocol interface. Drop OmniScout tools into any agent framework: LangChain, AutoGen, CrewAI."
+              title="CLI + JSON"
+              desc="Every command supports --json and OMNISCOUT_JSON=1. protocol_version on daemon status for compatibility checks."
             />
             <SmallFeature
               icon={<Layers className="w-4 h-4" />}
-              title="Workflow Replay"
-              desc="Define research workflows as YAML. Re-run with different parameters. Audit any step. Export results in any format."
+              title="Daemon Trace & Replay"
+              desc="daemon trace, replay, and watch inspect actions.jsonl. workflow export packages agent sessions for debugging."
             />
             <SmallFeature
               icon={<GitBranch className="w-4 h-4" />}
-              title="Parallel Execution"
-              desc="Run multiple browser sessions and search queries in parallel. OmniScout manages concurrency automatically."
+              title="Workflow Shortcuts"
+              desc="open, snapshot, context, reset, and open 1 (first hit from latest search — never tab indices)."
             />
             <SmallFeature
               icon={<Shield className="w-4 h-4" />}
-              title="Privacy by Design"
-              desc="No data leaves your machine unless you configure external LLMs. All storage is local and under your control."
+              title="CAPTCHA Handoff"
+              desc="Detect reCAPTCHA, hCaptcha, Turnstile. Default: block until you solve locally. 2captcha and capsolver are opt-in."
             />
             <SmallFeature
               icon={<Zap className="w-4 h-4" />}
-              title="Fast Startup"
-              desc="Single binary. No Docker, no virtual environments. Install once, run anywhere with a compatible OS."
+              title="Research Pipeline"
+              desc="omniscout research runs search → crawl → extract → embed → rerank → summarize (TextRank) in one command."
             />
             <SmallFeature
               icon={<RefreshCw className="w-4 h-4" />}
-              title="Self-Correcting Pipelines"
-              desc="Automatic retry with backoff when pages fail. Selector drift detection keeps workflows running over time."
+              title="Agent Skills"
+              desc="omniscout install --skill copies SKILL.md into Claude, Cursor, Codex, and Gemini skill directories."
             />
             <SmallFeature
               icon={<FileText className="w-4 h-4" />}
-              title="Export Anywhere"
-              desc="Output to Markdown, JSON, CSV, or pipe into your own toolchain. OmniScout doesn't lock in your data."
+              title="Benchmarks"
+              desc="omniscout benchmark answers and benchmark startup measure answer quality and cold-start latency locally."
             />
           </div>
         </div>
@@ -336,11 +327,11 @@ export default function Features() {
               Architecture
             </div>
             <h2 className="text-2xl md:text-4xl font-bold tracking-tight mb-3">
-              One runtime. Eight primitives.
+              Compose CLI commands in any order.
             </h2>
             <p className="text-muted-foreground text-sm max-w-md mx-auto">
-              Every component exposes a clean interface. Compose them in any
-              order. The runtime manages state, retries, and concurrency.
+              Search, browser, extract, research, remember, and memory — all
+              through the same omniscout binary talking to a local daemon.
             </p>
           </FadeUp>
 
@@ -355,14 +346,14 @@ export default function Features() {
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="grid grid-cols-4 gap-px bg-border/30 rounded-xl overflow-hidden border border-border/40 w-full max-w-3xl mx-8">
                     {[
-                      { label: "search()", icon: <Search className="w-4 h-4" /> },
-                      { label: "browser()", icon: <Globe className="w-4 h-4" /> },
-                      { label: "extract()", icon: <Code2 className="w-4 h-4" /> },
-                      { label: "memory()", icon: <Database className="w-4 h-4" /> },
-                      { label: "plan()", icon: <Layers className="w-4 h-4" /> },
-                      { label: "execute()", icon: <Zap className="w-4 h-4" /> },
-                      { label: "verify()", icon: <Shield className="w-4 h-4" /> },
-                      { label: "export()", icon: <FileText className="w-4 h-4" /> },
+                      { label: "search", icon: <Search className="w-4 h-4" /> },
+                      { label: "browser", icon: <Globe className="w-4 h-4" /> },
+                      { label: "extract", icon: <Code2 className="w-4 h-4" /> },
+                      { label: "research", icon: <Zap className="w-4 h-4" /> },
+                      { label: "remember", icon: <Database className="w-4 h-4" /> },
+                      { label: "memory", icon: <Layers className="w-4 h-4" /> },
+                      { label: "daemon", icon: <Shield className="w-4 h-4" /> },
+                      { label: "workflow", icon: <FileText className="w-4 h-4" /> },
                     ].map(({ label, icon }) => (
                       <div
                         key={label}
@@ -390,8 +381,8 @@ export default function Features() {
               See how it compares.
             </h2>
             <p className="text-muted-foreground text-sm leading-relaxed mb-8">
-              OmniScout outperforms alternatives on every research task we've
-              benchmarked. See the numbers.
+              See how OmniScout compares to hosted browsers, vendor-integrated
+              agents, and DIY scraper stacks.
             </p>
             <Link
               href="/compare"

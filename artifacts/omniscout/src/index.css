@@ -80,7 +80,8 @@
   --card-foreground: 210 20% 96%;
   --popover: 222 22% 7%;
   --popover-foreground: 210 20% 96%;
-  --primary: 230 85% 62%;
+  /* Brand accent #687FF3 */
+  --primary: 230 85% 68%;
   --primary-foreground: 0 0% 100%;
   --secondary: 222 18% 12%;
   --secondary-foreground: 210 20% 90%;
@@ -92,10 +93,10 @@
   --destructive-foreground: 0 0% 98%;
   --border: 222 16% 13%;
   --input: 222 16% 13%;
-  --ring: 230 85% 62%;
+  --ring: 230 85% 68%;
   --radius: 0.5rem;
 
-  --chart-1: 230 85% 62%;
+  --chart-1: 230 85% 68%;
   --chart-2: 262 83% 65%;
   --chart-3: 199 89% 55%;
   --chart-4: 168 75% 45%;
@@ -107,17 +108,17 @@
   --sidebar: 222 22% 6%;
   --sidebar-foreground: 210 20% 90%;
   --sidebar-border: 222 16% 13%;
-  --sidebar-primary: 230 85% 62%;
+  --sidebar-primary: 230 85% 68%;
   --sidebar-primary-foreground: 0 0% 100%;
   --sidebar-accent: 222 18% 10%;
   --sidebar-accent-foreground: 210 20% 90%;
-  --sidebar-ring: 230 85% 62%;
+  --sidebar-ring: 230 85% 68%;
 
   --app-font-sans: 'Inter', system-ui, sans-serif;
   --app-font-serif: Georgia, serif;
   --app-font-mono: 'JetBrains Mono', 'Fira Code', monospace;
 
-  --shadow-2xs: 0 0 0 1px hsl(230 85% 62% / 0.04);
+  --shadow-2xs: 0 0 0 1px hsl(230 85% 68% / 0.04);
   --shadow-xs:  0 1px 3px hsl(0 0% 0% / 0.4);
   --shadow-sm:  0 1px 3px hsl(0 0% 0% / 0.4), 0 1px 2px hsl(0 0% 0% / 0.3);
   --shadow:     0 2px 6px hsl(0 0% 0% / 0.4), 0 1px 3px hsl(0 0% 0% / 0.3);
@@ -150,7 +151,8 @@
   --card-foreground: 210 20% 96%;
   --popover: 222 22% 7%;
   --popover-foreground: 210 20% 96%;
-  --primary: 230 85% 62%;
+  /* Brand accent #687FF3 */
+  --primary: 230 85% 68%;
   --primary-foreground: 0 0% 100%;
   --secondary: 222 18% 12%;
   --secondary-foreground: 210 20% 90%;
@@ -162,9 +164,9 @@
   --destructive-foreground: 0 0% 98%;
   --border: 222 16% 13%;
   --input: 222 16% 13%;
-  --ring: 230 85% 62%;
+  --ring: 230 85% 68%;
 
-  --chart-1: 230 85% 62%;
+  --chart-1: 230 85% 68%;
   --chart-2: 262 83% 65%;
   --chart-3: 199 89% 55%;
   --chart-4: 168 75% 45%;
@@ -176,13 +178,13 @@
   --sidebar: 222 22% 6%;
   --sidebar-foreground: 210 20% 90%;
   --sidebar-border: 222 16% 13%;
-  --sidebar-primary: 230 85% 62%;
+  --sidebar-primary: 230 85% 68%;
   --sidebar-primary-foreground: 0 0% 100%;
   --sidebar-accent: 222 18% 10%;
   --sidebar-accent-foreground: 210 20% 90%;
-  --sidebar-ring: 230 85% 62%;
+  --sidebar-ring: 230 85% 68%;
 
-  --shadow-2xs: 0 0 0 1px hsl(230 85% 62% / 0.04);
+  --shadow-2xs: 0 0 0 1px hsl(230 85% 68% / 0.04);
   --shadow-xs:  0 1px 3px hsl(0 0% 0% / 0.6);
   --shadow-sm:  0 1px 3px hsl(0 0% 0% / 0.6), 0 1px 2px hsl(0 0% 0% / 0.5);
   --shadow:     0 2px 6px hsl(0 0% 0% / 0.6), 0 1px 3px hsl(0 0% 0% / 0.5);
@@ -244,7 +246,7 @@
   inset: 0;
   background: radial-gradient(
     600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
-    hsl(230 85% 62% / 0.08),
+    hsl(230 85% 68% / 0.08),
     transparent 40%
   );
   opacity: 0;
@@ -259,7 +261,7 @@
 /* Gradient divider */
 .gradient-divider {
   height: 1px;
-  background: linear-gradient(90deg, transparent 0%, hsl(230 85% 62% / 0.4) 50%, transparent 100%);
+  background: linear-gradient(90deg, transparent 0%, hsl(230 85% 68% / 0.4) 50%, transparent 100%);
 }
 
 @layer utilities {
