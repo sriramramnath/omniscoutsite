@@ -1,5 +1,6 @@
 import { Link } from "wouter";
 import { Github, Package } from "lucide-react";
+import { SiX } from "react-icons/si";
 
 const PYPI_URL = "https://pypi.org/project/omniscout/";
 
@@ -87,7 +88,7 @@ export function Footer() {
         <div className="gradient-divider mb-8" />
 
         <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-muted-foreground font-mono">
-          <span>© 2025 OmniScout. Modified MIT License.</span>
+          <span>© 2026 OmniScout</span>
           <div className="flex flex-wrap items-center gap-5">
             <a
               href={PYPI_URL}
@@ -113,10 +114,11 @@ export function Footer() {
               href="https://x.com/r__sriram"
               target="_blank"
               rel="noreferrer"
-              className="hover:text-foreground transition-colors"
-              data-testid="link-footer-twitter"
+              className="flex items-center gap-1.5 hover:text-foreground transition-colors"
+              data-testid="link-footer-x"
             >
-              Twitter
+              <SiX className="h-3.5 w-3.5" aria-hidden />
+              X
             </a>
           </div>
         </div>
