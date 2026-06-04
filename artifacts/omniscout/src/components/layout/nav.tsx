@@ -11,6 +11,7 @@ const links = [
   { label: "Features", href: "/features" },
   { label: "Compare", href: "/compare" },
   { label: "Use Cases", href: "/use-cases" },
+  { label: "Blog", href: "/blogs" },
   { label: "Docs", href: "https://github.com/sriramramnath/omniscout/tree/main/docs", external: true },
   { label: "PyPI", href: PYPI_URL, external: true },
 ];

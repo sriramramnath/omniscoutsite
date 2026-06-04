@@ -5,6 +5,7 @@ import Home from "@/pages/home";
 import Compare from "@/pages/compare";
 import Features from "@/pages/features";
 import UseCases from "@/pages/use-cases";
+import Blogs from "@/pages/blogs";
 import NotFound from "@/pages/not-found";
 
 const pageEase = [0.25, 0.1, 0.25, 1] as const;
@@ -30,6 +31,7 @@ export function PageTransition() {
           <Route path="/compare" component={Compare} />
           <Route path="/features" component={Features} />
           <Route path="/use-cases" component={UseCases} />
+          <Route path="/blogs" component={Blogs} />
           <Route component={NotFound} />
         </Switch>
       </motion.div>

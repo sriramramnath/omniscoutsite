@@ -33,6 +33,7 @@ export function Footer() {
                 { label: "Features", href: "/features" },
                 { label: "Compare", href: "/compare" },
                 { label: "Use Cases", href: "/use-cases" },
+                { label: "Blog", href: "/blogs" },
                 { label: "Changelog", href: "#" },
               ],
             },
