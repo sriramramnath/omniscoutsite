@@ -600,7 +600,7 @@ export default function Home() {
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
                 </button>
                 <a
-                  href="https://github.com/sriramramnath/omniscout/tree/main/docs"
+                  href="https://omniscout-docs.vercel.app/"
                   target="_blank"
                   rel="noreferrer"
                   className="flex items-center gap-2 px-6 py-3 rounded-lg border border-border/60 text-sm text-muted-foreground hover:text-foreground hover:border-border transition-all"

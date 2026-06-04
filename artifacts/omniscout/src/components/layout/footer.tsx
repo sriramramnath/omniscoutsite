@@ -40,7 +40,7 @@ export function Footer() {
             {
               heading: "Resources",
               links: [
-                { label: "Documentation", href: "https://github.com/sriramramnath/omniscout/tree/main/docs" },
+                { label: "Documentation", href: "https://omniscout-docs.vercel.app/" },
                 { label: "PyPI", href: PYPI_URL },
                 { label: "GitHub", href: "https://github.com/sriramramnath/omniscout" },
                 { label: "Examples", href: "#" },
