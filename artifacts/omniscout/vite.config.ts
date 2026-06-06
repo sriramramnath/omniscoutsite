@@ -4,6 +4,7 @@ import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import path from "path";
 import { buildRobotsTxt, buildSitemapXml } from "./src/lib/sitemap";
+import { generateOgHtmlPages } from "./src/lib/og-html";
 import { DEFAULT_SITE_URL } from "./src/config/site-routes";
 
 const port = Number(process.env.PORT ?? "5173");
@@ -33,9 +34,18 @@ function generateSitemapAndRobots(): Plugin {
   };
 }
 
+function generateOgMetaPages(): Plugin {
+  return {
+    name: "generate-og-meta-pages",
+    closeBundle() {
+      generateOgHtmlPages(outDir, siteUrl);
+    },
+  };
+}
+
 export default defineConfig({
   base: basePath,
-  plugins: [react(), tailwindcss(), vercelSpaFallback(), generateSitemapAndRobots()],
+  plugins: [react(), tailwindcss(), generateSitemapAndRobots(), generateOgMetaPages(), vercelSpaFallback()],
   resolve: {
     alias: {
       "@": path.resolve(import.meta.dirname, "src"),

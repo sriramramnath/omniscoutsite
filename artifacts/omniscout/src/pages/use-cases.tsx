@@ -100,7 +100,7 @@ const cases: UseCase[] = [
     workflow: [
       { step: "omniscout extract", detail: "https://docs.python.org/... --format markdown" },
       { step: "agent reads", detail: "/tmp/page.md or stdout" },
-      { step: "omniscout search", detail: "\"asyncio.gather\" --answer" },
+      { step: "omniscout answer", detail: "\"asyncio.gather\" --depth fast" },
       { step: "omniscout remember", detail: "index for later recall" },
     ],
   },

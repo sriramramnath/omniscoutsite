@@ -8,6 +8,7 @@ import { PageHeroGlow } from "@/components/layout/page-hero-glow";
 import { LandscapeThumbnail } from "@/components/blog/landscape-thumbnail";
 import { PostMeta } from "@/components/blog/post-meta";
 import { posts, type BlogPost } from "@/data/posts";
+import { useDocumentMeta } from "@/hooks/use-document-meta";
 
 function FadeUp({
   children,
@@ -106,6 +107,14 @@ function PostRow({ post, index }: { post: BlogPost; index: number }) {
 
 export default function Blogs() {
   const [latest, ...older] = posts;
+
+  useDocumentMeta({
+    title: "Blog · OmniScout",
+    description:
+      "Release notes, updates, and guides for OmniScout — local-first browser control for AI agents.",
+    image: latest?.thumbnail,
+    url: "/blogs",
+  });
 
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-clip">

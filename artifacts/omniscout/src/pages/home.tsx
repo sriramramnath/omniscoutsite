@@ -300,7 +300,7 @@ export default function Home() {
             delay={0.0}
             icon={<Search className="w-5 h-5" />}
             title="Semantic Search"
-            description="DuckDuckGo retrieval with optional local embedding rerank. Sources include ddg, index, memory, and hybrid. One-sentence answer mode with --answer."
+            description="DuckDuckGo retrieval with optional local embedding rerank. Sources include ddg, index, memory, and hybrid. Use omniscout answer for one-line factual answers."
           />
           <FeatureCard
             delay={0.05}
@@ -553,6 +553,9 @@ export default function Home() {
                     {"\n"}
                     <span className="text-zinc-300">omniscout research </span>
                     <span className="text-emerald-300">"state of local AI agents"</span>
+                    {"\n"}
+                    <span className="text-zinc-300">omniscout answer </span>
+                    <span className="text-emerald-300">"who is the pm of singapore"</span>
                     {"\n"}
                     <span className="text-zinc-300">omniscout remember </span>
                     <span className="text-emerald-300">https://docs.python.org</span>

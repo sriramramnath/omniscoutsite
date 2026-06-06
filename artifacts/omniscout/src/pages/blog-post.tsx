@@ -9,6 +9,7 @@ import { LandscapeThumbnail } from "@/components/blog/landscape-thumbnail";
 import { PostMeta } from "@/components/blog/post-meta";
 import { CodeBlock } from "@/components/blog/code-block";
 import { getPost } from "@/data/posts";
+import { useDocumentMeta } from "@/hooks/use-document-meta";
 import NotFound from "@/pages/not-found";
 
 function FadeUp({
@@ -184,6 +185,22 @@ const contentBySlug: Record<string, () => React.ReactNode> = {
 export default function BlogPost() {
   const params = useParams<{ slug: string }>();
   const post = getPost(params.slug ?? "");
+
+  useDocumentMeta(
+    post
+      ? {
+          title: `${post.title} · OmniScout`,
+          description: post.excerpt,
+          image: post.thumbnail,
+          url: `/blogs/${post.slug}`,
+          type: "article",
+        }
+      : {
+          title: "Post not found · OmniScout",
+          description: "The blog post you are looking for does not exist.",
+          url: "/blogs",
+        },
+  );
 
   if (!post) {
     return <NotFound />;

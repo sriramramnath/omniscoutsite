@@ -191,7 +191,7 @@ export default function Features() {
         tag="Web Search"
         title="Search the live web."
         subtitle="Real-time retrieval, not training data."
-        description="DuckDuckGo HTML retrieval with optional local embedding rerank. Search sources: ddg, index, memory, or hybrid. Use --answer for one-sentence answers with fast, balanced, or deep depth."
+        description="DuckDuckGo HTML retrieval with optional local embedding rerank. Search sources: ddg, index, memory, or hybrid. Use omniscout answer for one-sentence answers with fast, balanced, or deep depth."
         bullets={[
           "Default source: DuckDuckGo (multi-provider search is on the roadmap)",
           "Local embeddings via sentence-transformers/all-MiniLM-L6-v2",
@@ -199,7 +199,7 @@ export default function Features() {
           "Domain and freshness filters; duplicate detection",
         ]}
         code={`<span class="text-zinc-300">omniscout search </span><span class="text-emerald-300">"browser agents 2026"</span>
-<span class="text-zinc-300">omniscout search </span><span class="text-emerald-300">"who is the president"</span> <span class="text-zinc-300">--answer</span>
+<span class="text-zinc-300">omniscout answer </span><span class="text-emerald-300">"who is the president"</span>
 <span class="text-zinc-300">omniscout search </span><span class="text-emerald-300">"taskgroup"</span> <span class="text-zinc-300">--source memory</span>`}
         imageUrl="https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=900&q=80"
         imageAlt="Data visualization and search"
