@@ -5,12 +5,12 @@ import tailwindcss from "@tailwindcss/vite";
 import path from "path";
 import { buildRobotsTxt, buildSitemapXml } from "./src/lib/sitemap";
 import { generateOgHtmlPages } from "./src/lib/og-html";
-import { DEFAULT_SITE_URL } from "./src/config/site-routes";
+import { resolveSiteUrl } from "./src/config/site-routes";
 
 const port = Number(process.env.PORT ?? "5173");
 const basePath = process.env.BASE_PATH ?? "/";
 const outDir = path.resolve(import.meta.dirname, "dist");
-const siteUrl = process.env.VITE_SITE_URL ?? DEFAULT_SITE_URL;
+const siteUrl = resolveSiteUrl();
 
 /** Vercel serves 404.html for unknown paths; copy index.html so the SPA can render NotFound. */
 function vercelSpaFallback(): Plugin {
@@ -45,6 +45,9 @@ function generateOgMetaPages(): Plugin {
 
 export default defineConfig({
   base: basePath,
+  define: {
+    "import.meta.env.VITE_SITE_URL": JSON.stringify(siteUrl),
+  },
   plugins: [react(), tailwindcss(), generateSitemapAndRobots(), generateOgMetaPages(), vercelSpaFallback()],
   resolve: {
     alias: {

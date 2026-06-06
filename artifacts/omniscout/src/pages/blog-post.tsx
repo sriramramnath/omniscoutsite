@@ -8,7 +8,7 @@ import { PageHeroGlow } from "@/components/layout/page-hero-glow";
 import { LandscapeThumbnail } from "@/components/blog/landscape-thumbnail";
 import { PostMeta } from "@/components/blog/post-meta";
 import { CodeBlock } from "@/components/blog/code-block";
-import { getPost } from "@/data/posts";
+import { getPost, getPostOgImage } from "@/data/posts";
 import { useDocumentMeta } from "@/hooks/use-document-meta";
 import NotFound from "@/pages/not-found";
 
@@ -191,7 +191,10 @@ export default function BlogPost() {
       ? {
           title: `${post.title} · OmniScout`,
           description: post.excerpt,
-          image: post.thumbnail,
+          image: getPostOgImage(post),
+          imageWidth: 1200,
+          imageHeight: 675,
+          imageType: "image/jpeg",
           url: `/blogs/${post.slug}`,
           type: "article",
         }

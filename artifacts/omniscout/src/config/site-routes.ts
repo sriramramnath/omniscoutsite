@@ -1,4 +1,18 @@
-export const DEFAULT_SITE_URL = "https://omniscout-omega.vercel.app";
+export const DEFAULT_SITE_URL = "https://omniscoutai.vercel.app";
+
+/** Resolve canonical origin at build time (Vercel env → VITE_SITE_URL → default). */
+export function resolveSiteUrl(): string {
+  const explicit = process.env.VITE_SITE_URL?.trim().replace(/\/$/, "");
+  if (explicit) return explicit;
+
+  const production = process.env.VERCEL_PROJECT_PRODUCTION_URL?.trim().replace(/\/$/, "");
+  if (production) return production.startsWith("http") ? production : `https://${production}`;
+
+  const deployment = process.env.VERCEL_URL?.trim().replace(/\/$/, "");
+  if (deployment) return deployment.startsWith("http") ? deployment : `https://${deployment}`;
+
+  return DEFAULT_SITE_URL;
+}
 
 export const staticRoutes = [
   { path: "/", changefreq: "weekly", priority: "1.0" },

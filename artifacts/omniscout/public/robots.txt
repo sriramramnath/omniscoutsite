@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://omniscout-omega.vercel.app/sitemap.xml
+Sitemap: https://omniscoutai.vercel.app/sitemap.xml

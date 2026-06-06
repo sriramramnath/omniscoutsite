@@ -7,7 +7,7 @@ import { Footer } from "@/components/layout/footer";
 import { PageHeroGlow } from "@/components/layout/page-hero-glow";
 import { LandscapeThumbnail } from "@/components/blog/landscape-thumbnail";
 import { PostMeta } from "@/components/blog/post-meta";
-import { posts, type BlogPost } from "@/data/posts";
+import { getPostOgImage, posts, type BlogPost } from "@/data/posts";
 import { useDocumentMeta } from "@/hooks/use-document-meta";
 
 function FadeUp({
@@ -112,7 +112,10 @@ export default function Blogs() {
     title: "Blog · OmniScout",
     description:
       "Release notes, updates, and guides for OmniScout — local-first browser control for AI agents.",
-    image: latest?.thumbnail,
+    image: latest ? getPostOgImage(latest) : undefined,
+    imageWidth: 1200,
+    imageHeight: 675,
+    imageType: "image/jpeg",
     url: "/blogs",
   });
 

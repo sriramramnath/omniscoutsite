@@ -1,7 +1,13 @@
 import { mkdirSync, readFileSync, writeFileSync } from "fs";
 import path from "path";
-import { posts } from "../data/posts";
+import { getPostOgImage, posts } from "../data/posts";
 import { defaultSiteMeta, patchHtmlMeta, type PageMetaTags } from "./seo";
+
+const OG_IMAGE_META = {
+  imageWidth: 1200,
+  imageHeight: 675,
+  imageType: "image/jpeg",
+} as const;
 
 export function generateOgHtmlPages(outDir: string, siteUrl: string): void {
   const indexHtmlPath = path.join(outDir, "index.html");
@@ -12,10 +18,12 @@ export function generateOgHtmlPages(outDir: string, siteUrl: string): void {
     patchHtmlMeta(indexHtml, defaultSiteMeta, siteUrl),
   );
 
+  const latestOgImage = posts[0] ? getPostOgImage(posts[0]) : defaultSiteMeta.image;
   const blogsMeta: PageMetaTags = {
     title: "Blog · OmniScout",
     description: "Release notes, updates, and guides for OmniScout — local-first browser control for AI agents.",
-    image: posts[0]?.thumbnail ?? defaultSiteMeta.image,
+    image: latestOgImage,
+    ...OG_IMAGE_META,
     url: "/blogs",
     type: "website",
   };
@@ -31,7 +39,8 @@ export function generateOgHtmlPages(outDir: string, siteUrl: string): void {
     const postMeta: PageMetaTags = {
       title: `${post.title} · OmniScout`,
       description: post.excerpt,
-      image: post.thumbnail,
+      image: getPostOgImage(post),
+      ...OG_IMAGE_META,
       url: `/blogs/${post.slug}`,
       type: "article",
     };
