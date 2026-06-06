@@ -17,6 +17,7 @@ import { Nav } from "@/components/layout/nav";
 import { Footer } from "@/components/layout/footer";
 import { PageHeroGlow } from "@/components/layout/page-hero-glow";
 import { Link } from "wouter";
+import { cn } from "@/lib/utils";
 
 function FadeUp({
   children,
@@ -155,19 +156,19 @@ const cases: UseCase[] = [
 
 export default function UseCases() {
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-screen bg-background text-foreground overflow-x-clip">
       <Nav />
 
       {/* Hero */}
       <section className="relative overflow-hidden pt-28 pb-20 sm:pt-32">
         <PageHeroGlow />
 
-        <div className="relative z-10 max-w-6xl mx-auto px-5">
+        <div className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-5 min-w-0">
           <FadeUp>
             <div className="text-xs font-mono text-primary uppercase tracking-widest mb-5">
               Use Cases
             </div>
-            <h1 className="text-4xl md:text-6xl font-bold tracking-tight leading-tight mb-6">
+            <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold tracking-tight leading-tight mb-6 break-words">
               Recipes from
               <br />
               <span className="text-muted-foreground font-normal">
@@ -183,13 +184,13 @@ export default function UseCases() {
       </section>
 
       {/* Use case cards */}
-      <section className="pb-10 border-t border-border/30">
-        <div className="max-w-6xl mx-auto px-5">
+      <section className="pb-10 border-t border-border/30 overflow-x-clip">
+        <div className="w-full max-w-6xl mx-auto px-4 sm:px-5 min-w-0">
           {cases.map((uc, i) => (
-            <FadeUp key={uc.number} delay={0.05} className="py-16 border-b border-border/20 last:border-0">
-              <div className={`grid lg:grid-cols-2 gap-12 items-start ${i % 2 !== 0 ? "lg:[direction:rtl]" : ""}`}>
-                <div className="lg:[direction:ltr]">
-                  <div className="flex items-center gap-3 mb-5">
+            <FadeUp key={uc.number} delay={0.05} className="py-12 sm:py-16 border-b border-border/20 last:border-0 min-w-0">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 items-start min-w-0">
+                <div className={cn("min-w-0 w-full max-w-full order-2 lg:order-none", i % 2 !== 0 && "lg:order-2")}>
+                  <div className="flex flex-wrap items-center gap-3 mb-5">
                     <span className="text-xs font-mono text-muted-foreground/40">
                       {uc.number}
                     </span>
@@ -198,26 +199,26 @@ export default function UseCases() {
                     </span>
                   </div>
 
-                  <div className="flex items-start gap-3 mb-4">
+                  <div className="flex items-start gap-3 mb-4 min-w-0">
                     <div className="mt-0.5 w-9 h-9 rounded-xl bg-primary/10 text-primary flex items-center justify-center flex-shrink-0">
                       {uc.icon}
                     </div>
-                    <h2 className="text-2xl md:text-3xl font-bold tracking-tight leading-tight">
+                    <h2 className="text-xl sm:text-2xl md:text-3xl font-bold tracking-tight leading-tight break-words min-w-0 flex-1">
                       {uc.title}
                     </h2>
                   </div>
 
-                  <p className="text-muted-foreground leading-relaxed text-sm md:text-base mb-6">
+                  <p className="text-muted-foreground leading-relaxed text-sm md:text-base mb-6 break-words">
                     {uc.description}
                   </p>
 
-                  <div className="border border-border/40 bg-card rounded-xl overflow-hidden">
-                    <div className="flex items-center justify-between px-4 py-3 border-b border-border/30 bg-card/50">
-                      <div className="flex items-center gap-2 text-xs font-mono text-muted-foreground">
-                        <Terminal className="w-3.5 h-3.5" />
+                  <div className="border border-border/40 bg-card rounded-xl overflow-hidden max-w-full">
+                    <div className="flex flex-wrap items-center justify-between gap-2 px-4 py-3 border-b border-border/30 bg-card/50">
+                      <div className="flex items-center gap-2 text-xs font-mono text-muted-foreground min-w-0">
+                        <Terminal className="w-3.5 h-3.5 flex-shrink-0" />
                         example commands
                       </div>
-                      <div className="flex items-center gap-1.5 text-xs font-mono text-muted-foreground">
+                      <div className="flex items-center gap-1.5 text-xs font-mono text-muted-foreground flex-shrink-0">
                         <Clock className="w-3 h-3" />
                         {uc.timeEstimate}
                       </div>
@@ -229,13 +230,15 @@ export default function UseCases() {
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: si * 0.06 }}
-                        className="flex items-center gap-3 px-4 py-2.5 border-b border-border/20 last:border-0 hover:bg-card/50 transition-colors"
+                        className="flex flex-col gap-1.5 px-4 py-3 border-b border-border/20 last:border-0 hover:bg-card/50 transition-colors min-w-0"
                       >
-                        <CheckCircle className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" />
-                        <code className="text-xs font-mono text-primary min-w-[130px]">
-                          {step.step}
-                        </code>
-                        <span className="text-xs text-muted-foreground truncate">
+                        <div className="flex items-start gap-2 min-w-0">
+                          <CheckCircle className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0 mt-0.5" />
+                          <code className="text-xs font-mono text-primary break-words min-w-0">
+                            {step.step}
+                          </code>
+                        </div>
+                        <span className="text-xs text-muted-foreground break-words min-w-0 pl-5">
                           {step.detail}
                         </span>
                       </motion.div>
@@ -243,24 +246,24 @@ export default function UseCases() {
                   </div>
                 </div>
 
-                <div className="lg:[direction:ltr]">
-                  <div className="relative rounded-xl overflow-hidden border border-border/30 shadow-2xl shadow-black/40">
+                <div className={cn("min-w-0 w-full max-w-full order-1 lg:order-none mb-6 lg:mb-0", i % 2 !== 0 && "lg:order-1")}>
+                  <div className="relative w-full min-w-0 max-w-full rounded-xl overflow-hidden border border-border/30 shadow-lg sm:shadow-2xl sm:shadow-black/40">
                     <img
                       src={uc.imageUrl}
                       alt={uc.tag}
-                      className="w-full h-64 md:h-80 object-cover"
+                      className="block w-full max-w-full aspect-[4/3] object-cover"
                       loading="lazy"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-background/70 via-background/10 to-transparent" />
-                    <div className="absolute top-4 left-4">
+                    <div className="absolute inset-0 bg-gradient-to-t from-background/70 via-background/10 to-transparent pointer-events-none" />
+                    <div className="absolute top-3 left-3 sm:top-4 sm:left-4">
                       <span className="text-xs font-mono text-foreground/50 bg-background/60 backdrop-blur-sm px-2.5 py-1 rounded-md border border-border/30">
                         {uc.tag}
                       </span>
                     </div>
-                    <div className="absolute bottom-0 left-0 right-0 px-5 pb-5">
-                      <div className="flex items-center gap-1.5 text-xs font-mono text-foreground/70">
-                        <TrendingUp className="w-3.5 h-3.5 text-primary" />
-                        CLI + daemon · JSON output · Local-first
+                    <div className="absolute bottom-0 left-0 right-0 px-4 pb-4 sm:px-5 sm:pb-5">
+                      <div className="flex flex-wrap items-center gap-x-1.5 gap-y-1 text-[10px] sm:text-xs font-mono text-foreground/70">
+                        <TrendingUp className="w-3.5 h-3.5 text-primary flex-shrink-0" />
+                        <span className="break-words">CLI + daemon · JSON output · Local-first</span>
                       </div>
                     </div>
                   </div>

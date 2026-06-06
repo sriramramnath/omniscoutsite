@@ -341,7 +341,7 @@ export default function Compare() {
   const barInView = useInView(barRef, { once: true, margin: "-80px" });
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-screen bg-background text-foreground overflow-x-clip">
       <Nav />
 
       {/* Hero */}
@@ -432,7 +432,7 @@ export default function Compare() {
             <FadeUp delay={0.15}>
               <div
                 ref={radarRef}
-                className="border border-border/40 bg-card rounded-xl p-6"
+                className="min-w-0 border border-border/40 bg-card rounded-xl p-4 sm:p-6 overflow-hidden"
               >
                 <motion.div
                   initial={{ opacity: 0, scale: 0.9 }}
@@ -523,7 +523,7 @@ export default function Compare() {
           <FadeUp delay={0.1}>
             <div
               ref={barRef}
-              className="border border-border/40 bg-card rounded-xl p-6"
+              className="min-w-0 border border-border/40 bg-card rounded-xl p-4 sm:p-6 overflow-hidden"
             >
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -630,7 +630,8 @@ export default function Compare() {
           </FadeUp>
 
           <FadeUp delay={0.1}>
-            <div className="border border-border/40 rounded-xl overflow-hidden">
+            <div className="-mx-5 overflow-x-auto px-5 md:mx-0 md:px-0">
+              <div className="min-w-[640px] border border-border/40 rounded-xl overflow-hidden">
               <div className="grid grid-cols-5 bg-card border-b border-border/40">
                 <div className="col-span-1 px-5 py-4 text-xs font-mono text-muted-foreground uppercase tracking-widest">
                   Feature
@@ -679,9 +680,10 @@ export default function Compare() {
                   ))}
                 </div>
               ))}
+              </div>
             </div>
 
-            <div className="mt-4 flex items-center gap-5 text-xs text-muted-foreground font-mono">
+            <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 text-xs text-muted-foreground font-mono">
               <span className="flex items-center gap-1.5">
                 <Check className="w-3 h-3 text-primary" /> Supported
               </span>

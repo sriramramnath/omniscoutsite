@@ -32,7 +32,7 @@ export function ContainerScroll({
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  const scaleRange = isMobile ? [0.72, 0.92] : [1.05, 1];
+  const scaleRange = isMobile ? [0.72, 0.92] : [0.98, 1];
   /** Tilt / scale finish in the first ~30% of section scroll (snappier feel). */
   const tiltEnd = 0.3;
   const rotate = useTransform(scrollYProgress, [0, tiltEnd], [20, 0]);
@@ -43,12 +43,15 @@ export function ContainerScroll({
     <div
       ref={containerRef}
       className={cn(
-        "relative flex h-[58rem] items-start justify-center p-2 md:h-[78rem] md:p-12",
+        "relative flex h-[58rem] items-start justify-center overflow-x-clip p-2 md:h-[78rem] md:p-12",
         className,
       )}
     >
       <div
-        className={cn("relative w-full pt-4 pb-16 md:pt-8 md:pb-24", containerClassName)}
+        className={cn(
+          "relative w-full min-w-0 max-w-full pt-4 pb-16 md:pt-8 md:pb-24",
+          containerClassName,
+        )}
         style={{ perspective: "1000px" }}
       >
         <ScrollHeader translate={translate} titleComponent={titleComponent} />
@@ -94,7 +97,7 @@ function ScrollCard({
         boxShadow:
           "0 0 #0000004d, 0 9px 20px #0000004a, 0 37px 37px #00000042, 0 84px 50px #00000026, 0 149px 60px #0000000a, 0 233px 65px #00000003",
       }}
-      className="relative z-0 mx-auto mt-10 h-[28rem] w-full max-w-5xl border-4 border-[#6C6C6C] bg-[#222222] p-2 shadow-2xl rounded-[30px] md:mt-16 md:h-[38rem] md:p-6 lg:mt-20"
+      className="relative z-0 mx-auto mt-10 h-[28rem] w-full min-w-0 max-w-[min(100%,64rem)] border-4 border-[#6C6C6C] bg-[#222222] p-2 shadow-2xl rounded-[30px] md:mt-16 md:h-[38rem] md:p-6 lg:mt-20"
     >
       <div className="h-full w-full overflow-hidden rounded-2xl bg-zinc-950 md:rounded-2xl md:p-3">
         {children}

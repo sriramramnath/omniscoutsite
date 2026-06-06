@@ -176,7 +176,7 @@ function WorkflowStep({
 /* ─── Page ───────────────────────────────────────────────────────── */
 export default function Home() {
   return (
-    <div className="min-h-[100dvh] bg-background text-foreground selection:bg-primary/25 overflow-x-hidden">
+    <div className="min-h-[100dvh] bg-background text-foreground selection:bg-primary/25 overflow-x-clip">
       <Nav />
 
       {/* ── Hero ── */}

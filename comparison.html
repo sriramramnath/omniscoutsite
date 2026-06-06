@@ -27,6 +27,10 @@
         .active-glow {
             animation: pulse-glow 3s infinite ease-in-out;
         }
+        img {
+            max-width: 100%;
+            height: auto;
+        }
     </style>
 <script id="tailwind-config">
         tailwind.config = {
@@ -128,10 +132,10 @@
         }
     </script>
 </head>
-<body class="bg-background text-on-background selection:bg-primary-container selection:text-on-primary-container">
+<body class="bg-background text-on-background selection:bg-primary-container selection:text-on-primary-container overflow-x-clip">
 <!-- Top Navigation -->
 <header class="fixed top-0 w-full z-50 bg-background/60 backdrop-blur-xl border-b border-outline-variant/10">
-<nav class="flex justify-between items-center h-16 px-margin-desktop max-w-container-max mx-auto">
+<nav class="flex justify-between items-center h-16 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
 <div class="font-headline-lg text-headline-lg font-bold text-primary tracking-tight">OmniScout</div>
 <div class="hidden md:flex items-center gap-8">
 <a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" href="#">Docs</a>
@@ -147,7 +151,7 @@
 <main class="pt-32 pb-24 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
 <!-- Hero Section -->
 <section class="mb-24 text-center">
-<h1 class="font-display-lg text-display-lg mb-6 tracking-tight">OmniScout vs. Legacy Tools</h1>
+<h1 class="font-display-lg text-headline-lg-mobile md:text-display-lg mb-6 tracking-tight">OmniScout vs. Legacy Tools</h1>
 <p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto">
             Comparing the next generation of local-first AI research runtimes against fragmented automation scripts and generic search APIs.
         </p>

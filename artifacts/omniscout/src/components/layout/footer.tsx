@@ -34,7 +34,7 @@ export function Footer() {
                 { label: "Compare", href: "/compare" },
                 { label: "Use Cases", href: "/use-cases" },
                 { label: "Blog", href: "/blogs" },
-                { label: "Changelog", href: "#" },
+                { label: "Changelog", href: "/changelog" },
               ],
             },
             {

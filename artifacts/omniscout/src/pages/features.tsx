@@ -20,6 +20,7 @@ import { Nav } from "@/components/layout/nav";
 import { Footer } from "@/components/layout/footer";
 import { PageHeroGlow } from "@/components/layout/page-hero-glow";
 import { Link } from "wouter";
+import { cn } from "@/lib/utils";
 
 function FadeUp({
   children,
@@ -75,59 +76,54 @@ function FeatureBlock({
   code,
 }: FeatureBlockProps) {
   return (
-    <section className="py-24 border-t border-border/30">
-      <div className="max-w-6xl mx-auto px-5">
-        <div
-          className={`grid lg:grid-cols-2 gap-14 items-center ${
-            reverse ? "lg:flex-row-reverse" : ""
-          }`}
-          style={{ direction: reverse ? "rtl" : "ltr" }}
-        >
-          <FadeUp style={{ direction: "ltr" }}>
+    <section className="py-16 sm:py-24 border-t border-border/30 overflow-x-clip">
+      <div className="w-full max-w-6xl mx-auto px-4 sm:px-5 min-w-0">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-14 items-center min-w-0">
+          <FadeUp className={cn("min-w-0 w-full max-w-full", reverse && "lg:order-2")}>
             <div className="text-xs font-mono text-primary uppercase tracking-widest mb-4">
               {tag}
             </div>
-            <div className="flex items-center gap-3 mb-5">
+            <div className="flex items-start gap-3 mb-5 min-w-0">
               <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center flex-shrink-0">
                 {icon}
               </div>
-              <div>
-                <h2 className="text-2xl md:text-4xl font-bold tracking-tight leading-tight">
+              <div className="min-w-0 flex-1">
+                <h2 className="text-xl sm:text-2xl md:text-4xl font-bold tracking-tight leading-tight break-words">
                   {title}
                 </h2>
-                <p className="text-muted-foreground text-sm">{subtitle}</p>
+                <p className="text-muted-foreground text-sm break-words">{subtitle}</p>
               </div>
             </div>
-            <p className="text-muted-foreground leading-relaxed mb-6 text-sm md:text-base">
+            <p className="text-muted-foreground leading-relaxed mb-6 text-sm md:text-base break-words">
               {description}
             </p>
             <ul className="space-y-2.5 mb-6">
               {bullets.map((b) => (
-                <li key={b} className="flex items-start gap-2.5 text-sm text-muted-foreground">
+                <li key={b} className="flex items-start gap-2.5 text-sm text-muted-foreground min-w-0">
                   <span className="mt-0.5 w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0" />
-                  {b}
+                  <span className="break-words min-w-0">{b}</span>
                 </li>
               ))}
             </ul>
             {code && (
-              <div className="rounded-lg border border-border/40 bg-[hsl(222_22%_6%)] overflow-hidden">
+              <div className="rounded-lg border border-border/40 bg-[hsl(222_22%_6%)] overflow-hidden max-w-full">
                 <div className="flex items-center gap-1.5 px-4 py-2 border-b border-border/30 bg-[hsl(222_22%_5%)]">
-                  <Terminal className="w-3 h-3 text-muted-foreground" />
+                  <Terminal className="w-3 h-3 text-muted-foreground flex-shrink-0" />
                   <span className="text-xs font-mono text-muted-foreground">example</span>
                 </div>
-                <pre className="px-4 py-4 text-xs font-mono text-zinc-300 overflow-x-auto leading-6">
+                <pre className="px-4 py-4 text-xs font-mono text-zinc-300 whitespace-pre-wrap break-words leading-6">
                   <code dangerouslySetInnerHTML={{ __html: code }} />
                 </pre>
               </div>
             )}
           </FadeUp>
 
-          <FadeUp delay={0.15} style={{ direction: "ltr" }}>
-            <div className="relative rounded-xl overflow-hidden border border-border/30 shadow-2xl shadow-black/40">
+          <FadeUp delay={0.15} className={cn("min-w-0 w-full max-w-full", reverse && "lg:order-1")}>
+            <div className="relative w-full min-w-0 max-w-full rounded-xl overflow-hidden border border-border/30 shadow-lg sm:shadow-2xl sm:shadow-black/40">
               <img
                 src={imageUrl}
                 alt={imageAlt}
-                className="w-full h-72 md:h-96 object-cover"
+                className="block w-full max-w-full aspect-[4/3] object-cover"
                 loading="lazy"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent" />
@@ -162,19 +158,19 @@ function SmallFeature({ icon, title, desc }: { icon: React.ReactNode; title: str
 
 export default function Features() {
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-screen bg-background text-foreground overflow-x-clip">
       <Nav />
 
       {/* Hero */}
       <section className="relative overflow-hidden pt-28 pb-20 sm:pt-32">
         <PageHeroGlow />
 
-        <div className="relative z-10 max-w-6xl mx-auto px-5 text-center">
+        <div className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-5 min-w-0 text-center">
           <FadeUp>
             <div className="text-xs font-mono text-primary uppercase tracking-widest mb-5">
               All features
             </div>
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-tight mb-6">
+            <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-tight mb-6 break-words">
               Every primitive
               <br />
               <span className="text-muted-foreground font-normal">
@@ -336,15 +332,15 @@ export default function Features() {
           </FadeUp>
 
           <FadeUp delay={0.1}>
-            <div className="relative border border-border/40 bg-card rounded-xl overflow-hidden">
-              <div className="relative aspect-[16/7] overflow-hidden">
+            <div className="relative w-full min-w-0 max-w-full border border-border/40 bg-card rounded-xl overflow-hidden">
+              <div className="relative aspect-[4/3] sm:aspect-[16/7] overflow-hidden">
                 <img
                   src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1400&q=80"
                   alt="Server infrastructure"
-                  className="w-full h-full object-cover opacity-20"
+                  className="block w-full max-w-full h-full object-cover opacity-20"
                 />
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="grid grid-cols-4 gap-px bg-border/30 rounded-xl overflow-hidden border border-border/40 w-full max-w-3xl mx-8">
+                <div className="absolute inset-0 flex items-center justify-center p-3 sm:px-8">
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-px bg-border/30 rounded-xl overflow-hidden border border-border/40 w-full max-w-3xl min-w-0">
                     {[
                       { label: "search", icon: <Search className="w-4 h-4" /> },
                       { label: "browser", icon: <Globe className="w-4 h-4" /> },
@@ -357,10 +353,10 @@ export default function Features() {
                     ].map(({ label, icon }) => (
                       <div
                         key={label}
-                        className="bg-card/90 backdrop-blur-sm px-4 py-5 flex flex-col items-center gap-2 hover:bg-card transition-colors"
+                        className="bg-card/90 backdrop-blur-sm px-2 py-3 sm:px-4 sm:py-5 flex flex-col items-center gap-1.5 sm:gap-2 hover:bg-card transition-colors min-w-0"
                       >
                         <div className="text-primary">{icon}</div>
-                        <span className="text-xs font-mono text-muted-foreground">
+                        <span className="text-[10px] sm:text-xs font-mono text-muted-foreground truncate max-w-full">
                           {label}
                         </span>
                       </div>

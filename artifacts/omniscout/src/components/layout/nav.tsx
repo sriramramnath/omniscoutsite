@@ -12,6 +12,7 @@ const links = [
   { label: "Compare", href: "/compare" },
   { label: "Use Cases", href: "/use-cases" },
   { label: "Blog", href: "/blogs" },
+  { label: "Changelog", href: "/changelog" },
   { label: "Docs", href: "https://omniscout-docs.vercel.app/", external: true },
   { label: "PyPI", href: PYPI_URL, external: true },
 ];

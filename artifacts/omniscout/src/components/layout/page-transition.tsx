@@ -6,6 +6,8 @@ import Compare from "@/pages/compare";
 import Features from "@/pages/features";
 import UseCases from "@/pages/use-cases";
 import Blogs from "@/pages/blogs";
+import BlogPost from "@/pages/blog-post";
+import Changelog from "@/pages/changelog";
 import NotFound from "@/pages/not-found";
 
 const pageEase = [0.25, 0.1, 0.25, 1] as const;
@@ -25,6 +27,7 @@ export function PageTransition() {
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -10 }}
         transition={{ duration: 0.32, ease: pageEase }}
+        className="overflow-x-clip"
       >
         <Switch location={location}>
           <Route path="/" component={Home} />
@@ -32,6 +35,8 @@ export function PageTransition() {
           <Route path="/features" component={Features} />
           <Route path="/use-cases" component={UseCases} />
           <Route path="/blogs" component={Blogs} />
+          <Route path="/blogs/:slug" component={BlogPost} />
+          <Route path="/changelog" component={Changelog} />
           <Route component={NotFound} />
         </Switch>
       </motion.div>
