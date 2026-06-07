@@ -18,6 +18,8 @@ import { Footer } from "@/components/layout/footer";
 import { PageHeroGlow } from "@/components/layout/page-hero-glow";
 import { Link } from "wouter";
 import { cn } from "@/lib/utils";
+import { routePageMeta } from "@/config/page-meta";
+import { useDocumentMeta } from "@/hooks/use-document-meta";
 
 function FadeUp({
   children,
@@ -155,6 +157,8 @@ const cases: UseCase[] = [
 ];
 
 export default function UseCases() {
+  useDocumentMeta(routePageMeta["/use-cases"]);
+
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-clip">
       <Nav />

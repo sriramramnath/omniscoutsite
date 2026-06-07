@@ -18,6 +18,8 @@ import {
   type ChangelogSectionKind,
 } from "@/data/changelog";
 import { cn } from "@/lib/utils";
+import { routePageMeta } from "@/config/page-meta";
+import { useDocumentMeta } from "@/hooks/use-document-meta";
 
 function FadeUp({
   children,
@@ -138,6 +140,8 @@ function ReleasePanel({
 }
 
 export default function Changelog() {
+  useDocumentMeta(routePageMeta["/changelog"]);
+
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-clip">
       <Nav />

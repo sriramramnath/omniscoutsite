@@ -3,7 +3,7 @@ import { defineConfig, type Plugin } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import path from "path";
-import { buildRobotsTxt, buildSitemapXml } from "./src/lib/sitemap";
+import { buildLlmsFullTxt, buildLlmsTxt, buildRobotsTxt, buildSitemapXml } from "./src/lib/sitemap";
 import { generateOgHtmlPages } from "./src/lib/og-html";
 import { resolveSiteUrl } from "./src/config/site-routes";
 
@@ -30,6 +30,8 @@ function generateSitemapAndRobots(): Plugin {
     closeBundle() {
       writeFileSync(path.join(outDir, "sitemap.xml"), buildSitemapXml(siteUrl));
       writeFileSync(path.join(outDir, "robots.txt"), buildRobotsTxt(siteUrl));
+      writeFileSync(path.join(outDir, "llms.txt"), buildLlmsTxt(siteUrl));
+      writeFileSync(path.join(outDir, "llms-full.txt"), buildLlmsFullTxt(siteUrl));
     },
   };
 }

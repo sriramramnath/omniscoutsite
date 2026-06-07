@@ -193,7 +193,7 @@ export default function BlogPost() {
           description: post.excerpt,
           image: getPostOgImage(post),
           imageWidth: 1200,
-          imageHeight: 675,
+          imageHeight: 630,
           imageType: "image/jpeg",
           url: `/blogs/${post.slug}`,
           type: "article",

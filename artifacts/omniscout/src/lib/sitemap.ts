@@ -56,6 +56,70 @@ export function buildRobotsTxt(siteUrl: string = DEFAULT_SITE_URL): string {
   return `User-agent: *
 Allow: /
 
+# LLM-friendly site index: ${base}/llms.txt
 Sitemap: ${base}/sitemap.xml
+`;
+}
+
+export function buildLlmsTxt(siteUrl: string = DEFAULT_SITE_URL): string {
+  const base = siteUrl.replace(/\/$/, "");
+  return `# OmniScout
+
+> Give your AI agent a browser. No SDK. No cloud. Just a CLI. Local-first browser automation, semantic search, extraction, and research for AI agents.
+
+Install: \`pip install omniscout\` then \`omniscout install --skill\` to copy the agent skill into Claude, Cursor, Codex, and Gemini.
+
+## Product
+
+- [Home](${base}/): Overview and quick install
+- [Features](${base}/features): Browser control, search, extract, research primitives
+- [Use cases](${base}/use-cases): Agent workflow examples
+- [Compare](${base}/compare): vs hosted browsers and vendor-integrated agents
+- [Changelog](${base}/changelog): Release history
+- [Blog](${base}/blogs): Release notes and guides
+
+## Documentation
+
+- [OmniScout Docs llms.txt](https://docs.omniscout.xyz/llms.txt): Full CLI and SDK reference index
+- [OmniScout Docs llms-full.txt](https://docs.omniscout.xyz/llms-full.txt): Concatenated documentation for LLM context
+- [Agent skill (SKILL.md)](https://github.com/sriramramnath/omniscout/blob/main/docs/agent-skill.md): Drop-in instructions for AI agents
+
+## Optional
+
+- [PyPI package](https://pypi.org/project/omniscout/)
+- [GitHub repository](https://github.com/sriramramnath/omniscout)
+`;
+}
+
+export function buildLlmsFullTxt(siteUrl: string = DEFAULT_SITE_URL): string {
+  const base = siteUrl.replace(/\/$/, "");
+  return `# OmniScout — condensed site context
+
+> Local-first CLI for AI agents: semantic web search, one-sentence answers, multi-step research, URL extraction, browser memory, and full browser automation via a daemon at 127.0.0.1:7720.
+
+## Install
+
+\`\`\`bash
+pip install omniscout
+omniscout install --skill
+omniscout daemon start
+\`\`\`
+
+## Key pages
+
+- ${base}/
+- ${base}/features
+- ${base}/use-cases
+- ${base}/compare
+- ${base}/changelog
+- ${base}/blogs
+
+## Full technical documentation
+
+See https://docs.omniscout.xyz/llms-full.txt for the complete CLI commands reference, architecture, SDK API, examples, and troubleshooting guides.
+
+## Agent skill
+
+Install with \`omniscout install --skill\` or read https://github.com/sriramramnath/omniscout/blob/main/docs/agent-skill.md
 `;
 }

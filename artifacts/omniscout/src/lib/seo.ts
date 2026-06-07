@@ -1,13 +1,6 @@
-export interface PageMetaTags {
-  title: string;
-  description: string;
-  image?: string;
-  imageWidth?: number;
-  imageHeight?: number;
-  imageType?: string;
-  url?: string;
-  type?: "website" | "article";
-}
+import { routePageMeta, type PageMetaTags } from "../config/page-meta";
+
+export type { PageMetaTags };
 
 export function absoluteUrl(siteUrl: string, path: string): string {
   if (path.startsWith("http://") || path.startsWith("https://")) return path;
@@ -35,6 +28,13 @@ function setOrInsertMeta(
   return html.replace("</head>", `    ${tag}\n  </head>`);
 }
 
+function setOrInsertLink(html: string, rel: string, href: string): string {
+  const tag = `<link rel="${rel}" href="${escapeAttr(href)}" />`;
+  const pattern = new RegExp(`<link\\s+rel="${rel}"\\s+href="[^"]*"\\s*/?>`, "i");
+  if (pattern.test(html)) return html.replace(pattern, tag);
+  return html.replace("</head>", `    ${tag}\n  </head>`);
+}
+
 function applyImageMeta(html: string, meta: PageMetaTags, siteUrl: string): string {
   if (!meta.image) return html;
 
@@ -55,6 +55,80 @@ function applyImageMeta(html: string, meta: PageMetaTags, siteUrl: string): stri
   return result;
 }
 
+export function buildJsonLd(meta: PageMetaTags, siteUrl: string): Record<string, unknown>[] {
+  const pageUrl = meta.url ? absoluteUrl(siteUrl, meta.url) : siteUrl.replace(/\/$/, "");
+  const base = siteUrl.replace(/\/$/, "");
+
+  const organization = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "OmniScout",
+    url: base,
+    sameAs: [
+      "https://github.com/sriramramnath/omniscout",
+      "https://pypi.org/project/omniscout/",
+      "https://docs.omniscout.xyz",
+    ],
+  };
+
+  const software = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: "OmniScout",
+    applicationCategory: "DeveloperApplication",
+    operatingSystem: "macOS, Linux, Windows",
+    description: meta.description,
+    url: pageUrl,
+    downloadUrl: "https://pypi.org/project/omniscout/",
+    softwareHelp: "https://docs.omniscout.xyz/cli/overview/",
+    offers: {
+      "@type": "Offer",
+      price: "0",
+      priceCurrency: "USD",
+    },
+  };
+
+  if (meta.type === "article") {
+    return [
+      organization,
+      software,
+      {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        headline: meta.title.replace(/ · OmniScout$/, ""),
+        description: meta.description,
+        url: pageUrl,
+        image: meta.image ? absoluteUrl(siteUrl, meta.image) : undefined,
+        publisher: { "@type": "Organization", name: "OmniScout", url: base },
+      },
+    ];
+  }
+
+  return [organization, software];
+}
+
+function upsertJsonLd(meta: PageMetaTags, siteUrl: string): void {
+  const id = "omniscout-jsonld";
+  let el = document.getElementById(id) as HTMLScriptElement | null;
+  if (!el) {
+    el = document.createElement("script");
+    el.id = id;
+    el.type = "application/ld+json";
+    document.head.appendChild(el);
+  }
+  el.textContent = JSON.stringify(buildJsonLd(meta, siteUrl));
+}
+
+function upsertCanonical(href: string): void {
+  let el = document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null;
+  if (!el) {
+    el = document.createElement("link");
+    el.rel = "canonical";
+    document.head.appendChild(el);
+  }
+  el.href = href;
+}
+
 export function patchHtmlMeta(html: string, meta: PageMetaTags, siteUrl: string): string {
   const pageUrl = meta.url ? absoluteUrl(siteUrl, meta.url) : siteUrl.replace(/\/$/, "");
 
@@ -68,6 +142,14 @@ export function patchHtmlMeta(html: string, meta: PageMetaTags, siteUrl: string)
   result = setOrInsertMeta(result, "name", "twitter:title", meta.title);
   result = setOrInsertMeta(result, "name", "twitter:description", meta.description);
   result = applyImageMeta(result, meta, siteUrl);
+  result = setOrInsertLink(result, "canonical", pageUrl);
+
+  const jsonLd = `<script id="omniscout-jsonld" type="application/ld+json">${JSON.stringify(buildJsonLd(meta, siteUrl))}</script>`;
+  if (result.includes('id="omniscout-jsonld"')) {
+    result = result.replace(/<script id="omniscout-jsonld"[^>]*>[\s\S]*?<\/script>/, jsonLd);
+  } else {
+    result = result.replace("</head>", `    ${jsonLd}\n  </head>`);
+  }
 
   return result;
 }
@@ -95,6 +177,8 @@ export function applyPageMeta(meta: PageMetaTags, siteUrl: string): void {
   upsertDocumentMeta("name", "twitter:card", "summary_large_image");
   upsertDocumentMeta("name", "twitter:title", meta.title);
   upsertDocumentMeta("name", "twitter:description", meta.description);
+  upsertCanonical(pageUrl);
+  upsertJsonLd(meta, siteUrl);
 
   if (meta.image) {
     const imageUrl = absoluteUrl(siteUrl, meta.image);
@@ -112,16 +196,6 @@ export function applyPageMeta(meta: PageMetaTags, siteUrl: string): void {
   }
 }
 
-export const DEFAULT_OG_IMAGE = "/og/v0-2-6.jpg";
+export const DEFAULT_OG_IMAGE = "/og/home.jpg";
 
-export const defaultSiteMeta: PageMetaTags = {
-  title: "OmniScout",
-  description:
-    "Give your AI agent a browser. No SDK. No cloud. Just a CLI. Local-first browser automation and research for AI agents.",
-  image: DEFAULT_OG_IMAGE,
-  imageWidth: 1200,
-  imageHeight: 675,
-  imageType: "image/jpeg",
-  url: "/",
-  type: "website",
-};
+export const defaultSiteMeta: PageMetaTags = routePageMeta["/"];

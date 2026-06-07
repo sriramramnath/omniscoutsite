@@ -19,6 +19,8 @@ import { Nav } from "@/components/layout/nav";
 import { Footer } from "@/components/layout/footer";
 import { PageHeroGlow } from "@/components/layout/page-hero-glow";
 import { Link } from "wouter";
+import { routePageMeta } from "@/config/page-meta";
+import { useDocumentMeta } from "@/hooks/use-document-meta";
 
 /* ─── Helpers ───────────────────────────────────────────────────── */
 function FadeUp({
@@ -335,6 +337,8 @@ const customTooltipStyle = {
 };
 
 export default function Compare() {
+  useDocumentMeta(routePageMeta["/compare"]);
+
   const radarRef = useRef<HTMLDivElement>(null);
   const barRef = useRef<HTMLDivElement>(null);
   const radarInView = useInView(radarRef, { once: true, margin: "-80px" });
