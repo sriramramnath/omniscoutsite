@@ -288,7 +288,7 @@ export default function UseCases() {
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
               <a
-                href="https://omniscout-docs.vercel.app/"
+                href="https://docs.omniscout.xyz"
                 target="_blank"
                 rel="noreferrer"
                 className="group flex items-center gap-2 px-6 py-3 rounded-lg bg-primary text-white text-sm font-medium hover:bg-primary/90 transition-all shadow-lg shadow-primary/25"

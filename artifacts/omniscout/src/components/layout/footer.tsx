@@ -1,6 +1,7 @@
 import { Link } from "wouter";
 import { Github, Package } from "lucide-react";
 import { SiX } from "react-icons/si";
+import { latestChangelogVersion } from "@/data/changelog";
 
 const PYPI_URL = "https://pypi.org/project/omniscout/";
 
@@ -40,10 +41,9 @@ export function Footer() {
             {
               heading: "Resources",
               links: [
-                { label: "Documentation", href: "https://omniscout-docs.vercel.app/" },
+                { label: "Documentation", href: "https://docs.omniscout.xyz" },
                 { label: "PyPI", href: PYPI_URL },
                 { label: "GitHub", href: "https://github.com/sriramramnath/omniscout" },
-                { label: "Examples", href: "#" },
               ],
             },
             {
@@ -99,7 +99,7 @@ export function Footer() {
               data-testid="link-footer-pypi"
             >
               <Package className="w-3.5 h-3.5" />
-              PyPI
+              PyPI · v{latestChangelogVersion}
             </a>
             <a
               href="https://github.com/sriramramnath/omniscout"

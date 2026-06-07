@@ -1,0 +1,390 @@
+
+<style>
+* { box-sizing: border-box; }
+.g { font-family: var(--font-sans); padding: 1.5rem 0 2rem; }
+.hero { background: #EEEDFE; border-radius: var(--border-radius-lg); padding: 18px 20px; margin-bottom: 2rem; border: 0.5px solid #AFA9EC; }
+.hero-title { font-size: 20px; font-weight: 500; color: #26215C; margin: 0 0 4px; }
+.hero-sub { font-size: 14px; color: #534AB7; margin: 0; line-height: 1.5; }
+.phase-label { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+.phase-badge { font-size: 11px; font-weight: 500; padding: 3px 10px; border-radius: 20px; }
+.badge-setup { background: #EEEDFE; color: #3C3489; }
+.badge-done { background: #E1F5EE; color: #085041; }
+.badge-use { background: #FAEEDA; color: #633806; }
+.badge-outcome { background: #E6F1FB; color: #0C447C; }
+.badge-how { background: #FAECE7; color: #712B13; }
+.phase-title { font-size: 16px; font-weight: 500; color: var(--color-text-primary); margin: 0 0 12px; }
+.steps { display: flex; flex-direction: column; gap: 10px; margin-bottom: 2rem; }
+.step { display: flex; gap: 14px; padding: 14px 16px; background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); align-items: flex-start; }
+.num { width: 28px; height: 28px; border-radius: 50%; background: #EEEDFE; color: #3C3489; font-size: 13px; font-weight: 500; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+.num.done { background: #E1F5EE; color: #085041; font-size: 16px; }
+.body { flex: 1; min-width: 0; }
+.stitle { font-size: 15px; font-weight: 500; color: var(--color-text-primary); margin: 0 0 3px; }
+.sdesc { font-size: 13px; color: var(--color-text-secondary); margin: 0 0 8px; line-height: 1.6; }
+.where { font-size: 11px; font-weight: 500; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.06em; margin: 0 0 5px; }
+.cmd-single { font-family: var(--font-mono); font-size: 12px; background: var(--color-background-secondary); border: 0.5px solid var(--color-border-tertiary); border-radius: 6px; padding: 6px 10px; color: var(--color-text-primary); display: block; line-height: 1.6; margin-bottom: 6px; }
+.note { font-size: 12px; color: var(--color-text-secondary); margin: 6px 0 0; line-height: 1.5; padding: 6px 10px; background: var(--color-background-secondary); border-radius: 6px; }
+.divider { border: none; border-top: 0.5px solid var(--color-border-tertiary); margin: 0 0 2rem; }
+.three-cmds { background: #E1F5EE; border: 0.5px solid #5DCAA5; border-radius: var(--border-radius-lg); padding: 16px 18px; margin-bottom: 2rem; }
+.three-title { font-size: 14px; font-weight: 500; color: #04342C; margin: 0 0 10px; }
+.three-list { display: flex; flex-direction: column; gap: 6px; }
+.three-item { display: flex; align-items: center; gap: 8px; }
+.three-n { width: 20px; height: 20px; border-radius: 50%; background: #085041; color: #9FE1CB; font-size: 11px; font-weight: 500; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.tcmd { font-family: var(--font-mono); font-size: 12px; background: #fff; border: 0.5px solid #5DCAA5; border-radius: 5px; padding: 4px 9px; color: #04342C; flex: 1; }
+.use-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px; margin-bottom: 2rem; }
+.uc { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 13px 14px; }
+.uc-icon { font-size: 18px; color: #534AB7; margin-bottom: 6px; }
+.uc-title { font-size: 13px; font-weight: 500; color: var(--color-text-primary); margin: 0 0 4px; }
+.uc-say { font-size: 12px; color: #185FA5; margin: 0 0 6px; line-height: 1.5; font-style: italic; }
+.uc-note { font-size: 12px; color: var(--color-text-secondary); margin: 0; line-height: 1.5; }
+.tip-box { border-left: 2px solid #7F77DD; padding: 10px 14px; margin-bottom: 2rem; border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0; background: var(--color-background-secondary); }
+.tip-box p { font-size: 13px; color: var(--color-text-secondary); margin: 0; line-height: 1.6; }
+.tip-box strong { color: var(--color-text-primary); font-weight: 500; }
+.chat-frame { background: var(--color-background-secondary); border-radius: var(--border-radius-lg); padding: 16px; border: 0.5px solid var(--color-border-tertiary); margin-bottom: 14px; }
+.chat-topbar { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 0.5px solid var(--color-border-tertiary); }
+.chat-app-dot { width: 8px; height: 8px; border-radius: 50%; background: #7F77DD; }
+.chat-app-name { font-size: 12px; font-weight: 500; color: var(--color-text-secondary); }
+.chat-msgs { display: flex; flex-direction: column; gap: 10px; }
+.msg-user { align-self: flex-end; max-width: 80%; }
+.msg-user-bubble { background: #534AB7; color: #EEEDFE; border-radius: 12px 12px 3px 12px; padding: 9px 13px; font-size: 13px; line-height: 1.5; }
+.msg-ai { align-self: flex-start; max-width: 92%; display: flex; gap: 8px; align-items: flex-start; }
+.ai-avatar { width: 24px; height: 24px; border-radius: 50%; background: #EEEDFE; border: 0.5px solid #AFA9EC; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 11px; font-weight: 500; color: #3C3489; margin-top: 2px; }
+.ai-bubble { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: 12px 12px 12px 3px; padding: 10px 13px; font-size: 13px; color: var(--color-text-primary); line-height: 1.6; }
+.ai-bubble p { margin: 0 0 6px; }
+.ai-bubble p:last-child { margin: 0; }
+.ai-result-row { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; }
+.ai-result { background: var(--color-background-secondary); border-radius: 8px; padding: 8px 10px; border: 0.5px solid var(--color-border-tertiary); }
+.ai-result-title { font-size: 12px; font-weight: 500; color: #185FA5; margin: 0 0 2px; }
+.ai-result-desc { font-size: 12px; color: var(--color-text-secondary); margin: 0; }
+.ai-result-price { font-size: 13px; font-weight: 500; color: #27500A; margin: 2px 0 0; }
+.outcome-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-bottom: 2rem; }
+.oc { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 13px 14px; }
+.oc-label { font-size: 11px; font-weight: 500; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.06em; margin: 0 0 5px; }
+.oc-title { font-size: 13px; font-weight: 500; color: var(--color-text-primary); margin: 0 0 4px; }
+.oc-desc { font-size: 12px; color: var(--color-text-secondary); margin: 0; line-height: 1.5; }
+.apps-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; margin-bottom: 16px; }
+.app-chip { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-md); padding: 10px 12px; display: flex; align-items: center; gap: 8px; }
+.app-chip-icon { font-size: 16px; color: #534AB7; flex-shrink: 0; }
+.app-chip-name { font-size: 13px; font-weight: 500; color: var(--color-text-primary); margin: 0; }
+.app-chip-where { font-size: 11px; color: var(--color-text-secondary); margin: 0; }
+
+.behind-scene { background: var(--color-background-secondary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 18px; margin-bottom: 14px; }
+.bs-title { font-size: 13px; font-weight: 500; color: var(--color-text-primary); margin: 0 0 14px; }
+.bs-flow { display: flex; flex-direction: column; gap: 0; }
+.bs-row { display: flex; align-items: stretch; gap: 12px; }
+.bs-line-col { display: flex; flex-direction: column; align-items: center; width: 28px; flex-shrink: 0; }
+.bs-dot { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; flex-shrink: 0; }
+.bs-dot-you { background: #534AB7; color: #EEEDFE; }
+.bs-dot-os { background: #085041; color: #9FE1CB; }
+.bs-dot-tab { background: #E6F1FB; color: #0C447C; border: 0.5px solid #85B7EB; font-size: 11px; font-weight: 500; }
+.bs-dot-result { background: #E1F5EE; color: #085041; border: 0.5px solid #5DCAA5; }
+.bs-connector { width: 1.5px; flex: 1; background: var(--color-border-tertiary); margin: 2px 0; min-height: 10px; align-self: stretch; }
+.bs-content { flex: 1; padding-bottom: 14px; padding-top: 2px; }
+.bs-content-title { font-size: 13px; font-weight: 500; color: var(--color-text-primary); margin: 0 0 2px; line-height: 1.4; }
+.bs-content-desc { font-size: 12px; color: var(--color-text-secondary); margin: 0; line-height: 1.5; }
+.bs-tabs { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
+.bs-tab { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: 6px; padding: 5px 10px; font-size: 11px; font-weight: 500; display: flex; align-items: center; gap: 5px; }
+.bs-tab-g { color: #185FA5; }
+.bs-tab-b { color: #633806; }
+.bs-tab-d { color: #3C3489; }
+.bs-tab-icon { font-size: 13px; }
+.invisible-badge { display: inline-flex; align-items: center; gap: 4px; background: #FCEBEB; border: 0.5px solid #F09595; border-radius: 4px; padding: 3px 8px; font-size: 11px; font-weight: 500; color: #791F1F; margin-top: 6px; }
+</style>
+
+<div class="g">
+
+  <div class="hero">
+    <p class="hero-title">OmniScout — anyone can set this up</p>
+    <p class="hero-sub">Run 3 commands once. Then just ask your AI in plain English — it will browse, search, and fill in forms for you automatically.</p>
+  </div>
+
+  <div class="phase-label"><span class="phase-badge badge-setup">Part 1 — one time only</span></div>
+  <p class="phase-title">Open a terminal on your computer</p>
+  <div class="steps">
+    <div class="step">
+      <div class="num">1</div>
+      <div class="body">
+        <p class="stitle">Switch on your laptop and wait for it to fully load</p>
+        <p class="sdesc" style="margin:0;">Make sure you can see your desktop before continuing.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="num">2</div>
+      <div class="body">
+        <p class="stitle">Open the terminal (the text window where you type commands)</p>
+        <p class="sdesc">This is where you will type the 3 install commands below. Here is how to open it on each system:</p>
+        <p class="where">Mac</p>
+        <p class="sdesc" style="margin-bottom:8px;">Press <span style="font-family:var(--font-mono);font-size:12px;background:var(--color-background-secondary);padding:2px 7px;border-radius:4px;border:0.5px solid var(--color-border-tertiary);">Command ⌘ + Space</span> — a search bar appears. Type <span style="font-family:var(--font-mono);font-size:12px;background:var(--color-background-secondary);padding:2px 7px;border-radius:4px;border:0.5px solid var(--color-border-tertiary);">Terminal</span> and press Enter.</p>
+        <p class="where">Windows</p>
+        <p class="sdesc" style="margin-bottom:8px;">Press the <span style="font-family:var(--font-mono);font-size:12px;background:var(--color-background-secondary);padding:2px 7px;border-radius:4px;border:0.5px solid var(--color-border-tertiary);">Windows key</span> on your keyboard. Type <span style="font-family:var(--font-mono);font-size:12px;background:var(--color-background-secondary);padding:2px 7px;border-radius:4px;border:0.5px solid var(--color-border-tertiary);">cmd</span> and press Enter. A black window opens — that is the Command Prompt.</p>
+        <p class="where">Linux</p>
+        <p class="sdesc" style="margin-bottom:0;">Press <span style="font-family:var(--font-mono);font-size:12px;background:var(--color-background-secondary);padding:2px 7px;border-radius:4px;border:0.5px solid var(--color-border-tertiary);">Ctrl + Alt + T</span> — the terminal opens immediately.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="phase-label"><span class="phase-badge badge-setup">Part 2 — run these 3 commands</span></div>
+  <p class="phase-title" style="margin-bottom:4px;">Copy each line below, paste it into the terminal, press Enter, and wait for it to finish before typing the next one</p>
+  <p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 12px;line-height:1.6;">Each command installs one thing. The whole process takes about 2–5 minutes depending on your internet speed.</p>
+
+  <div class="three-cmds">
+    <p class="three-title">The 3 commands — type these in order</p>
+    <div class="three-list">
+      <div class="three-item"><div class="three-n">1</div><span class="tcmd">pip install omniscout</span></div>
+      <div class="three-item"><div class="three-n">2</div><span class="tcmd">omniscout install</span></div>
+      <div class="three-item"><div class="three-n">3</div><span class="tcmd">omniscout install --skill</span></div>
+    </div>
+  </div>
+
+  <div class="steps">
+    <div class="step">
+      <div class="num">3</div>
+      <div class="body">
+        <p class="stitle">Command 1 — installs OmniScout on your computer</p>
+        <span class="cmd-single">pip install omniscout</span>
+        <p class="note">If you see a message saying "pip is not recognised", you need to install Python first. Go to python.org, download the installer, run it, then try again.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="num">4</div>
+      <div class="body">
+        <p class="stitle">Command 2 — picks a browser and downloads the AI model</p>
+        <span class="cmd-single">omniscout install</span>
+        <p class="sdesc">It will ask you which browser to use (Chrome, Edge, Brave, etc.). Press Enter to accept the default. It then downloads a small AI model — this takes 1–3 minutes.</p>
+        <p class="note">If you do not have any Chromium browser, add --bundled to the end: <span style="font-family:var(--font-mono);font-size:11px;">omniscout install --bundled</span></p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="num">5</div>
+      <div class="body">
+        <p class="stitle">Command 3 — tells your AI apps that OmniScout exists</p>
+        <span class="cmd-single">omniscout install --skill</span>
+        <p class="sdesc">This is the most important step. It writes instructions into Claude Code, Codex, Kiro, Cursor, and others so that whenever you ask them to search, browse, or fill in a form, they automatically use OmniScout without you having to explain anything.</p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="phase-label"><span class="phase-badge badge-done">Part 3 — you are done. forever.</span></div>
+  <p class="phase-title">Every day from now on — just talk to your AI normally</p>
+  <div class="steps">
+    <div class="step">
+      <div class="num done">✓</div>
+      <div class="body">
+        <p class="stitle">Open any AI app — Claude Code, Codex, Kiro, Cursor, or any other</p>
+        <p class="sdesc">Type <span style="font-family:var(--font-mono);font-size:12px;">/omniscout</span> at the start of your message to activate it, then just describe what you want in plain English. The AI handles everything from there.</p>
+        <span class="cmd-single">/omniscout find me the best price for AirPods Pro in India</span>
+        <span class="cmd-single">/omniscout go to my Gmail and find any unread emails from last week</span>
+        <span class="cmd-single">/omniscout search for Python tutorials for beginners and summarise the top 3</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="phase-label" style="margin-top:0;"><span class="phase-badge badge-how">What actually happens the moment you press Enter</span></div>
+  <p class="phase-title" style="margin-bottom:6px;">Your browser opens invisibly in the background — you never see it</p>
+  <p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 14px;line-height:1.6;">The moment you send your message, OmniScout silently takes over your default browser — the same Chrome or Edge you use every day — but hides it completely from your screen. Here is the exact sequence of what happens, every single time:</p>
+
+  <div class="behind-scene">
+    <p class="bs-title">Behind the scenes — what OmniScout does while you wait</p>
+    <div class="bs-flow">
+
+      <div class="bs-row">
+        <div class="bs-line-col">
+          <div class="bs-dot bs-dot-you"><i class="ti ti-user" style="font-size:13px;" aria-hidden="true"></i></div>
+          <div class="bs-connector"></div>
+        </div>
+        <div class="bs-content">
+          <p class="bs-content-title">You type your question in Claude Code, Codex, or Cursor</p>
+          <p class="bs-content-desc">Example: /omniscout what is the best laptop under 60000 rupees right now</p>
+        </div>
+      </div>
+
+      <div class="bs-row">
+        <div class="bs-line-col">
+          <div class="bs-dot bs-dot-os"><i class="ti ti-cpu" style="font-size:13px;" aria-hidden="true"></i></div>
+          <div class="bs-connector"></div>
+        </div>
+        <div class="bs-content">
+          <p class="bs-content-title">OmniScout starts your browser silently in the background</p>
+          <p class="bs-content-desc">Your Chrome or Edge opens without appearing on your screen. You will not see any window pop up — it is completely invisible to you.</p>
+          <div class="invisible-badge"><i class="ti ti-eye-off" style="font-size:12px;" aria-hidden="true"></i> invisible to you</div>
+        </div>
+      </div>
+
+      <div class="bs-row">
+        <div class="bs-line-col">
+          <div class="bs-dot bs-dot-tab" style="font-size:11px;">3</div>
+          <div class="bs-connector"></div>
+        </div>
+        <div class="bs-content">
+          <p class="bs-content-title">It opens 3 tabs at the same time — one for each search engine</p>
+          <p class="bs-content-desc">All three searches happen simultaneously, not one after another, so it is fast. Each engine gives different results, which means better coverage.</p>
+          <div class="bs-tabs">
+            <div class="bs-tab bs-tab-g"><i class="ti ti-search bs-tab-icon" aria-hidden="true"></i> Google</div>
+            <div class="bs-tab bs-tab-b"><i class="ti ti-search bs-tab-icon" aria-hidden="true"></i> Bing</div>
+            <div class="bs-tab bs-tab-d"><i class="ti ti-search bs-tab-icon" aria-hidden="true"></i> DuckDuckGo</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bs-row">
+        <div class="bs-line-col">
+          <div class="bs-dot bs-dot-os"><i class="ti ti-file-text" style="font-size:13px;" aria-hidden="true"></i></div>
+          <div class="bs-connector"></div>
+        </div>
+        <div class="bs-content">
+          <p class="bs-content-title">It reads all the results and the actual pages behind them</p>
+          <p class="bs-content-desc">Not just the headline snippets — OmniScout clicks into the top results and reads the full content of each page, like a person would.</p>
+        </div>
+      </div>
+
+      <div class="bs-row">
+        <div class="bs-line-col">
+          <div class="bs-dot bs-dot-result"><i class="ti ti-check" style="font-size:13px;" aria-hidden="true"></i></div>
+        </div>
+        <div class="bs-content" style="padding-bottom:0;">
+          <p class="bs-content-title">The summary appears directly in your AI app</p>
+          <p class="bs-content-desc">The browser closes quietly. The answer shows up right where you typed your question — inside Claude Code, Codex, or Cursor. You never left the app.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="step" style="margin-bottom:2rem;">
+    <div class="num" style="background:#FAEEDA;color:#633806;font-size:16px;">!</div>
+    <div class="body">
+      <p class="stitle">Your screen stays completely undisturbed</p>
+      <p class="sdesc" style="margin:0;">The browser never appears. No tabs flash up. No windows move around. Whatever you were doing on your screen stays exactly as it was. OmniScout works entirely in the background — like a helper in another room.</p>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="phase-label"><span class="phase-badge badge-use">Things you can ask OmniScout to do</span></div>
+  <p class="phase-title">Everyday tasks that used to take you 10 minutes</p>
+  <div class="use-cards">
+    <div class="uc">
+      <div class="uc-icon" aria-hidden="true"><i class="ti ti-shopping-cart"></i></div>
+      <p class="uc-title">Compare prices</p>
+      <p class="uc-say">"Find the cheapest flight from Chennai to Delhi next Friday"</p>
+      <p class="uc-note">OmniScout opens sites, reads the prices, and gives you the best deal.</p>
+    </div>
+    <div class="uc">
+      <div class="uc-icon" aria-hidden="true"><i class="ti ti-news"></i></div>
+      <p class="uc-title">Get a news summary</p>
+      <p class="uc-say">"What happened in tech news today?"</p>
+      <p class="uc-note">Searches multiple news sites and gives you a short readable summary.</p>
+    </div>
+    <div class="uc">
+      <div class="uc-icon" aria-hidden="true"><i class="ti ti-forms"></i></div>
+      <p class="uc-title">Fill in forms</p>
+      <p class="uc-say">"Go to this website and fill in the contact form with my details"</p>
+      <p class="uc-note">Types into fields, clicks buttons, and submits — you just watch.</p>
+    </div>
+    <div class="uc">
+      <div class="uc-icon" aria-hidden="true"><i class="ti ti-map-pin"></i></div>
+      <p class="uc-title">Research a place</p>
+      <p class="uc-say">"Find the top rated restaurants near Marina Beach Chennai"</p>
+      <p class="uc-note">Searches, reads reviews, and lists the best options with details.</p>
+    </div>
+    <div class="uc">
+      <div class="uc-icon" aria-hidden="true"><i class="ti ti-file-text"></i></div>
+      <p class="uc-title">Read a website for you</p>
+      <p class="uc-say">"Read this company's pricing page and tell me what the cheapest plan includes"</p>
+      <p class="uc-note">Extracts just the information you care about from any webpage.</p>
+    </div>
+    <div class="uc">
+      <div class="uc-icon" aria-hidden="true"><i class="ti ti-repeat"></i></div>
+      <p class="uc-title">Repetitive tasks</p>
+      <p class="uc-say">"Check this job board every morning and save any new Python jobs"</p>
+      <p class="uc-note">Anything you do on a browser the same way each day can be automated.</p>
+    </div>
+  </div>
+
+  <div class="tip-box">
+    <p><strong>Nothing is sent to the cloud.</strong> OmniScout runs entirely on your own computer. Your passwords, browsing history, and personal data never leave your machine. It uses your own Chrome or Edge — the same one you use every day, with all your logins already saved.</p>
+  </div>
+
+  <hr class="divider">
+
+  <div class="phase-label"><span class="phase-badge badge-outcome">What you will actually see — the final outcome</span></div>
+  <p class="phase-title">After the 3 commands, here is exactly what changes</p>
+  <p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 14px;line-height:1.6;">You open Claude Code, Codex, Kiro, or Cursor — the same app you already use — and it now has a superpower. Instead of saying "I cannot browse the web", it silently uses OmniScout in the background and hands you a real answer. Here is what a conversation looks like:</p>
+
+  <div class="chat-frame">
+    <div class="chat-topbar">
+      <div class="chat-app-dot"></div>
+      <span class="chat-app-name">Claude Code — with OmniScout installed</span>
+    </div>
+    <div class="chat-msgs">
+      <div class="msg-user">
+        <div class="msg-user-bubble">/omniscout find me the best price for Sony WH-1000XM5 headphones online right now</div>
+      </div>
+      <div class="msg-ai">
+        <div class="ai-avatar">OS</div>
+        <div class="ai-bubble">
+          <p>I searched across major retailers. Here are the best prices I found right now:</p>
+          <div class="ai-result-row">
+            <div class="ai-result">
+              <p class="ai-result-title">Amazon India</p>
+              <p class="ai-result-desc">Sony WH-1000XM5 — Black, ships in 2 days, Prime eligible</p>
+              <p class="ai-result-price">₹24,990</p>
+            </div>
+            <div class="ai-result">
+              <p class="ai-result-title">Croma</p>
+              <p class="ai-result-desc">In stock, store pickup available today in Chennai</p>
+              <p class="ai-result-price">₹26,490</p>
+            </div>
+            <div class="ai-result">
+              <p class="ai-result-title">Flipkart</p>
+              <p class="ai-result-desc">Extra 10% off with Axis Bank card applied</p>
+              <p class="ai-result-price">₹23,490 after discount</p>
+            </div>
+          </div>
+          <p style="margin-top:8px;">Flipkart is cheapest if you have an Axis Bank card. Amazon is the safest no-card option. Want me to open the Flipkart listing for you?</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 16px;line-height:1.6;">The AI opened real websites, read the actual prices, and gave you a comparison — all in seconds. You did not touch a browser. Here is what changed in each app you use:</p>
+
+  <div class="apps-row">
+    <div class="app-chip">
+      <div class="app-chip-icon" aria-hidden="true"><i class="ti ti-terminal-2"></i></div>
+      <div><p class="app-chip-name">Claude Code</p><p class="app-chip-where">In your terminal</p></div>
+    </div>
+    <div class="app-chip">
+      <div class="app-chip-icon" aria-hidden="true"><i class="ti ti-brand-openai"></i></div>
+      <div><p class="app-chip-name">Codex</p><p class="app-chip-where">In your terminal</p></div>
+    </div>
+    <div class="app-chip">
+      <div class="app-chip-icon" aria-hidden="true"><i class="ti ti-code"></i></div>
+      <div><p class="app-chip-name">Cursor / Kiro</p><p class="app-chip-where">In your code editor</p></div>
+    </div>
+    <div class="app-chip">
+      <div class="app-chip-icon" aria-hidden="true"><i class="ti ti-robot"></i></div>
+      <div><p class="app-chip-name">Any AI agent</p><p class="app-chip-where">That reads skill files</p></div>
+    </div>
+  </div>
+
+  <div class="outcome-cards">
+    <div class="oc">
+      <p class="oc-label">Before OmniScout</p>
+      <p class="oc-title">Your AI hits a wall</p>
+      <p class="oc-desc">You ask it to search the web or check a price. It says "I don't have access to the internet" or gives you outdated information from months ago.</p>
+    </div>
+    <div class="oc">
+      <p class="oc-label">After OmniScout</p>
+      <p class="oc-title">Your AI just does it</p>
+      <p class="oc-desc">Same question, same app — but now it opens a real browser on your computer, reads the live page, and hands you the answer. No extra apps to open. No copying links.</p>
+    </div>
+    <div class="oc">
+      <p class="oc-label">Where it runs</p>
+      <p class="oc-title">Quietly in the background</p>
+      <p class="oc-desc">A tiny server starts automatically on your machine the moment your AI needs it. You will never see it. It stops itself when not needed. Nothing is in the cloud.</p>
+    </div>
+  </div>
+
+</div>

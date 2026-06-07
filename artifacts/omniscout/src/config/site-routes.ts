@@ -1,4 +1,4 @@
-export const DEFAULT_SITE_URL = "https://omniscoutai.vercel.app";
+export const DEFAULT_SITE_URL = "https://omniscout.xyz";
 
 /** Resolve canonical origin at build time (Vercel env → VITE_SITE_URL → default). */
 export function resolveSiteUrl(): string {

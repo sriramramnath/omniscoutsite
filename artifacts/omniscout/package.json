@@ -73,6 +73,7 @@
   },
   "dependencies": {
     "@react-three/fiber": "^9.6.1",
+    "@ridemountainpig/svgl-react": "^1.0.17",
     "shiki": "^4.2.0",
     "three": "^0.184.0"
   }
