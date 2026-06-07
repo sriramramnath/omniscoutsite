@@ -27,6 +27,21 @@ export function getSitemapEntries(siteUrl: string = DEFAULT_SITE_URL): SitemapEn
     });
   }
 
+  pages.push(
+    {
+      loc: `${base}/llms.txt`,
+      lastmod: new Date().toISOString().slice(0, 10),
+      changefreq: "weekly",
+      priority: "0.5",
+    },
+    {
+      loc: `${base}/llms-full.txt`,
+      lastmod: new Date().toISOString().slice(0, 10),
+      changefreq: "weekly",
+      priority: "0.4",
+    },
+  );
+
   return pages;
 }
 
