@@ -9,6 +9,16 @@ export interface ChangelogRelease {
 
 export const changelogReleases: ChangelogRelease[] = [
   {
+    version: "0.2.7.1",
+    date: "2026-06-07",
+    label: "Beta",
+    sections: {
+      Changed: [
+        "PyPI project URLs now point to omniscout.xyz and docs.omniscout.xyz.",
+      ],
+    },
+  },
+  {
     version: "0.2.7",
     date: "2026-06-07",
     label: "Beta",
