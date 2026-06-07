@@ -9,6 +9,23 @@ export interface ChangelogRelease {
 
 export const changelogReleases: ChangelogRelease[] = [
   {
+    version: "0.2.7",
+    date: "2026-06-07",
+    label: "Beta",
+    sections: {
+      Added: [
+        "**Browser automation v1** — type, paste, select; back, forward, reload; get title|url|text|html, is; wait text|selector|networkidle|url; mouse scroll|move; console start|stop|list|tail; network tail.",
+        "**omniscout settings** — settings show, settings browsers, and settings set browser to pick a Chromium browser for automation.",
+        "**Multi-browser support** — Chrome, Edge, Brave, Vivaldi, Opera One, Arc, Dia, Thorium, Chromium, or a custom binary. Install prompts interactively (omniscout install --browser <id>).",
+        "**Structured extraction** — extract --format structured auto-extracts flat JSON (NLP, no LLM): metadata, pricing, socials, docs/blog/careers links, and labeled fields. Use --fields to limit; --data for full ExtractResult.",
+      ],
+      Changed: [
+        "Browser launch (daemon, extract, sessions) resolves the configured browser via a shared catalog with automatic fallback to other installed Chromium builds.",
+        "Config.toml prefers browser = \"…\" over legacy browser_channel.",
+      ],
+    },
+  },
+  {
     version: "0.2.6",
     date: "2026-06-05",
     label: "Beta",
@@ -132,7 +149,7 @@ export const changelogReleases: ChangelogRelease[] = [
   },
 ];
 
-export const latestChangelogVersion = changelogReleases[0]?.version ?? "0.2.6";
+export const latestChangelogVersion = changelogReleases[0]?.version ?? "0.2.7";
 
 export function formatChangelogDate(iso: string): string {
   return new Date(iso).toLocaleDateString("en-US", {
