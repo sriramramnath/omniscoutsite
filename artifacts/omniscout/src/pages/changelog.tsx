@@ -14,8 +14,10 @@ import {
   changelogReleases,
   formatChangelogDate,
   latestChangelogVersion,
+  releaseStability,
   type ChangelogRelease,
   type ChangelogSectionKind,
+  type ReleaseStability,
 } from "@/data/changelog";
 import { cn } from "@/lib/utils";
 import { routePageMeta } from "@/config/page-meta";
@@ -42,6 +44,47 @@ function FadeUp({
     >
       {children}
     </motion.div>
+  );
+}
+
+const stabilityBadgeClass: Record<
+  ReleaseStability,
+  { latest: string; default: string }
+> = {
+  Beta: {
+    latest:
+      "border-primary/40 bg-primary/10 text-primary",
+    default:
+      "border-amber-500/30 bg-amber-500/10 text-amber-600 dark:text-amber-400",
+  },
+  Alpha: {
+    latest: "border-border/50 bg-muted/40 text-muted-foreground",
+    default: "border-border/50 bg-muted/40 text-muted-foreground",
+  },
+};
+
+function StabilityBadge({
+  stability,
+  isLatest,
+  size = "md",
+}: {
+  stability: ReleaseStability;
+  isLatest: boolean;
+  size?: "sm" | "md";
+}) {
+  const styles = stabilityBadgeClass[stability][isLatest ? "latest" : "default"];
+  return (
+    <span
+      className={cn(
+        "rounded-full border font-mono uppercase tracking-widest",
+        size === "sm"
+          ? "rounded px-1.5 py-0.5 text-[9px] tracking-wider"
+          : "px-2.5 py-0.5 text-[10px]",
+        styles,
+      )}
+    >
+      {stability}
+    </span>
   );
 }
 
@@ -86,15 +129,10 @@ function ReleasePanel({
             {formatChangelogDate(release.date)}
           </time>
         )}
-        {isLatest && release.label ? (
-          <span className="rounded-full border border-primary/40 bg-primary/10 px-2.5 py-0.5 text-[10px] font-mono uppercase tracking-widest text-primary">
-            {release.label}
-          </span>
-        ) : !isLatest ? (
-          <span className="rounded-full border border-border/50 bg-muted/40 px-2.5 py-0.5 text-[10px] font-mono uppercase tracking-widest text-muted-foreground">
-            Alpha
-          </span>
-        ) : null}
+        <StabilityBadge
+          stability={releaseStability(release)}
+          isLatest={isLatest}
+        />
       </div>
 
       {sectionOrder.map((kind) => {
@@ -160,7 +198,8 @@ export default function Changelog() {
             </h1>
             <p className="mx-auto max-w-lg text-base sm:text-lg leading-relaxed text-muted-foreground">
               Version history for the omniscout Python package. Latest: v
-              {latestChangelogVersion}.
+              {latestChangelogVersion} (beta). Releases from v0.2.6 onward are
+              beta; earlier releases were alpha.
             </p>
           </FadeUp>
         </div>
@@ -201,15 +240,11 @@ export default function Changelog() {
                         className="w-full justify-between gap-2 px-3 py-2.5 font-mono text-xs sm:text-sm data-[state=active]:font-semibold"
                       >
                         <span>v{release.version}</span>
-                        {isLatest && release.label ? (
-                          <span className="rounded border border-primary/40 bg-primary/10 px-1.5 py-0.5 text-[9px] font-mono uppercase tracking-wider text-primary">
-                            {release.label}
-                          </span>
-                        ) : !isLatest ? (
-                          <span className="rounded border border-border/50 bg-muted/40 px-1.5 py-0.5 text-[9px] font-mono uppercase tracking-wider text-muted-foreground">
-                            Alpha
-                          </span>
-                        ) : null}
+                        <StabilityBadge
+                          stability={releaseStability(release)}
+                          isLatest={isLatest}
+                          size="sm"
+                        />
                       </TabsTrigger>
                     );
                   })}

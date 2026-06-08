@@ -161,6 +161,35 @@ export const changelogReleases: ChangelogRelease[] = [
 
 export const latestChangelogVersion = changelogReleases[0]?.version ?? "0.2.7";
 
+/** First PyPI release promoted to Development Status :: 4 - Beta. */
+export const BETA_FIRST_VERSION = "0.2.6";
+
+function parseVersion(version: string): number[] {
+  return version.split(".").map((part) => parseInt(part, 10) || 0);
+}
+
+function compareVersion(a: string, b: string): number {
+  const left = parseVersion(a);
+  const right = parseVersion(b);
+  const len = Math.max(left.length, right.length);
+  for (let i = 0; i < len; i++) {
+    const diff = (left[i] ?? 0) - (right[i] ?? 0);
+    if (diff !== 0) return diff < 0 ? -1 : 1;
+  }
+  return 0;
+}
+
+export function isBetaRelease(version: string): boolean {
+  return compareVersion(version, BETA_FIRST_VERSION) >= 0;
+}
+
+export type ReleaseStability = "Beta" | "Alpha";
+
+export function releaseStability(release: ChangelogRelease): ReleaseStability {
+  if (release.label === "Beta" || isBetaRelease(release.version)) return "Beta";
+  return "Alpha";
+}
+
 export function formatChangelogDate(iso: string): string {
   return new Date(iso).toLocaleDateString("en-US", {
     month: "long",
