@@ -8,6 +8,7 @@ import UseCases from "@/pages/use-cases";
 import Blogs from "@/pages/blogs";
 import BlogPost from "@/pages/blog-post";
 import Changelog from "@/pages/changelog";
+import Contact from "@/pages/contact";
 import NotFound from "@/pages/not-found";
 
 const pageEase = [0.25, 0.1, 0.25, 1] as const;
@@ -37,6 +38,7 @@ export function PageTransition() {
           <Route path="/blogs" component={Blogs} />
           <Route path="/blogs/:slug" component={BlogPost} />
           <Route path="/changelog" component={Changelog} />
+          <Route path="/contact" component={Contact} />
           <Route component={NotFound} />
         </Switch>
       </motion.div>

@@ -68,6 +68,14 @@ export const routePageMeta: Record<string, PageMetaTags> = {
     type: "website",
     ...ogImage("/og/blogs.jpg"),
   },
+  "/contact": {
+    title: "Contact · OmniScout",
+    description:
+      "Contact Sriram Ramnath, founder of OmniScout. Project queries, collaboration, GitHub, and PyPI.",
+    url: "/contact",
+    type: "website",
+    ...ogImage("/og/home.jpg"),
+  },
 };
 
 export function getRoutePageMeta(path: string): PageMetaTags {

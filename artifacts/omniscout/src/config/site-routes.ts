@@ -21,4 +21,5 @@ export const staticRoutes = [
   { path: "/compare", changefreq: "monthly", priority: "0.7" },
   { path: "/blogs", changefreq: "weekly", priority: "0.9" },
   { path: "/changelog", changefreq: "weekly", priority: "0.8" },
+  { path: "/contact", changefreq: "monthly", priority: "0.6" },
 ] as const;

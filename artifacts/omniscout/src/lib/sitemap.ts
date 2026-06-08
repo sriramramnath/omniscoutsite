@@ -92,6 +92,7 @@ Install: \`pip install omniscout\` then \`omniscout install --skill\` to copy th
 - [Compare](${base}/compare): vs hosted browsers and vendor-integrated agents
 - [Changelog](${base}/changelog): Release history
 - [Blog](${base}/blogs): Release notes and guides
+- [Contact](${base}/contact): Founder and collaboration inquiries
 
 ## Documentation
 

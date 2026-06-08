@@ -13,6 +13,7 @@ const links = [
   { label: "Use Cases", href: "/use-cases" },
   { label: "Blog", href: "/blogs" },
   { label: "Changelog", href: "/changelog" },
+  { label: "Contact", href: "/contact" },
   { label: "Developer Docs", href: "https://docs.omniscout.xyz", external: true },
   { label: "PyPI", href: PYPI_URL, external: true },
 ];

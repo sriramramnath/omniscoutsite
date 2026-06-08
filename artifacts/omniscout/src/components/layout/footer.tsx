@@ -36,6 +36,7 @@ export function Footer() {
                 { label: "Use Cases", href: "/use-cases" },
                 { label: "Blog", href: "/blogs" },
                 { label: "Changelog", href: "/changelog" },
+                { label: "Contact", href: "/contact" },
               ],
             },
             {
