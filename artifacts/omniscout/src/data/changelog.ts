@@ -9,6 +9,26 @@ export interface ChangelogRelease {
 
 export const changelogReleases: ChangelogRelease[] = [
   {
+    version: "0.2.7.8",
+    date: "2026-06-09",
+    label: "Beta",
+    sections: {
+      Added: [
+        "**Query-driven structured extraction** — extract --query searches DDG, crawls seed URLs, follows same-host links (--depth, default 3), merges pages, and emits structured fields. --results controls seed count; --data includes crawl_sources and timing.",
+        "**Depth-aware crawler** — crawl_bfs() for bounded multi-level same-host link expansion.",
+      ],
+      Changed: [
+        "Structured founder extraction prefers Company was founded by Name, rejects employee/subordinate-clause false positives, and resolves Space X-style queries to SpaceX from DDG titles.",
+        "Detail-page enrichment follows about/contact/plans links when fields are empty.",
+        "Agent skill files bundle in omniscout/data/ (fixes CI wheel build).",
+      ],
+      Fixed: [
+        "False founder matches (e.g. Tom Mueller reported as SpaceX founder).",
+        "Query crawls prefer spacex.com/Wikipedia over tag-aggregator pages.",
+      ],
+    },
+  },
+  {
     version: "0.2.7.1",
     date: "2026-06-07",
     label: "Beta",
