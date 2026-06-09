@@ -9,7 +9,7 @@ export interface ChangelogRelease {
 
 export const changelogReleases: ChangelogRelease[] = [
   {
-    version: "0.2.7.8",
+    version: "0.2.8",
     date: "2026-06-09",
     label: "Beta",
     sections: {
