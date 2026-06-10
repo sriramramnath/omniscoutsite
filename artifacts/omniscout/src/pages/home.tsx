@@ -79,7 +79,7 @@ export default function Home() {
                     Quick Setup
                   </a>
                   <a
-                    href="https://github.com/sriramramnath/omniscout"
+                    href="https://github.com/sriramramnath"
                     target="_blank"
                     rel="noreferrer"
                     className="flex items-center gap-2 rounded-lg border border-border/60 bg-card/50 px-5 py-2.5 text-sm text-muted-foreground backdrop-blur-sm transition-all hover:border-border hover:text-foreground"

@@ -96,7 +96,7 @@ export function Nav() {
 
         <div className="flex flex-shrink-0 items-center gap-1.5 sm:gap-2">
           <a
-            href="https://github.com/sriramramnath/omniscout"
+            href="https://github.com/sriramramnath"
             target="_blank"
             rel="noreferrer"
             aria-label="GitHub repository"
@@ -207,7 +207,7 @@ export function Nav() {
                   PyPI
                 </a>
                 <a
-                  href="https://github.com/sriramramnath/omniscout"
+                  href="https://github.com/sriramramnath"
                   target="_blank"
                   rel="noreferrer"
                   className="rounded-full border border-[#333] bg-[rgba(31,31,31,0.62)] py-2.5 text-center text-xs text-zinc-300 transition-colors hover:border-white/50 hover:text-white"
