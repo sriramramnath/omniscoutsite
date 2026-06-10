@@ -9,6 +9,20 @@ export interface ChangelogRelease {
 
 export const changelogReleases: ChangelogRelease[] = [
   {
+    version: "0.2.9",
+    date: "2026-06-10",
+    label: "Beta",
+    sections: {
+      Added: [
+        "**omniscout graph** — structured knowledge graphs for products, companies, and people. Default 3 web sources, local LLM tree output (Company, Founders, Competitors, Pricing, Features, Reviews, …). Pass a URL or --website to crawl one site and same-host links only.",
+        "**--full-length screenshot flag** — alias for --full-page on browser screenshot; captures the full scrollable document.",
+      ],
+      Fixed: [
+        "Extension full-page screenshots now use Page.getLayoutMetrics for true document-height captures instead of viewport-sized images.",
+      ],
+    },
+  },
+  {
     version: "0.2.8",
     date: "2026-06-09",
     label: "Beta",
