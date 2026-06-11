@@ -9,6 +9,16 @@ export interface ChangelogRelease {
 
 export const changelogReleases: ChangelogRelease[] = [
   {
+    version: "0.2.9.1",
+    date: "2026-06-10",
+    label: "Beta",
+    sections: {
+      Added: [
+        "**--delay on browser screenshot** — wait N seconds before capture so loading animations and spinners can finish (Playwright + extension backends).",
+      ],
+    },
+  },
+  {
     version: "0.2.9",
     date: "2026-06-10",
     label: "Beta",
