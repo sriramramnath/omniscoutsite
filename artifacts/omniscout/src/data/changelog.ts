@@ -20,6 +20,10 @@ export const changelogReleases: ChangelogRelease[] = [
         "**Shared retrieve_hits()** — unified ranking for search --answer and omniscout answer.",
         "**Confidence calibration** — multi-signal crawl-skip gating (≥ 0.75 confidence; blocked on freshness and deep depth).",
         "**Skip diagnostics** — rerank/crawl skip reasons and confidence_score on --data.",
+        "**Unified challenge handling** — detect/solve CAPTCHAs and bot blocks (reCAPTCHA, hCaptcha, Turnstile, Cloudflare, DataDome, PerimeterX) across browser, DDG, and crawl.",
+        "**Stealth browser launch** — reduced automation signals and dynamic Chrome UA (on by default).",
+        "**CAPTCHA auto-resolve** — --auto-captcha on navigate; Capsolver Cloudflare + reCAPTCHA v3; challenge.detected SSE events.",
+        "**Challenge-aware crawl/DDG** — profile-backed browser fallback with headful manual captcha handoff.",
       ],
       Changed: [
         "Fused embedding batches for rerank, LLM crawl, and research (one daemon hop).",
