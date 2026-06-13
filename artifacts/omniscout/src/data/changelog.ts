@@ -9,6 +9,28 @@ export interface ChangelogRelease {
 
 export const changelogReleases: ChangelogRelease[] = [
   {
+    version: "0.2.10",
+    date: "2026-06-13",
+    label: "Beta",
+    sections: {
+      Added: [
+        "**Retrieval benchmarks** — benchmark retrieval (recall@3/5, MRR) and benchmark ablation (optimization matrix presets).",
+        "**benchmark answers --pipeline** — grade extractive, LLM, or both pipelines with per-stage timing and skip rates.",
+        "**Retrieval feature flags** — SHARED_RETRIEVAL, FUSE_EMBED (on by default); CONDITIONAL_RERANK, CRAWL_GATE, PARALLEL_RETRIEVAL (off by default). Flags surface in --data.",
+        "**Shared retrieve_hits()** — unified ranking for search --answer and omniscout answer.",
+        "**Confidence calibration** — multi-signal crawl-skip gating (≥ 0.75 confidence; blocked on freshness and deep depth).",
+        "**Skip diagnostics** — rerank/crawl skip reasons and confidence_score on --data.",
+      ],
+      Changed: [
+        "Fused embedding batches for rerank, LLM crawl, and research (one daemon hop).",
+        "Conditional rerank skips embed on stable heuristic rankings; caps rerank pool to top 12.",
+        "Answer cache key normalization and LLM freshness bypass; high-confidence answers cacheable.",
+        "Freshness classifier includes year tokens (20xx).",
+        "Optional parallel index + DDG in balanced mode (PARALLEL_RETRIEVAL=1).",
+      ],
+    },
+  },
+  {
     version: "0.2.9.1",
     date: "2026-06-10",
     label: "Beta",
