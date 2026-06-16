@@ -9,6 +9,28 @@ export interface ChangelogRelease {
 
 export const changelogReleases: ChangelogRelease[] = [
   {
+    version: "0.2.11",
+    date: "2026-06-16",
+    label: "Beta",
+    sections: {
+      Added: [
+        "**Site Markdown export** — extract URL --depth N --out site.md crawls same-host links and writes one combined Markdown file (--max-pages, --max-links, --concurrency). JSON mode returns SiteExportResult.",
+        "**Expanded answer gold dataset** — 10 additional benchmark queries.",
+        "**Daemon embed throughput** — OMNISCOUT_EMBED_WORKERS (default 2); embed_queue_ms diagnostic.",
+      ],
+      Changed: [
+        "Retrieval optimizations on by default — conditional_rerank, crawl_gate, parallel_retrieval (env overrides still supported).",
+        "research --depth ≥ 2 uses BFS link crawl from top DDG seeds.",
+        "Headless automated crawls — extract/research/search/DDG fallbacks stay background; headful_on_challenge default off.",
+        "Extraction retries on short trafilatura output; site export dedupes by content hash.",
+        "Comparison queries never skip semantic rerank; extended spam/aggregator blocklist.",
+      ],
+      Fixed: [
+        "research --depth CLI flag was previously ignored.",
+      ],
+    },
+  },
+  {
     version: "0.2.10",
     date: "2026-06-13",
     label: "Beta",
