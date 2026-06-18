@@ -9,6 +9,37 @@ export interface ChangelogRelease {
 
 export const changelogReleases: ChangelogRelease[] = [
   {
+    version: "0.2.13",
+    date: "2026-06-18",
+    label: "Beta",
+    sections: {
+      Added: [
+        "**Answer diagnostics** — --data can report direct_ms, crawl_ms, extract_ms, and browser_fallback_count alongside existing retrieval timings.",
+        "**Regression coverage** — grounded search --answer routing, ranked support reuse, fast-mode no-crawl behavior, role/person validation, cache rejection, and no-browser direct-answer fallbacks.",
+      ],
+      Changed: [
+        "**search --answer now uses the grounded local answer pipeline** — direct answers, ranked snippet supports, optional local synthesis, and crawl escalation replace the older extractive-only router.",
+        "**Answer latency guardrails** — fast/balanced answer retrieval uses answer-specific DDG/crawl budgets and avoids browser fallback by default.",
+        "**Role/person answer shaping** — who-is, CEO, founder, president, PM, and CM questions use shared role-intent parsing and validated role sentences.",
+      ],
+      Fixed: [
+        "**Bad cached answers** — cached answers are validated on read and write, so empty strings and headline fragments like “Steps Down” are ignored.",
+        "**Repeated answer blanks/timeouts** — validated who-is answers use the short freshness-sensitive cache TTL, and direct-answer DDG paths no longer launch a browser by default after a DDG challenge.",
+      ],
+    },
+  },
+  {
+    version: "0.2.12",
+    date: "2026-06-17",
+    label: "Beta",
+    sections: {
+      Added: [
+        "**omniscout auto** — routes free-form input to the best command (search, answer, research, graph, extract, remember, or open) using lightweight intent heuristics.",
+        "**Routing diagnostics** — auto --data shows the routing decision and passes diagnostics through to the chosen command.",
+      ],
+    },
+  },
+  {
     version: "0.2.11",
     date: "2026-06-16",
     label: "Beta",
