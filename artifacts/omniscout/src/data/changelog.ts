@@ -9,6 +9,21 @@ export interface ChangelogRelease {
 
 export const changelogReleases: ChangelogRelease[] = [
   {
+    version: "0.2.14",
+    date: "2026-06-19",
+    label: "Beta",
+    sections: {
+      Changed: [
+        "**Answer retrieval avoids DDG browser challenge hangs** — answer keeps DDG paths HTTP-only, uses DDG Lite before browser rendering for search, and lazy-loads crawl/extract/embed dependencies only when crawl escalation is needed.",
+        "**Role answer extraction is broader and stricter** — CEO/founder/person answers handle source titles like Name - Co-founder & CEO at Company, Company CEO Name, and glued snippets such as CompanyCEOand co-founder, Name.",
+      ],
+      Fixed: [
+        "**Bad role answers from headlines and stale cache** — cache validation rejects fragments like Built, Ping Labs CEO, and generic leadership-team text, and can repair invalid cached role answers from their cached sources when a validated name is present.",
+        "**No-answer formatting** — fallback text is no longer wrapped as The CEO of X is I could not find a reliable answer.",
+      ],
+    },
+  },
+  {
     version: "0.2.13",
     date: "2026-06-18",
     label: "Beta",
