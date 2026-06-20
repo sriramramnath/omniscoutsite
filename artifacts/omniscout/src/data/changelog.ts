@@ -9,6 +9,20 @@ export interface ChangelogRelease {
 
 export const changelogReleases: ChangelogRelease[] = [
   {
+    version: "0.2.15",
+    date: "2026-06-20",
+    label: "Beta",
+    sections: {
+      Added: [
+        "**omniscout answer --probe** — experimental flag to synthesize answers with Omniscout Probe Zero Mini instead of the default SmolLM2 answer model.",
+        "**Probe Zero Mini distillation** — support-derived EXA-style teacher formatting from the existing DDG retrieval pipeline (no EXA data as a source).",
+      ],
+      Changed: [
+        "**Default answer model unchanged** — still HuggingFaceTB/SmolLM2-360M-Instruct; Probe Zero Mini is opt-in via --probe for now.",
+      ],
+    },
+  },
+  {
     version: "0.2.14",
     date: "2026-06-19",
     label: "Beta",
