@@ -15,7 +15,7 @@ export const changelogReleases: ChangelogRelease[] = [
     sections: {
       Added: [
         "**omniscout answer --probe** — experimental flag to synthesize answers with Omniscout Probe Zero Mini instead of the default SmolLM2 answer model.",
-        "**Probe Zero Mini distillation** — support-derived EXA-style teacher formatting from the existing DDG retrieval pipeline (no EXA data as a source).",
+        "**Probe Zero Mini distillation** — support-derived full-sentence teacher formatting from the existing DDG retrieval pipeline.",
       ],
       Changed: [
         "**Default answer model unchanged** — still HuggingFaceTB/SmolLM2-360M-Instruct; Probe Zero Mini is opt-in via --probe for now.",
