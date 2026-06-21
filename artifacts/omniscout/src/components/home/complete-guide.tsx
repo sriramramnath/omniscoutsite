@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import {
   User,
@@ -68,6 +68,114 @@ const USE_CASES = [
     note: "Anything you do on a browser the same way each day can be automated.",
   },
 ] as const;
+
+const COST_TABLE_ROWS = [
+  {
+    question: "Who is the President of the United States?",
+    prompt: "Who is the President of the United...",
+    traditional: "Reading whitehouse.gov, news pages, and recent election coverage to confirm the latest office holder...",
+    traditionalTokens: "1,500 tok",
+    traditionalCost: "$0.0045",
+    answer: "Donald Trump",
+    omniTokens: "50 tok",
+    omniCost: "$0.00015",
+    reduction: "97%",
+    savings: "20x-30x fewer tokens",
+  },
+  {
+    question: "What is Apple's current stock price?",
+    prompt: "What is Apple's current stock price?",
+    traditional: "Reading finance.yahoo.com, marketwatch.com, bloomberg.com, and parsing live tickers across multiple market snippets to surface the latest quote...",
+    traditionalTokens: "2,000 tok",
+    traditionalCost: "$0.0060",
+    answer: "$237.41 (NASDAQ: AAPL)",
+    omniTokens: "50 tok",
+    omniCost: "$0.00015",
+    reduction: "98%",
+    savings: "20x-40x fewer tokens",
+  },
+  {
+    question: "What is the capital of Japan?",
+    prompt: "What is the capital of Japan?",
+    traditional: "Scanning encyclopedia snippets, country profiles, and travel references before returning the city name...",
+    traditionalTokens: "900 tok",
+    traditionalCost: "$0.0027",
+    answer: "Tokyo",
+    omniTokens: "35 tok",
+    omniCost: "$0.00011",
+    reduction: "96%",
+    savings: "25x fewer tokens",
+  },
+  {
+    question: "What is OpenAI?",
+    prompt: "What is OpenAI?",
+    traditional: "Reading company pages, recent news, and background articles to build a concise definition...",
+    traditionalTokens: "1,800 tok",
+    traditionalCost: "$0.0054",
+    answer: "An AI research and product company.",
+    omniTokens: "70 tok",
+    omniCost: "$0.00021",
+    reduction: "96%",
+    savings: "25x fewer tokens",
+  },
+  {
+    question: "What is the return policy? (Support Bot)",
+    prompt: "What is the return policy?",
+    traditional: "Reading help-center articles, FAQ sections, and policy pages to extract the merchant's return window...",
+    traditionalTokens: "4,000 tok",
+    traditionalCost: "$0.0120",
+    answer: "Returns accepted within 30 days.",
+    omniTokens: "100 tok",
+    omniCost: "$0.00030",
+    reduction: "97.5%",
+    savings: "40x fewer tokens",
+  },
+] as const;
+
+const TYPICAL_RESULTS = [
+  {
+    metric: "Input Tokens",
+    traditional: "1,000-5,000",
+    omniscout: "20-200",
+  },
+  {
+    metric: "Response Speed",
+    traditional: "Slower",
+    omniscout: "Faster",
+  },
+  {
+    metric: "LLM Cost",
+    traditional: "Higher",
+    omniscout: "Up to 95% lower",
+  },
+  {
+    metric: "Context Window Usage",
+    traditional: "High",
+    omniscout: "Minimal",
+  },
+] as const;
+
+const BROWSER_COMPARISON = {
+  label: "Browser use",
+  prompt: "sign in with Google and check my order",
+  withoutTitle: "AI without your browser",
+  withoutItems: [
+    "Cannot use your Google login",
+    "Asks you to copy links",
+    "Asks for screenshots",
+    "More back and forth",
+  ],
+  withoutAnswer: "Please open the page for me.",
+  withTitle: "AI with OmniScout",
+  withItems: [
+    "Opens your browser",
+    "Uses your signed-in session",
+    "Clicks normal website buttons",
+    "Returns the result",
+  ],
+  withAnswer: "Your order is arriving tomorrow.",
+  takeaway: "Your browser, your logins, less manual work.",
+} as const;
 
 const OUTCOMES = [
   {
@@ -210,6 +318,272 @@ function TimelineStep({
   );
 }
 
+function CostSavingsTable() {
+  const [activeIndex, setActiveIndex] = useState(1);
+  const activeRow = COST_TABLE_ROWS[activeIndex];
+  const nextPrompt = () => setActiveIndex((activeIndex + 1) % COST_TABLE_ROWS.length);
+
+  return (
+    <div className="rounded-[1.5rem] border border-border/50 bg-card p-4 sm:rounded-[1.75rem] sm:p-6">
+      <div className="mb-6 sm:mb-8">
+        <p className="text-xs font-mono uppercase tracking-widest text-muted-foreground">
+          Token comparison
+        </p>
+        <h3 className="mt-3 text-2xl font-bold leading-tight tracking-tight text-foreground sm:text-4xl">
+          How OmniScout reduces AI costs
+        </h3>
+        <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base">
+          Traditional retrieval sends full pages into the model. OmniScout extracts
+          the exact answer first, so the LLM reads less and responds faster.
+        </p>
+      </div>
+
+      <div className="overflow-hidden rounded-[1.5rem] border border-border/60 bg-background/60 shadow-sm">
+        <div className="flex flex-col gap-3 border-b border-border/60 px-4 py-4 sm:flex-row sm:items-center sm:px-5">
+          <p className="shrink-0 font-mono text-[10px] uppercase tracking-[0.28em] text-muted-foreground">
+            Prompt
+          </p>
+          <div className="-mx-4 flex min-w-0 snap-x gap-2 overflow-x-auto px-4 pb-1 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0 sm:pb-0">
+            {COST_TABLE_ROWS.map((row) => {
+              const isActive = row.question === activeRow.question;
+              return (
+                <button
+                  key={row.question}
+                  type="button"
+                  title={row.question}
+                  onClick={() => setActiveIndex(COST_TABLE_ROWS.indexOf(row))}
+                  aria-pressed={isActive}
+                  className={cn(
+                    "min-h-10 max-w-[78vw] shrink-0 snap-start truncate rounded-full border px-3.5 py-2 text-xs transition-colors sm:min-h-0 sm:max-w-none sm:py-1.5",
+                    isActive
+                      ? "border-foreground bg-foreground text-background shadow-sm"
+                      : "border-border/70 bg-card text-muted-foreground hover:border-foreground/30 hover:text-foreground",
+                  )}
+                >
+                  {row.prompt}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        <div className="border-b border-border/60 px-4 py-5 sm:px-8 sm:py-7">
+          <h4 className="break-words text-xl font-semibold leading-tight tracking-tight text-foreground sm:text-3xl">
+            <span className="font-mono text-muted-foreground">&gt; </span>
+            {activeRow.question}
+          </h4>
+          <div className="mt-5 grid gap-3 sm:grid-cols-2">
+            <div className="rounded-2xl border border-border/60 bg-card/70 px-4 py-3">
+              <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-muted-foreground">
+                Traditional avg cost
+              </p>
+              <p className="mt-1 text-xl font-semibold text-foreground">
+                {activeRow.traditionalCost}
+              </p>
+            </div>
+            <div className="rounded-2xl border border-primary/25 bg-primary/10 px-4 py-3">
+              <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-primary">
+                OmniScout avg cost
+              </p>
+              <p className="mt-1 text-xl font-semibold text-primary">
+                {activeRow.omniCost}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="grid min-h-56 md:grid-cols-2">
+          <div className="border-b border-border/60 px-4 py-5 md:border-b-0 md:border-r sm:px-8 sm:py-7">
+            <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
+              <p className="font-mono text-[10px] uppercase tracking-[0.32em] text-muted-foreground">
+                Traditional AI
+              </p>
+              <p className="font-mono text-[11px] text-muted-foreground">
+                {activeRow.traditionalTokens}
+              </p>
+            </div>
+            <div className="mb-6 h-1 w-44 max-w-full overflow-hidden rounded-full bg-border">
+              <div className="h-full w-4/5 bg-muted-foreground/60" />
+            </div>
+            <p className="max-w-md break-words font-mono text-sm leading-7 text-muted-foreground">
+              {activeRow.traditional}
+            </p>
+          </div>
+
+          <div className="px-4 py-5 sm:px-8 sm:py-7">
+            <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
+              <p className="font-mono text-[10px] uppercase tracking-[0.32em] text-primary">
+                With OmniScout
+              </p>
+              <p className="font-mono text-[11px] text-primary">{activeRow.omniTokens}</p>
+            </div>
+            <div className="mb-6 h-1 w-8 overflow-hidden rounded-full bg-primary" />
+            <p className="break-words font-mono text-base leading-7 text-foreground sm:text-lg sm:leading-8">
+              {activeRow.answer}
+            </p>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-4 border-t border-border/60 px-4 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-8">
+          <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+            <p className="font-serif text-4xl leading-none text-primary sm:text-6xl">
+              {activeRow.reduction}
+            </p>
+            <p className="text-sm text-muted-foreground">fewer tokens on this prompt</p>
+          </div>
+          <button
+            type="button"
+            onClick={nextPrompt}
+            className="inline-flex min-h-11 w-full items-center justify-center rounded-full border border-border/70 px-4 py-2 font-mono text-[10px] uppercase tracking-[0.28em] text-muted-foreground transition-colors hover:border-foreground/30 hover:text-foreground sm:w-fit"
+          >
+            Next prompt -&gt;
+          </button>
+        </div>
+      </div>
+
+      <div className="mt-8 overflow-hidden rounded-2xl border border-border/50 bg-background/40">
+        <div className="grid gap-0 md:grid-cols-[1.35fr_0.65fr]">
+          <div className="border-b border-border/50 md:border-b-0 md:border-r">
+            <div className="hidden grid-cols-3 border-b border-border/50 px-5 py-3 font-mono text-[10px] uppercase tracking-[0.28em] text-muted-foreground sm:grid">
+              <div>Metric</div>
+              <div>Traditional</div>
+              <div className="text-primary">OmniScout</div>
+            </div>
+            <div className="sm:hidden">
+              {TYPICAL_RESULTS.map((row) => (
+                <div key={row.metric} className="px-4 py-3.5 not-last:border-b not-last:border-border/35">
+                  <div className="flex items-start justify-between gap-3">
+                    <p className="font-medium leading-snug text-foreground">{row.metric}</p>
+                    <p className="shrink-0 rounded-full border border-primary/20 bg-primary/10 px-2.5 py-1 text-right text-xs font-semibold text-primary">
+                      {row.omniscout}
+                    </p>
+                  </div>
+                  <p className="mt-1.5 text-xs leading-relaxed text-muted-foreground">
+                    Traditional: <span className="text-foreground/80">{row.traditional}</span>
+                  </p>
+                </div>
+              ))}
+            </div>
+            <div className="hidden sm:block">
+              {TYPICAL_RESULTS.map((row) => (
+                <div
+                  key={row.metric}
+                  className="grid grid-cols-3 px-5 py-4 text-sm not-last:border-b not-last:border-border/35"
+                >
+                  <div className="font-medium text-foreground">{row.metric}</div>
+                  <div className="text-muted-foreground">{row.traditional}</div>
+                  <div className="font-semibold text-primary">{row.omniscout}</div>
+                </div>
+              ))}
+              </div>
+          </div>
+
+          <div className="flex flex-col justify-between bg-primary/[0.04] p-5 sm:p-6">
+            <div>
+              <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-primary">
+                Average reduction
+              </p>
+              <p className="mt-4 text-4xl font-semibold tracking-tight text-primary sm:text-5xl">
+                95%
+              </p>
+              <p className="mt-2 text-sm font-medium text-foreground">
+                lower LLM token costs
+              </p>
+            </div>
+            <p className="mt-6 text-sm leading-relaxed text-muted-foreground">
+              OmniScout sends compact answers instead of full pages, reducing context use
+              without changing the user&apos;s prompt.
+            </p>
+          </div>
+        </div>
+        <div className="border-t border-border/50 px-5 py-3 text-center text-sm text-muted-foreground">
+          Typical search-heavy workflows use{" "}
+          <span className="font-semibold text-foreground">70-95% fewer LLM tokens</span>.
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function BrowserComparisonPanel() {
+  const comparison = BROWSER_COMPARISON;
+
+  return (
+    <div className="rounded-[1.5rem] border border-border/50 bg-card p-4 sm:rounded-[1.75rem] sm:p-6">
+      <div className="flex flex-col gap-4 border-b border-border/40 pb-5 sm:flex-row sm:items-end sm:justify-between">
+        <div className="min-w-0">
+          <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-primary">
+            {comparison.label}
+          </p>
+          <h3 className="mt-3 text-xl font-semibold tracking-tight text-foreground sm:text-2xl">
+            Your signed-in browser becomes the tool
+          </h3>
+        </div>
+        <div className="rounded-2xl border border-border/50 bg-background/50 px-4 py-3 text-sm text-muted-foreground sm:max-w-xs">
+          Ask:{" "}
+          <span className="break-words font-medium text-foreground">
+            {comparison.prompt}
+          </span>
+        </div>
+      </div>
+
+      <div className="grid gap-4 py-5 sm:py-6 md:grid-cols-[0.95fr_1.05fr]">
+        <div className="rounded-2xl border border-border/45 bg-background/35 p-4 sm:p-5">
+          <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-muted-foreground">
+            Without browser access
+          </p>
+          <p className="mt-3 text-lg font-semibold text-foreground">
+            The agent stops and asks you to do the work.
+          </p>
+          <div className="mt-5 space-y-2">
+            {comparison.withoutItems.map((item) => (
+              <div
+                key={item}
+                className="flex items-start gap-3 rounded-xl border border-border/35 bg-card/50 px-3 py-2.5 text-sm text-muted-foreground"
+              >
+                <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-muted-foreground/50" />
+                <span className="min-w-0 break-words">{item}</span>
+              </div>
+            ))}
+          </div>
+          <div className="mt-6 rounded-xl border border-border/40 bg-card/70 px-4 py-3 text-sm text-muted-foreground">
+            {comparison.withoutAnswer}
+          </div>
+        </div>
+
+        <div className="rounded-2xl border border-primary/25 bg-primary/[0.06] p-4 sm:p-5">
+          <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-primary">
+            With OmniScout
+          </p>
+          <p className="mt-3 text-lg font-semibold text-foreground">
+            The same request runs through your real browser session.
+          </p>
+          <div className="mt-5 grid gap-2.5 sm:grid-cols-2 sm:gap-3">
+            {comparison.withItems.map((item) => (
+              <div
+                key={item}
+                className="flex min-h-11 items-start gap-2 rounded-xl border border-primary/15 bg-background/45 px-3.5 py-3 text-sm font-medium text-foreground"
+              >
+                <span className="shrink-0 text-primary">✓</span>
+                <span className="min-w-0 break-words">{item}</span>
+              </div>
+            ))}
+          </div>
+          <div className="mt-6 rounded-xl border border-primary/20 bg-background/60 px-4 py-3 text-sm font-semibold text-foreground">
+            {comparison.withAnswer}
+          </div>
+        </div>
+      </div>
+
+      <div className="rounded-2xl border border-border/45 bg-background/40 px-4 py-4 text-sm leading-relaxed text-muted-foreground sm:px-5">
+        <span className="font-semibold text-foreground">{comparison.takeaway}</span>{" "}
+        OmniScout handles the browser steps invisibly, then gives the model only the
+        result it needs.
+      </div>
+    </div>
+  );
+}
+
 export const QUICK_SETUP_SECTION_ID = "quick-setup";
 
 export function CompleteGuide() {
@@ -219,21 +593,37 @@ export function CompleteGuide() {
       className="scroll-mt-28 overflow-x-clip border-t border-border/30 bg-card/20 py-20 md:scroll-mt-32 md:py-32"
     >
       <div className="mx-auto w-full min-w-0 max-w-6xl px-4 sm:px-5">
-        {/* Intro */}
-        <FadeUp className="mx-auto mb-16 max-w-2xl text-center md:mb-20">
-          <div className="text-xs font-mono uppercase tracking-widest text-primary mb-5">
-            Get started
-          </div>
-          <h2 className="mb-4 text-2xl font-bold tracking-tight sm:text-3xl md:text-4xl">
-            Anyone can set this up
-          </h2>
-          <p className="text-base leading-relaxed text-muted-foreground md:text-lg">
-            Run 3 commands once. Then just ask your AI in plain English — it will
-            browse, search, and fill in forms for you automatically.
-          </p>
-        </FadeUp>
-
         <div className="mx-auto max-w-4xl space-y-16 md:space-y-20">
+          {/* Advantages */}
+          <FadeUp delay={0.05}>
+            <SectionHeader
+              tag="Why it helps"
+              title="Same result, less work for the AI"
+              description="OmniScout keeps the hard parts simple. It finds short answers before the model spends tokens, and it can use your own browser for real website tasks."
+            />
+
+            <div className="space-y-5">
+              <CostSavingsTable />
+              <BrowserComparisonPanel />
+            </div>
+          </FadeUp>
+
+          <div className="gradient-divider" />
+
+          {/* Intro */}
+          <FadeUp className="mx-auto max-w-2xl text-center">
+            <div className="text-xs font-mono uppercase tracking-widest text-primary mb-5">
+              Get started
+            </div>
+            <h2 className="mb-4 text-2xl font-bold tracking-tight sm:text-3xl md:text-4xl">
+              Anyone can set this up
+            </h2>
+            <p className="text-base leading-relaxed text-muted-foreground md:text-lg">
+              Run 3 commands once. Then just ask your AI in plain English — it will
+              browse, search, and fill in forms for you automatically.
+            </p>
+          </FadeUp>
+
           {/* Part 1 */}
           <FadeUp>
             <SectionHeader
