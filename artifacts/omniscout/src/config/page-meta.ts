@@ -37,6 +37,14 @@ export const routePageMeta: Record<string, PageMetaTags> = {
     type: "website",
     ...ogImage("/og/features.jpg"),
   },
+  "/install": {
+    title: "Install · OmniScout",
+    description:
+      "Install OmniScout locally and connect it to Claude Code, Cursor, Codex, Cline, Windsurf, and other supported agents.",
+    url: "/install",
+    type: "website",
+    ...ogImage("/og/home.jpg"),
+  },
   "/use-cases": {
     title: "Use Cases · OmniScout",
     description:
