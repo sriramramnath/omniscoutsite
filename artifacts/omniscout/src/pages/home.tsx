@@ -6,7 +6,7 @@ import { HeroCanvasBackground } from "@/components/layout/hero-canvas-background
 import { HeroTerminal } from "@/components/layout/hero-terminal";
 import { ContainerScroll } from "@/components/ui/container-scroll-animation";
 import { CopyInstallButton } from "@/components/ui/copy-install-button";
-import { CompleteGuide, QUICK_SETUP_SECTION_ID } from "@/components/home/complete-guide";
+import { HomePreview, QUICK_SETUP_SECTION_ID } from "@/components/home/home-preview";
 import { routePageMeta } from "@/config/page-meta";
 import { useDocumentMeta } from "@/hooks/use-document-meta";
 
@@ -97,7 +97,7 @@ export default function Home() {
         </div>
       </section>
 
-      <CompleteGuide />
+      <HomePreview />
 
       <Footer />
     </div>
