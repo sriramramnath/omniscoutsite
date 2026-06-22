@@ -1,4 +1,5 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
+import { motion, useInView } from "framer-motion";
 import {
   Bar,
   BarChart,
@@ -19,21 +20,36 @@ import {
   ArrowRight,
   LockOpen,
   Puzzle,
+  Globe,
+  Terminal,
+  Check,
+  MousePointerClick,
+  Camera,
 } from "lucide-react";
 import {
   ADVANTAGES_SCENARIOS,
   TOKEN_CHART_DATA,
 } from "@/data/advantages-content";
+import {
+  CHART_COLORS,
+  chartAxisTick,
+  chartCursorFill,
+  chartGridStroke,
+  chartLegendStyle,
+  chartTooltipStyle,
+  chartYAxisTick,
+} from "@/components/home/chart-styles";
 import { FadeUp, PageLinkButton, SectionHeader } from "@/components/home/shared";
 import { CopyableCommand } from "@/components/home/copyable-command";
 import { cn } from "@/lib/utils";
 
-const CHART_COLORS = {
-  Traditional: "hsl(0 65% 55%)",
-  OmniScout: "hsl(var(--primary))",
-};
+const INSTALL_COMMANDS = [
+  "pip install omniscout",
+  "omniscout install",
+  "omniscout install --skill",
+] as const;
 
-const COMPETITOR_EDGES = [
+const WHY_OMNISCOUT = [
   {
     icon: CloudOff,
     title: "No cloud browser sessions",
@@ -56,7 +72,12 @@ const COMPETITOR_EDGES = [
   },
 ] as const;
 
-const AUTH_BYPASS_FEATURES = [
+const BROWSER_FEATURES = [
+  {
+    icon: MousePointerClick,
+    title: "Atomic browser commands",
+    desc: "navigate, snapshot, click, fill, scroll, screenshot, eval — sub-second via a local daemon.",
+  },
   {
     icon: LockOpen,
     title: "Persistent browser profiles",
@@ -74,220 +95,500 @@ const AUTH_BYPASS_FEATURES = [
   },
 ] as const;
 
-const INSTALL_COMMANDS = [
-  "pip install omniscout",
-  "omniscout install",
-  "omniscout install --skill",
+const COMPARE_STACK = [
+  {
+    name: "OmniScout",
+    color: CHART_COLORS.OmniScout,
+    tag: "Local actuator",
+    detail: "Shell agent → CLI → daemon → your browser",
+    highlight: true,
+  },
+  {
+    name: "Hosted browsers",
+    color: CHART_COLORS.Hosted,
+    tag: "Cloud fleet",
+    detail: "API signup → remote session → per-minute billing",
+    highlight: false,
+  },
+  {
+    name: "Vendor-integrated",
+    color: CHART_COLORS.Vendor,
+    tag: "Full loop",
+    detail: "Kimi · Claude for Chrome · ChatGPT Atlas",
+    highlight: false,
+  },
 ] as const;
 
-function TokenTooltip({
-  active,
-  payload,
-  label,
+const SECTIONS = [
+  { id: "token-savings", label: "Token Savings" },
+  { id: "see-it-in-action", label: "See It In Action" },
+  { id: "why-omniscout", label: "Why OmniScout" },
+  { id: "browser-automation", label: "Browser Automation" },
+  { id: "comparison", label: "Comparison" },
+  { id: "install", label: "Install" },
+] as const;
+
+function SectionFlowDivider() {
+  return (
+    <div className="flex justify-center py-2" aria-hidden>
+      <span className="font-mono text-sm text-primary/50">↓</span>
+    </div>
+  );
+}
+
+function HomeSection({
+  id,
+  children,
+  className,
+  altBg = false,
 }: {
-  active?: boolean;
-  payload?: Array<{ name: string; value: number; color: string }>;
-  label?: string;
+  id: string;
+  children: React.ReactNode;
+  className?: string;
+  altBg?: boolean;
 }) {
-  if (!active || !payload?.length) return null;
   return (
-    <div className="rounded-xl border border-border/60 bg-card px-4 py-3 text-sm shadow-xl">
-      <p className="mb-2 max-w-xs font-medium text-foreground">{label}</p>
-      {payload.map((entry) => (
-        <p key={entry.name} style={{ color: entry.color }} className="font-mono text-xs">
-          {entry.name}: {entry.value.toLocaleString()} tokens
-        </p>
-      ))}
+    <section
+      id={id}
+      className={cn(
+        "scroll-mt-28 py-14 md:scroll-mt-32 md:py-20",
+        altBg && "rounded-[1.75rem] border border-border/30 bg-card/25 px-4 sm:px-6",
+        className,
+      )}
+    >
+      {children}
+    </section>
+  );
+}
+
+function ChartPanel({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <div
+      className={cn(
+        "glow-card min-w-0 overflow-hidden rounded-xl border border-border/40 bg-card p-4 sm:p-6",
+        className,
+      )}
+    >
+      {children}
     </div>
   );
 }
 
-function TokenEfficiencyChart() {
-  return (
-    <div className="rounded-[1.5rem] border border-border/50 bg-card p-4 sm:p-6">
-      <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-muted-foreground">
-        Token efficiency
-      </p>
-      <h3 className="mt-3 text-xl font-bold tracking-tight sm:text-2xl">
-        Same answer, a fraction of the tokens
-      </h3>
-      <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
-        Traditional search sends whole pages to your LLM. OmniScout extracts the
-        answer first — typical workflows see 70–95% fewer input tokens.
-      </p>
+function TokenSavingsSection() {
+  const chartRef = useRef<HTMLDivElement>(null);
+  const chartInView = useInView(chartRef, { once: true, margin: "-80px" });
+  const [activeIndex, setActiveIndex] = useState(0);
+  const activeRow = ADVANTAGES_SCENARIOS[activeIndex];
 
-      <div className="mt-6 h-72 w-full sm:h-80">
-        <ResponsiveContainer width="100%" height="100%">
-          <BarChart data={TOKEN_CHART_DATA} margin={{ top: 8, right: 8, left: 0, bottom: 8 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border) / 0.4)" vertical={false} />
-            <XAxis
-              dataKey="name"
-              tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 11 }}
-              axisLine={false}
-              tickLine={false}
-            />
-            <YAxis
-              tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 11 }}
-              axisLine={false}
-              tickLine={false}
-              tickFormatter={(v) => `${(v / 1000).toFixed(1)}k`}
-            />
-            <Tooltip content={<TokenTooltip />} />
-            <Legend
-              wrapperStyle={{ fontSize: 12, paddingTop: 12 }}
-              formatter={(value) => (
-                <span className="text-muted-foreground">{value}</span>
-              )}
-            />
-            <Bar
-              dataKey="Traditional"
-              fill={CHART_COLORS.Traditional}
-              radius={[6, 6, 0, 0]}
-              maxBarSize={48}
-            />
-            <Bar
-              dataKey="OmniScout"
-              fill={CHART_COLORS.OmniScout}
-              radius={[6, 6, 0, 0]}
-              maxBarSize={48}
-            />
-          </BarChart>
-        </ResponsiveContainer>
-      </div>
-
-      <div className="mt-4 grid gap-3 sm:grid-cols-3">
-        {ADVANTAGES_SCENARIOS.map((row) => (
-          <div
-            key={row.question}
-            className="rounded-xl border border-border/40 bg-background/40 px-4 py-3"
-          >
-            <p className="text-xs font-medium text-foreground line-clamp-2">{row.question}</p>
-            <p className="mt-2 text-2xl font-bold text-primary">{row.reduction}</p>
-            <p className="text-xs text-muted-foreground">fewer tokens</p>
-          </div>
-        ))}
-      </div>
-
-      <div className="mt-6 flex flex-wrap items-center justify-between gap-4">
-        <p className="text-sm text-muted-foreground">
-          Try different prompts in the full comparison — toggle between real-world scenarios.
-        </p>
-        <PageLinkButton href="/advantages">See full cost breakdown</PageLinkButton>
-      </div>
-    </div>
-  );
-}
-
-function CostSavingsStrip() {
-  const ref = useRef<HTMLDivElement>(null);
   const stats = [
     { label: "Token reduction", value: "up to 95%" },
-    { label: "Typical input tokens", value: "20–200" },
-    { label: "vs traditional", value: "1,000–5,000" },
+    { label: "OmniScout input", value: "20–200" },
+    { label: "Traditional input", value: "1,000–5,000" },
   ];
 
   return (
-    <div
-      ref={ref}
-      className="grid gap-3 rounded-[1.5rem] border border-primary/20 bg-gradient-to-br from-primary/10 via-card to-card p-4 sm:grid-cols-3 sm:p-6"
-    >
-      {stats.map((stat) => (
-        <div key={stat.label} className="rounded-xl border border-border/30 bg-background/50 px-4 py-4 text-center">
-          <p className="text-2xl font-bold text-primary sm:text-3xl">{stat.value}</p>
-          <p className="mt-1 text-xs text-muted-foreground">{stat.label}</p>
-        </div>
-      ))}
-    </div>
-  );
-}
+    <HomeSection id="token-savings">
+      <FadeUp>
+        <SectionHeader
+          tag="Token Savings"
+          title="Spend less on tokens. Get answers faster."
+          description="OmniScout extracts precise answers before they reach your LLM — so you send less context and pay less per query."
+        />
 
-function AuthBypassSection() {
-  return (
-    <div className="rounded-[1.5rem] border border-border/50 bg-card p-4 sm:p-6">
-      <SectionHeader
-        tag="No walls"
-        title="Bypass auth, CAPTCHAs, and session limits"
-        description="Competitors stop at login screens and bot checks. OmniScout uses your real browser profile so agents keep moving."
-      />
-      <div className="grid gap-4 sm:grid-cols-3">
-        {AUTH_BYPASS_FEATURES.map(({ icon: Icon, title, desc }) => (
-          <div
-            key={title}
-            className="rounded-xl border border-border/40 bg-background/40 p-4 transition-colors hover:border-primary/25"
-          >
-            <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
-              <Icon className="h-5 w-5" aria-hidden />
+        <div className="grid gap-4 sm:grid-cols-3">
+          {stats.map((stat) => (
+            <div
+              key={stat.label}
+              className="rounded-xl border border-primary/20 bg-gradient-to-br from-primary/10 to-card px-4 py-5 text-center"
+            >
+              <p className="text-2xl font-bold text-primary sm:text-3xl">{stat.value}</p>
+              <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.24em] text-muted-foreground">
+                {stat.label}
+              </p>
             </div>
-            <p className="text-sm font-semibold text-foreground">{title}</p>
-            <p className="mt-2 text-xs leading-relaxed text-muted-foreground">{desc}</p>
-          </div>
-        ))}
-      </div>
-    </div>
+          ))}
+        </div>
+
+        <div className="mt-6 grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
+          <ChartPanel>
+            <div className="mb-4 flex items-center gap-2 border-b border-border/30 pb-3">
+              <Terminal className="h-3.5 w-3.5 text-muted-foreground" />
+              <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-muted-foreground">
+                tokens per query
+              </span>
+            </div>
+            <motion.div
+              ref={chartRef}
+              initial={{ opacity: 0, y: 16 }}
+              animate={chartInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+              className="h-72 w-full sm:h-80"
+            >
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                  data={TOKEN_CHART_DATA}
+                  margin={{ top: 10, right: 10, left: -8, bottom: 0 }}
+                  barCategoryGap="24%"
+                  barGap={4}
+                >
+                  <CartesianGrid
+                    strokeDasharray="3 3"
+                    stroke={chartGridStroke}
+                    vertical={false}
+                  />
+                  <XAxis
+                    dataKey="name"
+                    tick={chartAxisTick}
+                    axisLine={false}
+                    tickLine={false}
+                  />
+                  <YAxis
+                    tick={chartYAxisTick}
+                    axisLine={false}
+                    tickLine={false}
+                    tickFormatter={(v) => `${(v / 1000).toFixed(1)}k`}
+                  />
+                  <Tooltip
+                    contentStyle={chartTooltipStyle}
+                    cursor={{ fill: chartCursorFill }}
+                    formatter={(value: number) => [`${value.toLocaleString()} tok`, ""]}
+                    labelFormatter={(_, payload) =>
+                      payload?.[0]?.payload?.fullQuestion ?? ""
+                    }
+                  />
+                  <Legend wrapperStyle={chartLegendStyle} />
+                  <Bar
+                    dataKey="Traditional"
+                    fill={CHART_COLORS.Traditional}
+                    radius={[3, 3, 0, 0]}
+                    fillOpacity={0.85}
+                    isAnimationActive={chartInView}
+                    animationDuration={800}
+                  />
+                  <Bar
+                    dataKey="OmniScout"
+                    fill={CHART_COLORS.OmniScout}
+                    radius={[3, 3, 0, 0]}
+                    isAnimationActive={chartInView}
+                    animationDuration={900}
+                    animationBegin={120}
+                  />
+                </BarChart>
+              </ResponsiveContainer>
+            </motion.div>
+          </ChartPanel>
+
+          <ChartPanel className="flex flex-col">
+            <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-muted-foreground">
+              Prompt toggle
+            </p>
+            <h3 className="mt-2 text-lg font-bold tracking-tight">How OmniScout reduces AI costs</h3>
+            <div className="mt-4 flex flex-wrap gap-2">
+              {ADVANTAGES_SCENARIOS.map((row, index) => (
+                <button
+                  key={row.question}
+                  type="button"
+                  onClick={() => setActiveIndex(index)}
+                  aria-pressed={index === activeIndex}
+                  className={cn(
+                    "rounded-full border px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.18em] transition-colors",
+                    index === activeIndex
+                      ? "border-foreground bg-foreground text-background"
+                      : "border-border/60 text-muted-foreground hover:border-foreground/30 hover:text-foreground",
+                  )}
+                >
+                  Scenario {index + 1}
+                </button>
+              ))}
+            </div>
+
+            <div className="mt-5 flex-1 space-y-3">
+              <div className="rounded-lg border border-border/40 bg-[hsl(222_22%_6%)] p-3">
+                <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-muted-foreground">
+                  Traditional
+                </p>
+                <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
+                  {activeRow.traditional}
+                </p>
+              </div>
+              <div className="rounded-lg border border-primary/25 bg-primary/10 p-3">
+                <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-primary">
+                  OmniScout
+                </p>
+                <p className="mt-1 text-sm font-medium text-foreground">{activeRow.omniscout}</p>
+              </div>
+            </div>
+
+            <div className="mt-5 flex items-end justify-between border-t border-border/40 pt-4">
+              <div>
+                <p className="text-3xl font-bold text-primary">{activeRow.reduction}</p>
+                <p className="text-xs text-muted-foreground">fewer tokens</p>
+              </div>
+              <PageLinkButton href="/advantages">Full breakdown</PageLinkButton>
+            </div>
+          </ChartPanel>
+        </div>
+      </FadeUp>
+    </HomeSection>
   );
 }
 
-function CompetitorEdgeSection() {
+function SeeItInActionSection() {
   return (
-    <div>
-      <SectionHeader
-        tag="Why OmniScout"
-        title="Better than hosted browsers and vendor agents"
-        description="Local execution, your LLM, and answers that cost less — without signing up for another cloud API."
-      />
-      <div className="grid gap-4 sm:grid-cols-2">
-        {COMPETITOR_EDGES.map(({ icon: Icon, title, desc }) => (
-          <div
-            key={title}
-            className={cn(
-              "group rounded-xl border border-border/40 bg-card p-5 transition-colors hover:border-primary/30",
-            )}
-          >
-            <div className="flex items-start gap-4">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+    <HomeSection id="see-it-in-action" altBg>
+      <FadeUp delay={0.05}>
+        <SectionHeader
+          tag="See It In Action"
+          title="Your AI opens real sites and returns live answers"
+          description="Same app you already use — but now it browses, reads prices, and hands you a comparison in seconds."
+        />
+
+        <div className="overflow-hidden rounded-xl border border-border/40 bg-[hsl(222_22%_6%)] shadow-2xl shadow-black/30">
+          <div className="flex items-center gap-2 border-b border-border/30 bg-[hsl(222_22%_5%)] px-4 py-3">
+            <span className="h-2 w-2 rounded-full bg-primary" />
+            <span className="font-mono text-xs text-muted-foreground">
+              Claude Code — with OmniScout installed
+            </span>
+          </div>
+          <div className="space-y-4 p-4 sm:p-5">
+            <div className="ml-auto max-w-[85%] rounded-xl rounded-br-sm bg-primary px-3 py-2 text-sm leading-relaxed text-primary-foreground">
+              /omniscout find me the best price for Sony WH-1000XM5 headphones online right now
+            </div>
+            <div className="flex gap-2">
+              <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-[10px] font-semibold text-primary">
+                OS
+              </div>
+              <div className="min-w-0 flex-1 rounded-xl rounded-bl-sm border border-border/40 bg-secondary/30 p-3 text-sm leading-relaxed text-foreground">
+                <p className="mb-3 text-muted-foreground">
+                  I searched across major retailers. Here are the best prices I found right now:
+                </p>
+                <div className="space-y-2">
+                  {[
+                    { store: "Amazon India", detail: "Prime eligible", price: "₹24,990" },
+                    { store: "Croma", detail: "Store pickup today", price: "₹26,490" },
+                    { store: "Flipkart", detail: "10% off with Axis Bank", price: "₹23,490" },
+                  ].map(({ store, detail, price }) => (
+                    <div
+                      key={store}
+                      className="rounded-lg border border-border/30 bg-card/60 px-3 py-2"
+                    >
+                      <p className="text-xs font-semibold text-primary">{store}</p>
+                      <p className="text-xs text-muted-foreground">{detail}</p>
+                      <p className="mt-0.5 text-sm font-semibold text-emerald-400">{price}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p className="mx-auto mt-6 max-w-2xl text-center text-sm text-muted-foreground">
+          The AI opened real websites, read actual prices, and gave you a comparison — you never
+          touched a browser.
+        </p>
+      </FadeUp>
+    </HomeSection>
+  );
+}
+
+function WhyOmniScoutSection() {
+  return (
+    <HomeSection id="why-omniscout">
+      <FadeUp delay={0.05}>
+        <SectionHeader
+          tag="Why OmniScout"
+          title="Local execution. Your LLM. Less waste."
+          description="No hosted browser sessions, no vendor lock-in, and answers that cost a fraction of traditional search + LLM workflows."
+        />
+        <div className="grid gap-4 sm:grid-cols-2">
+          {WHY_OMNISCOUT.map(({ icon: Icon, title, desc }) => (
+            <div
+              key={title}
+              className="glow-card rounded-xl border border-border/40 bg-card p-5 transition-colors hover:border-primary/30"
+            >
+              <div className="flex items-start gap-4">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                  <Icon className="h-5 w-5" aria-hidden />
+                </div>
+                <div>
+                  <p className="font-semibold text-foreground">{title}</p>
+                  <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{desc}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </FadeUp>
+    </HomeSection>
+  );
+}
+
+function BrowserAutomationSection() {
+  return (
+    <HomeSection id="browser-automation" altBg>
+      <FadeUp delay={0.05}>
+        <SectionHeader
+          tag="Browser Automation"
+          title="Navigate like a human. Bypass auth and CAPTCHAs."
+          description="A long-lived local daemon drives your browser — persistent profiles, extension mode, and CAPTCHA handoff built in."
+        />
+
+        <div className="grid gap-4 sm:grid-cols-2">
+          {BROWSER_FEATURES.map(({ icon: Icon, title, desc }) => (
+            <div
+              key={title}
+              className="rounded-xl border border-border/40 bg-background/40 p-4 transition-colors hover:border-primary/25"
+            >
+              <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
                 <Icon className="h-5 w-5" aria-hidden />
               </div>
-              <div>
-                <p className="font-semibold text-foreground">{title}</p>
-                <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{desc}</p>
-              </div>
+              <p className="text-sm font-semibold text-foreground">{title}</p>
+              <p className="mt-2 text-xs leading-relaxed text-muted-foreground">{desc}</p>
             </div>
+          ))}
+        </div>
+
+        <div className="mt-6 overflow-hidden rounded-lg border border-border/40 bg-[hsl(222_22%_6%)]">
+          <div className="flex items-center gap-1.5 border-b border-border/30 bg-[hsl(222_22%_5%)] px-4 py-2">
+            <Globe className="h-3 w-3 shrink-0 text-muted-foreground" />
+            <span className="font-mono text-xs text-muted-foreground">example</span>
           </div>
-        ))}
-      </div>
-      <div className="mt-6 text-center">
-        <Link
-          href="/compare"
-          className="inline-flex items-center gap-2 text-sm font-medium text-primary hover:underline"
-        >
-          Full competitor comparison
-          <ArrowRight className="h-4 w-4" aria-hidden />
-        </Link>
-      </div>
-    </div>
+          <pre className="overflow-x-auto px-4 py-4 font-mono text-xs leading-6 text-zinc-300">
+            <code>
+              {`omniscout browser navigate https://example.com
+omniscout browser snapshot --refs-only
+omniscout browser click @e1
+omniscout browser login https://github.com --profile work`}
+            </code>
+          </pre>
+        </div>
+
+        <div className="mt-6 text-center">
+          <Link
+            href="/features"
+            className="inline-flex items-center gap-2 text-sm font-medium text-primary hover:underline"
+          >
+            All browser features
+            <ArrowRight className="h-4 w-4" aria-hidden />
+          </Link>
+        </div>
+      </FadeUp>
+    </HomeSection>
   );
 }
 
-function SetupGuideTeaser() {
+function ComparisonSection() {
   return (
-    <div className="rounded-[1.5rem] border border-border/50 bg-card p-5 sm:p-8">
-      <div className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
-        <div>
-          <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-primary">
-            Quick setup
+    <HomeSection id="comparison">
+      <FadeUp delay={0.05}>
+        <SectionHeader
+          tag="Comparison"
+          title="How OmniScout stacks up"
+          description="Local actuator for your agent — not another chatbot or per-minute hosted browser."
+        />
+
+        <div className="grid gap-6 lg:grid-cols-2">
+          <ChartPanel>
+            <div className="mb-4 flex items-center gap-2 border-b border-border/30 pb-3">
+              <Terminal className="h-3.5 w-3.5 text-muted-foreground" />
+              <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-muted-foreground">
+                stack at a glance
+              </span>
+            </div>
+            <div className="space-y-2">
+              {COMPARE_STACK.map((option) => (
+                <div
+                  key={option.name}
+                  className={cn(
+                    "rounded-lg border px-3 py-2.5 transition-colors",
+                    option.highlight
+                      ? "border-primary/40 bg-primary/10"
+                      : "border-border/40 bg-card/40",
+                  )}
+                >
+                  <div className="mb-1 flex items-center gap-2">
+                    <span
+                      className="h-2 w-2 shrink-0 rounded-full"
+                      style={{ backgroundColor: option.color }}
+                    />
+                    <span className="text-sm font-semibold text-foreground">{option.name}</span>
+                    <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+                      {option.tag}
+                    </span>
+                  </div>
+                  <p className="text-xs text-muted-foreground">{option.detail}</p>
+                </div>
+              ))}
+            </div>
+          </ChartPanel>
+
+          <div className="space-y-3">
+            {[
+              {
+                label: "vs Hosted browsers",
+                text: "Local Playwright instead of per-minute cloud sessions.",
+              },
+              {
+                label: "vs Vendor agents",
+                text: "Same browser surface, any LLM you choose — Kimi, Claude, Atlas.",
+              },
+              {
+                label: "vs DIY scrapers",
+                text: "One CLI with daemon, search, extract, and memory — no glue code.",
+              },
+            ].map(({ label, text }) => (
+              <div
+                key={label}
+                className="flex gap-3 rounded-xl border border-border/40 bg-card/50 p-4"
+              >
+                <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary/15">
+                  <Check className="h-3 w-3 text-primary" aria-hidden />
+                </span>
+                <div>
+                  <p className="text-sm font-medium text-foreground">{label}</p>
+                  <p className="mt-0.5 text-xs leading-relaxed text-muted-foreground">{text}</p>
+                </div>
+              </div>
+            ))}
+            <Link
+              href="/compare"
+              className="inline-flex items-center gap-2 pt-2 text-sm font-medium text-primary hover:underline"
+            >
+              Full competitor comparison with charts
+              <ArrowRight className="h-4 w-4" aria-hidden />
+            </Link>
+          </div>
+        </div>
+      </FadeUp>
+    </HomeSection>
+  );
+}
+
+function InstallSection() {
+  return (
+    <HomeSection id="install" altBg>
+      <FadeUp delay={0.05}>
+        <SectionHeader
+          tag="Install"
+          title="Anyone can set this up"
+          description="Run 3 commands once. Then ask your AI in plain English — it browses, searches, and fills forms automatically."
+        />
+
+        <div className="rounded-xl border border-emerald-500/25 bg-emerald-500/5 p-5 sm:p-6">
+          <p className="mb-4 text-sm font-semibold text-emerald-300">
+            The 3 commands — type these in order
           </p>
-          <h3 className="mt-3 text-2xl font-bold tracking-tight sm:text-3xl">
-            Anyone can set this up
-          </h3>
-          <p className="mt-3 max-w-xl text-sm leading-relaxed text-muted-foreground sm:text-base">
-            Run 3 commands once. Then ask your AI in plain English — it browses,
-            searches, and fills forms automatically. The full guide covers terminal
-            setup on Mac, Windows, and Linux, plus what happens behind the scenes.
-          </p>
-          <div className="mt-5 space-y-2">
+          <div className="space-y-2">
             {INSTALL_COMMANDS.map((cmd, i) => (
               <div key={cmd} className="flex items-center gap-2">
-                <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary/15 text-[11px] font-semibold text-primary">
+                <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-500/20 text-[11px] font-semibold text-emerald-300">
                   {i + 1}
                 </span>
                 <CopyableCommand command={cmd} variant="inline" />
@@ -295,61 +596,63 @@ function SetupGuideTeaser() {
             ))}
           </div>
         </div>
-        <div className="flex flex-col gap-3">
+
+        <div className="mt-6 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
           <PageLinkButton href="/guide">Read the full setup guide</PageLinkButton>
-          <a
-            href="#quick-setup"
-            className="text-center text-xs text-muted-foreground hover:text-foreground"
+          <Link
+            href="/features"
+            className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
           >
-            Jump to install on this page
-          </a>
+            <Camera className="h-4 w-4" aria-hidden />
+            Explore all features
+          </Link>
         </div>
-      </div>
-    </div>
+      </FadeUp>
+    </HomeSection>
   );
 }
 
-export const QUICK_SETUP_SECTION_ID = "quick-setup";
+export const QUICK_SETUP_SECTION_ID = "install";
 
 export function HomePreview() {
   return (
-    <section
-      id={QUICK_SETUP_SECTION_ID}
-      className="scroll-mt-28 overflow-x-clip border-t border-border/30 bg-card/20 py-20 md:scroll-mt-32 md:py-28"
-    >
-      <div className="mx-auto w-full min-w-0 max-w-6xl px-4 sm:px-5">
-        <div className="mx-auto max-w-5xl space-y-16 md:space-y-20">
-          <FadeUp>
-            <SectionHeader
-              tag="Cost & efficiency"
-              title="Spend less on tokens. Get answers faster."
-              description="OmniScout extracts precise answers before they reach your LLM — so you send less context and pay less per query."
-            />
-            <div className="space-y-5">
-              <CostSavingsStrip />
-              <TokenEfficiencyChart />
-            </div>
-          </FadeUp>
-
-          <div className="gradient-divider" />
-
-          <FadeUp delay={0.05}>
-            <AuthBypassSection />
-          </FadeUp>
-
-          <div className="gradient-divider" />
-
-          <FadeUp delay={0.05}>
-            <CompetitorEdgeSection />
-          </FadeUp>
-
-          <div className="gradient-divider" />
-
-          <FadeUp delay={0.05}>
-            <SetupGuideTeaser />
-          </FadeUp>
+    <div className="overflow-x-clip border-t border-border/30 bg-card/20">
+      {/* Section flow nav */}
+      <nav
+        aria-label="Page sections"
+        className="sticky top-[4.5rem] z-30 border-b border-border/30 bg-background/80 backdrop-blur-md sm:top-[5.5rem]"
+      >
+        <div className="mx-auto flex max-w-6xl gap-1 overflow-x-auto px-4 py-2.5 sm:gap-2 sm:px-5">
+          {SECTIONS.map((section, index) => (
+            <a
+              key={section.id}
+              href={`#${section.id}`}
+              className="flex shrink-0 items-center gap-1.5 rounded-full border border-border/40 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.16em] text-muted-foreground transition-colors hover:border-primary/30 hover:text-foreground"
+            >
+              {section.label}
+              {index < SECTIONS.length - 1 && (
+                <span className="text-primary/40" aria-hidden>
+                  ↓
+                </span>
+              )}
+            </a>
+          ))}
         </div>
+      </nav>
+
+      <div className="mx-auto w-full min-w-0 max-w-6xl px-4 sm:px-5">
+        <TokenSavingsSection />
+        <SectionFlowDivider />
+        <SeeItInActionSection />
+        <SectionFlowDivider />
+        <WhyOmniScoutSection />
+        <SectionFlowDivider />
+        <BrowserAutomationSection />
+        <SectionFlowDivider />
+        <ComparisonSection />
+        <SectionFlowDivider />
+        <InstallSection />
       </div>
-    </section>
+    </div>
   );
 }
