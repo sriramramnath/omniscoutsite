@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { Link } from "wouter";
-import { CompleteGuide } from "@/components/home/complete-guide";
+import { SetupGuideContent } from "@/components/home/setup-guide";
 import { Footer } from "@/components/layout/footer";
 import { Nav } from "@/components/layout/nav";
 import { PageHeroGlow } from "@/components/layout/page-hero-glow";
@@ -52,7 +52,12 @@ export default function Install() {
         </div>
       </section>
 
-      <CompleteGuide />
+      <section id="quick-setup" className="scroll-mt-28 border-t border-border/30 bg-card/20 py-16 md:scroll-mt-32 md:py-24">
+        <div className="mx-auto w-full max-w-6xl px-4 sm:px-5">
+          <SetupGuideContent />
+        </div>
+      </section>
+
       <Footer />
     </div>
   );

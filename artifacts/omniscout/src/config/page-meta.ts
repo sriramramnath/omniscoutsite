@@ -53,6 +53,22 @@ export const routePageMeta: Record<string, PageMetaTags> = {
     type: "website",
     ...ogImage("/og/use-cases.jpg"),
   },
+  "/advantages": {
+    title: "How OmniScout Reduces AI Costs · OmniScout",
+    description:
+      "Get precise answers. Use fewer tokens. Save more. See how OmniScout cuts LLM token costs by up to 95% compared to traditional search + LLM workflows.",
+    url: "/advantages",
+    type: "website",
+    ...ogImage("/og/features.jpg"),
+  },
+  "/guide": {
+    title: "Setup Guide · OmniScout",
+    description:
+      "Anyone can set this up. Run 3 commands once, then ask your AI in plain English to browse, search, and fill forms automatically.",
+    url: "/guide",
+    type: "website",
+    ...ogImage("/og/home.jpg"),
+  },
   "/compare": {
     title: "Compare · OmniScout",
     description:
