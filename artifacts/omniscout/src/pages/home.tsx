@@ -1,12 +1,12 @@
 import { motion } from "framer-motion";
-import { ArrowDown, Github } from "lucide-react";
+import { ArrowRight, Github } from "lucide-react";
+import { Link } from "wouter";
 import { Nav } from "@/components/layout/nav";
 import { Footer } from "@/components/layout/footer";
 import { HeroCanvasBackground } from "@/components/layout/hero-canvas-background";
 import { HeroTerminal } from "@/components/layout/hero-terminal";
 import { ContainerScroll } from "@/components/ui/container-scroll-animation";
-import { CopyInstallButton } from "@/components/ui/copy-install-button";
-import { HomePreview, QUICK_SETUP_SECTION_ID } from "@/components/home/home-preview";
+import { HomePreview } from "@/components/home/home-preview";
 import { routePageMeta } from "@/config/page-meta";
 import { useDocumentMeta } from "@/hooks/use-document-meta";
 
@@ -17,7 +17,6 @@ export default function Home() {
     <div className="min-h-[100dvh] bg-background text-foreground selection:bg-primary/25 overflow-x-clip">
       <Nav />
 
-      {/* ── Hero ── */}
       <section className="relative overflow-hidden pt-24 md:pt-28">
         <HeroCanvasBackground />
 
@@ -26,8 +25,17 @@ export default function Home() {
             className="px-2 md:px-5"
             titleComponent={
               <div className="px-3 text-center">
+                <motion.div
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.55, delay: 0.05 }}
+                  className="mx-auto mb-6 inline-flex items-center rounded-full border border-border/60 bg-card/50 px-3 py-1 text-xs font-medium text-muted-foreground backdrop-blur-sm"
+                >
+                  Local browser control for AI agents
+                </motion.div>
+
                 <div className="mb-7 overflow-hidden">
-                  {["Give your AI agent", "a browser.", "No SDK. No cloud."].map((line, i) => (
+                  {["Give your agent", "a browser.", "Nothing in the cloud."].map((line, i) => (
                     <motion.div
                       key={line}
                       initial={{ opacity: 0, y: 40, filter: "blur(8px)" }}
@@ -55,12 +63,8 @@ export default function Home() {
                   transition={{ duration: 0.6, delay: 0.6 }}
                   className="mx-auto mb-10 max-w-2xl text-base leading-relaxed text-muted-foreground md:text-xl"
                 >
-                  Navigate, search, extract, and remember — through a local CLI and
-                  daemon.{" "}
-                  <span className="text-foreground/70">
-                    Same browser-control surface as Kimi WebBridge or Claude for Chrome,
-                    but you bring the LLM. No hosted browsers. No MCP server yet.
-                  </span>
+                  OmniScout lets Claude Code, Cursor, Codex, and other shell-capable
+                  agents search, open, extract, and remember through your own browser.
                 </motion.p>
 
                 <motion.div
@@ -69,24 +73,30 @@ export default function Home() {
                   transition={{ duration: 0.5, delay: 0.75 }}
                   className="relative z-20 mb-10 flex flex-col flex-wrap items-center justify-center gap-3 sm:mb-12 sm:flex-row md:mb-14"
                 >
-                  <CopyInstallButton testId="button-hero-install" />
-                  <a
-                    href={`#${QUICK_SETUP_SECTION_ID}`}
-                    className="flex items-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground shadow-lg shadow-primary/25 transition-all hover:bg-primary/90"
-                    data-testid="button-hero-quick-setup"
+                  <Link
+                    href="/install"
+                    className="group inline-flex items-center gap-2 rounded-full bg-gradient-to-br from-zinc-100 to-zinc-300 px-5 py-2.5 text-sm font-semibold text-black shadow-xl shadow-black/20 transition-all hover:from-zinc-200 hover:to-zinc-400"
+                    data-testid="button-hero-install"
                   >
-                    <ArrowDown className="h-4 w-4" />
-                    Quick Setup
-                  </a>
+                    Install
+                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                  </Link>
+                  <Link
+                    href="/compare"
+                    className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-card/50 px-5 py-2.5 text-sm text-muted-foreground backdrop-blur-sm transition-all hover:border-border hover:text-foreground"
+                    data-testid="button-hero-compare"
+                  >
+                    Compare
+                  </Link>
                   <a
                     href="https://github.com/sriramramnath"
                     target="_blank"
                     rel="noreferrer"
-                    className="flex items-center gap-2 rounded-lg border border-border/60 bg-card/50 px-5 py-2.5 text-sm text-muted-foreground backdrop-blur-sm transition-all hover:border-border hover:text-foreground"
+                    className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-card/50 px-5 py-2.5 text-sm text-muted-foreground backdrop-blur-sm transition-all hover:border-border hover:text-foreground"
                     data-testid="button-hero-github"
                   >
                     <Github className="h-4 w-4" />
-                    View on GitHub
+                    GitHub
                   </a>
                 </motion.div>
               </div>

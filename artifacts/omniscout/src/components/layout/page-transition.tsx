@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Switch, Route, useLocation } from "wouter";
 import Home from "@/pages/home";
+import Install from "@/pages/install";
 import Advantages from "@/pages/advantages";
 import Guide from "@/pages/guide";
 import Compare from "@/pages/compare";
@@ -34,6 +35,7 @@ export function PageTransition() {
       >
         <Switch location={location}>
           <Route path="/" component={Home} />
+          <Route path="/install" component={Install} />
           <Route path="/advantages" component={Advantages} />
           <Route path="/guide" component={Guide} />
           <Route path="/compare" component={Compare} />

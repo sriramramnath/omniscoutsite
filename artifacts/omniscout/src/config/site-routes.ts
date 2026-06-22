@@ -16,6 +16,7 @@ export function resolveSiteUrl(): string {
 
 export const staticRoutes = [
   { path: "/", changefreq: "weekly", priority: "1.0" },
+  { path: "/install", changefreq: "monthly", priority: "0.9" },
   { path: "/advantages", changefreq: "monthly", priority: "0.85" },
   { path: "/guide", changefreq: "monthly", priority: "0.85" },
   { path: "/features", changefreq: "monthly", priority: "0.8" },

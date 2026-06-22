@@ -656,7 +656,7 @@ function InstallSection() {
         </div>
 
         <div className="mt-6 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-          <PageLinkButton href="/guide">Read the full setup guide</PageLinkButton>
+          <PageLinkButton href="/install">Read the full setup guide</PageLinkButton>
           <Link
             href="/features"
             className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
