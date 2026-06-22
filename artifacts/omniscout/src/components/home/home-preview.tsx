@@ -4,6 +4,7 @@ import {
   Bar,
   BarChart,
   CartesianGrid,
+  Cell,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -22,14 +23,24 @@ import {
   Puzzle,
   Globe,
   Terminal,
-  Check,
   MousePointerClick,
   Camera,
 } from "lucide-react";
 import {
   ADVANTAGES_SCENARIOS,
-  TOKEN_CHART_DATA,
+  buildTokenChartData,
+  formatChartValue,
+  formatUsd,
+  type CostViewMode,
 } from "@/data/advantages-content";
+import {
+  BROWSER_COMPARISON_COLUMNS,
+  BROWSER_COMPARISON_ROWS,
+  PRICING_FOOTNOTE,
+  SEARCH_COMPARISON_COLUMNS,
+  SEARCH_COMPARISON_ROWS,
+  SEARCH_COST_CHART_DATA,
+} from "@/data/comparison-content";
 import {
   CHART_COLORS,
   chartAxisTick,
@@ -40,6 +51,7 @@ import {
   chartYAxisTick,
 } from "@/components/home/chart-styles";
 import { FadeUp, PageLinkButton, SectionHeader } from "@/components/home/shared";
+import { ComparisonTable, ViewModeToggle } from "@/components/home/comparison-table";
 import { CopyableCommand } from "@/components/home/copyable-command";
 import { cn } from "@/lib/utils";
 
@@ -95,29 +107,12 @@ const BROWSER_FEATURES = [
   },
 ] as const;
 
-const COMPARE_STACK = [
-  {
-    name: "OmniScout",
-    color: CHART_COLORS.OmniScout,
-    tag: "Local actuator",
-    detail: "Shell agent → CLI → daemon → your browser",
-    highlight: true,
-  },
-  {
-    name: "Hosted browsers",
-    color: CHART_COLORS.Hosted,
-    tag: "Cloud fleet",
-    detail: "API signup → remote session → per-minute billing",
-    highlight: false,
-  },
-  {
-    name: "Vendor-integrated",
-    color: CHART_COLORS.Vendor,
-    tag: "Full loop",
-    detail: "Kimi · Claude for Chrome · ChatGPT Atlas",
-    highlight: false,
-  },
-] as const;
+const SEARCH_BAR_COLORS: Record<string, string> = {
+  Traditional: CHART_COLORS.Traditional,
+  Exa: CHART_COLORS.Exa,
+  Parallel: CHART_COLORS.Parallel,
+  OmniScout: CHART_COLORS.OmniScout,
+};
 
 const SECTIONS = [
   { id: "token-savings", label: "Token Savings" },
@@ -184,13 +179,22 @@ function TokenSavingsSection() {
   const chartRef = useRef<HTMLDivElement>(null);
   const chartInView = useInView(chartRef, { once: true, margin: "-80px" });
   const [activeIndex, setActiveIndex] = useState(0);
+  const [viewMode, setViewMode] = useState<CostViewMode>("tokens");
   const activeRow = ADVANTAGES_SCENARIOS[activeIndex];
+  const chartData = buildTokenChartData(viewMode);
 
-  const stats = [
-    { label: "Token reduction", value: "up to 95%" },
-    { label: "OmniScout input", value: "20–200" },
-    { label: "Traditional input", value: "1,000–5,000" },
-  ];
+  const stats =
+    viewMode === "tokens"
+      ? [
+          { label: "Token reduction", value: activeRow.reduction },
+          { label: "OmniScout input", value: `${activeRow.omniscoutTokens} tok` },
+          { label: "Traditional input", value: `${activeRow.traditionalTokens.toLocaleString()} tok` },
+        ]
+      : [
+          { label: "Cost reduction", value: activeRow.reduction },
+          { label: "OmniScout LLM cost", value: formatUsd(activeRow.omniscoutCost) },
+          { label: "Traditional LLM cost", value: formatUsd(activeRow.traditionalCost) },
+        ];
 
   return (
     <HomeSection id="token-savings">
@@ -198,8 +202,11 @@ function TokenSavingsSection() {
         <SectionHeader
           tag="Token Savings"
           title="Spend less on tokens. Get answers faster."
-          description="OmniScout extracts precise answers before they reach your LLM — so you send less context and pay less per query."
+          description="OmniScout extracts precise answers before they reach your LLM — toggle between token and dollar views."
         />
+        <div className="mb-8 flex justify-center">
+          <ViewModeToggle mode={viewMode} onChange={setViewMode} />
+        </div>
 
         <div className="grid gap-4 sm:grid-cols-3">
           {stats.map((stat) => (
@@ -220,7 +227,7 @@ function TokenSavingsSection() {
             <div className="mb-4 flex items-center gap-2 border-b border-border/30 pb-3">
               <Terminal className="h-3.5 w-3.5 text-muted-foreground" />
               <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-muted-foreground">
-                tokens per query
+                {viewMode === "tokens" ? "tokens per query" : "llm cost per query"}
               </span>
             </div>
             <motion.div
@@ -232,7 +239,7 @@ function TokenSavingsSection() {
             >
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart
-                  data={TOKEN_CHART_DATA}
+                  data={chartData}
                   margin={{ top: 10, right: 10, left: -8, bottom: 0 }}
                   barCategoryGap="24%"
                   barGap={4}
@@ -252,12 +259,21 @@ function TokenSavingsSection() {
                     tick={chartYAxisTick}
                     axisLine={false}
                     tickLine={false}
-                    tickFormatter={(v) => `${(v / 1000).toFixed(1)}k`}
+                    tickFormatter={(v) =>
+                      viewMode === "tokens"
+                        ? v < 1000
+                          ? `${v}`
+                          : `${(v / 1000).toFixed(1)}k`
+                        : `$${v.toFixed(4)}`
+                    }
                   />
                   <Tooltip
                     contentStyle={chartTooltipStyle}
                     cursor={{ fill: chartCursorFill }}
-                    formatter={(value: number) => [`${value.toLocaleString()} tok`, ""]}
+                    formatter={(value: number) => [
+                      formatChartValue(viewMode, value),
+                      "",
+                    ]}
                     labelFormatter={(_, payload) =>
                       payload?.[0]?.payload?.fullQuestion ?? ""
                     }
@@ -285,10 +301,13 @@ function TokenSavingsSection() {
           </ChartPanel>
 
           <ChartPanel className="flex flex-col">
-            <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-muted-foreground">
-              Prompt toggle
-            </p>
-            <h3 className="mt-2 text-lg font-bold tracking-tight">How OmniScout reduces AI costs</h3>
+            <div className="mb-4 flex items-center justify-between gap-3">
+              <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-muted-foreground">
+                Scenario detail
+              </p>
+              <ViewModeToggle mode={viewMode} onChange={setViewMode} />
+            </div>
+            <h3 className="text-lg font-bold tracking-tight">How OmniScout reduces AI costs</h3>
             <div className="mt-4 flex flex-wrap gap-2">
               {ADVANTAGES_SCENARIOS.map((row, index) => (
                 <button
@@ -316,24 +335,40 @@ function TokenSavingsSection() {
                 <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
                   {activeRow.traditional}
                 </p>
+                <p className="mt-2 font-mono text-xs text-foreground/80">
+                  {viewMode === "tokens"
+                    ? `${activeRow.traditionalTokens.toLocaleString()} tokens`
+                    : `${formatUsd(activeRow.traditionalCost)} LLM cost`}
+                </p>
               </div>
               <div className="rounded-lg border border-primary/25 bg-primary/10 p-3">
                 <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-primary">
                   OmniScout
                 </p>
                 <p className="mt-1 text-sm font-medium text-foreground">{activeRow.omniscout}</p>
+                <p className="mt-2 font-mono text-xs text-primary">
+                  {viewMode === "tokens"
+                    ? `${activeRow.omniscoutTokens} tokens`
+                    : `${formatUsd(activeRow.omniscoutCost)} LLM cost`}
+                </p>
               </div>
             </div>
 
             <div className="mt-5 flex items-end justify-between border-t border-border/40 pt-4">
               <div>
                 <p className="text-3xl font-bold text-primary">{activeRow.reduction}</p>
-                <p className="text-xs text-muted-foreground">fewer tokens</p>
+                <p className="text-xs text-muted-foreground">
+                  {viewMode === "tokens" ? "fewer tokens" : "lower LLM cost"}
+                </p>
               </div>
               <PageLinkButton href="/advantages">Full breakdown</PageLinkButton>
             </div>
           </ChartPanel>
         </div>
+
+        <p className="mt-4 text-center font-mono text-[10px] text-muted-foreground">
+          {PRICING_FOOTNOTE}
+        </p>
       </FadeUp>
     </HomeSection>
   );
@@ -485,86 +520,109 @@ omniscout browser login https://github.com --profile work`}
 }
 
 function ComparisonSection() {
+  const chartRef = useRef<HTMLDivElement>(null);
+  const chartInView = useInView(chartRef, { once: true, margin: "-80px" });
+
   return (
     <HomeSection id="comparison">
       <FadeUp delay={0.05}>
         <SectionHeader
           tag="Comparison"
-          title="How OmniScout stacks up"
-          description="Local actuator for your agent — not another chatbot or per-minute hosted browser."
+          title="Search and browser — side by side"
+          description="Real pricing from Exa, Parallel, and Browserbase docs. Same president query, same 5-minute browser workflow."
         />
 
-        <div className="grid gap-6 lg:grid-cols-2">
+        <div className="space-y-8">
+          <ComparisonTable
+            title="Search — Traditional vs Exa vs Parallel vs OmniScout"
+            columns={SEARCH_COMPARISON_COLUMNS}
+            rows={SEARCH_COMPARISON_ROWS}
+            highlightColumn="OmniScout"
+          />
+
           <ChartPanel>
             <div className="mb-4 flex items-center gap-2 border-b border-border/30 pb-3">
               <Terminal className="h-3.5 w-3.5 text-muted-foreground" />
               <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-muted-foreground">
-                stack at a glance
+                total cost per search query
               </span>
             </div>
-            <div className="space-y-2">
-              {COMPARE_STACK.map((option) => (
-                <div
-                  key={option.name}
-                  className={cn(
-                    "rounded-lg border px-3 py-2.5 transition-colors",
-                    option.highlight
-                      ? "border-primary/40 bg-primary/10"
-                      : "border-border/40 bg-card/40",
-                  )}
+            <motion.div
+              ref={chartRef}
+              initial={{ opacity: 0, y: 16 }}
+              animate={chartInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+              className="h-64 w-full sm:h-72"
+            >
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                  data={SEARCH_COST_CHART_DATA}
+                  margin={{ top: 10, right: 10, left: -8, bottom: 0 }}
+                  barCategoryGap="28%"
                 >
-                  <div className="mb-1 flex items-center gap-2">
-                    <span
-                      className="h-2 w-2 shrink-0 rounded-full"
-                      style={{ backgroundColor: option.color }}
-                    />
-                    <span className="text-sm font-semibold text-foreground">{option.name}</span>
-                    <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-                      {option.tag}
-                    </span>
-                  </div>
-                  <p className="text-xs text-muted-foreground">{option.detail}</p>
-                </div>
-              ))}
-            </div>
+                  <CartesianGrid
+                    strokeDasharray="3 3"
+                    stroke={chartGridStroke}
+                    vertical={false}
+                  />
+                  <XAxis
+                    dataKey="name"
+                    tick={chartAxisTick}
+                    axisLine={false}
+                    tickLine={false}
+                  />
+                  <YAxis
+                    tick={chartYAxisTick}
+                    axisLine={false}
+                    tickLine={false}
+                    tickFormatter={(v) => `$${v.toFixed(4)}`}
+                  />
+                  <Tooltip
+                    contentStyle={chartTooltipStyle}
+                    cursor={{ fill: chartCursorFill }}
+                    formatter={(value: number, name: string) => [
+                      formatUsd(value),
+                      name === "total" ? "Total" : name === "api" ? "API" : "LLM",
+                    ]}
+                  />
+                  <Bar
+                    dataKey="total"
+                    radius={[3, 3, 0, 0]}
+                    isAnimationActive={chartInView}
+                    animationDuration={800}
+                  >
+                    {SEARCH_COST_CHART_DATA.map((entry) => (
+                      <Cell
+                        key={entry.name}
+                        fill={SEARCH_BAR_COLORS[entry.name] ?? CHART_COLORS.Traditional}
+                      />
+                    ))}
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
+            </motion.div>
           </ChartPanel>
 
-          <div className="space-y-3">
-            {[
-              {
-                label: "vs Hosted browsers",
-                text: "Local Playwright instead of per-minute cloud sessions.",
-              },
-              {
-                label: "vs Vendor agents",
-                text: "Same browser surface, any LLM you choose — Kimi, Claude, Atlas.",
-              },
-              {
-                label: "vs DIY scrapers",
-                text: "One CLI with daemon, search, extract, and memory — no glue code.",
-              },
-            ].map(({ label, text }) => (
-              <div
-                key={label}
-                className="flex gap-3 rounded-xl border border-border/40 bg-card/50 p-4"
-              >
-                <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary/15">
-                  <Check className="h-3 w-3 text-primary" aria-hidden />
-                </span>
-                <div>
-                  <p className="text-sm font-medium text-foreground">{label}</p>
-                  <p className="mt-0.5 text-xs leading-relaxed text-muted-foreground">{text}</p>
-                </div>
-              </div>
-            ))}
-            <Link
-              href="/compare"
-              className="inline-flex items-center gap-2 pt-2 text-sm font-medium text-primary hover:underline"
-            >
-              Full competitor comparison with charts
-              <ArrowRight className="h-4 w-4" aria-hidden />
-            </Link>
-          </div>
+          <ComparisonTable
+            title="Browser — OmniScout vs Browserbase vs Playwright"
+            columns={BROWSER_COMPARISON_COLUMNS}
+            rows={BROWSER_COMPARISON_ROWS}
+            highlightColumn="OmniScout"
+          />
+        </div>
+
+        <p className="mt-6 text-center font-mono text-[10px] leading-relaxed text-muted-foreground">
+          {PRICING_FOOTNOTE}
+        </p>
+
+        <div className="mt-6 text-center">
+          <Link
+            href="/compare"
+            className="inline-flex items-center gap-2 text-sm font-medium text-primary hover:underline"
+          >
+            Extended competitor analysis
+            <ArrowRight className="h-4 w-4" aria-hidden />
+          </Link>
         </div>
       </FadeUp>
     </HomeSection>

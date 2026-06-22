@@ -1,3 +1,33 @@
+/**
+ * LLM input pricing baseline: GPT-4o at $2.50 / 1M input tokens.
+ * Used for apples-to-apples LLM cost estimates across approaches.
+ */
+export const LLM_INPUT_COST_PER_TOKEN = 2.5 / 1_000_000;
+
+export function llmCostFromTokens(tokens: number): number {
+  return tokens * LLM_INPUT_COST_PER_TOKEN;
+}
+
+export function formatUsd(cost: number): string {
+  if (cost >= 0.01) return `$${cost.toFixed(4)}`;
+  if (cost >= 0.0001) return `$${cost.toFixed(5)}`;
+  return `$${cost.toFixed(6)}`;
+}
+
+export function formatTokens(tokens: number): string {
+  return tokens.toLocaleString();
+}
+
+export function tokenReduction(traditional: number, omniscout: number): string {
+  const pct = ((traditional - omniscout) / traditional) * 100;
+  return `${pct >= 99.95 ? pct.toFixed(1) : Math.round(pct)}%`;
+}
+
+export function tokenSavingsMultiplier(traditional: number, omniscout: number): string {
+  const mult = traditional / omniscout;
+  return `${Math.round(mult)}x fewer tokens`;
+}
+
 /** Exact content from the "How OmniScout Reduces AI Costs" infographic. */
 export const ADVANTAGES_HEADER = {
   title: "How OmniScout Reduces AI Costs",
@@ -9,33 +39,33 @@ export const ADVANTAGES_SCENARIOS = [
     question: "Who is the President of the United States?",
     traditional:
       "AI reads multiple search results (~1,500 tokens) before answering.",
-    omniscout: 'Returns "Donald Trump" (~50 tokens).',
-    reduction: "97%",
-    savings: "20x-30x fewer tokens saved",
+    omniscout: 'Returns "Donald Trump" (~4 tokens).',
     traditionalTokens: 1500,
-    omniscoutTokens: 50,
+    omniscoutTokens: 4,
   },
   {
     question: "What is Apple's current stock price?",
     traditional:
       "AI reads finance websites and market snippets (~2,000 tokens).",
-    omniscout: "Returns the latest price (~50 tokens).",
-    reduction: "97%",
-    savings: "20x-40x fewer tokens saved",
+    omniscout: "Returns the latest price (~10 tokens).",
     traditionalTokens: 2000,
-    omniscoutTokens: 50,
+    omniscoutTokens: 10,
   },
   {
     question: "What is the return policy? (Support Bot)",
     traditional:
       "AI reads several knowledge-base articles (~4,000 tokens).",
-    omniscout: "Extracts the policy statement (~100 tokens).",
-    reduction: "97.5%",
-    savings: "40x fewer tokens saved",
+    omniscout: "Extracts the policy statement (~12 tokens).",
     traditionalTokens: 4000,
-    omniscoutTokens: 100,
+    omniscoutTokens: 12,
   },
-] as const;
+].map((row) => ({
+  ...row,
+  reduction: tokenReduction(row.traditionalTokens, row.omniscoutTokens),
+  savings: tokenSavingsMultiplier(row.traditionalTokens, row.omniscoutTokens),
+  traditionalCost: llmCostFromTokens(row.traditionalTokens),
+  omniscoutCost: llmCostFromTokens(row.omniscoutTokens),
+}));
 
 export const ADVANTAGES_ANALOGY = {
   without: {
@@ -62,7 +92,7 @@ export const ADVANTAGES_TYPICAL_RESULTS = [
   {
     metric: "Input Tokens",
     traditional: "1,000 – 5,000",
-    omniscout: "20 – 200",
+    omniscout: "4 – 200",
   },
   {
     metric: "Response Speed",
@@ -72,7 +102,7 @@ export const ADVANTAGES_TYPICAL_RESULTS = [
   {
     metric: "LLM Cost",
     traditional: "Higher",
-    omniscout: "Up to 95% lower",
+    omniscout: "Up to 99% lower",
   },
   {
     metric: "Context Window Usage",
@@ -89,10 +119,29 @@ export const ADVANTAGES_VALUE_PROP = {
 export const ADVANTAGES_FOOTER =
   "Typical users see 70–95% fewer LLM tokens for search-heavy workflows.";
 
-/** Chart-friendly token data derived from the three infographic scenarios. */
-export const TOKEN_CHART_DATA = ADVANTAGES_SCENARIOS.map((row) => ({
-  name: row.question.split("?")[0].slice(0, 22) + "…",
-  fullQuestion: row.question,
-  Traditional: row.traditionalTokens,
-  OmniScout: row.omniscoutTokens,
-}));
+export type CostViewMode = "tokens" | "cost";
+
+export function getScenarioChartValue(
+  mode: CostViewMode,
+  kind: "traditional" | "omniscout",
+  row: (typeof ADVANTAGES_SCENARIOS)[number],
+): number {
+  if (mode === "tokens") {
+    return kind === "traditional" ? row.traditionalTokens : row.omniscoutTokens;
+  }
+  return kind === "traditional" ? row.traditionalCost : row.omniscoutCost;
+}
+
+/** Chart-friendly data for token/cost toggle. */
+export function buildTokenChartData(mode: CostViewMode) {
+  return ADVANTAGES_SCENARIOS.map((row) => ({
+    name: row.question.split("?")[0].slice(0, 22) + "…",
+    fullQuestion: row.question,
+    Traditional: getScenarioChartValue(mode, "traditional", row),
+    OmniScout: getScenarioChartValue(mode, "omniscout", row),
+  }));
+}
+
+export function formatChartValue(mode: CostViewMode, value: number): string {
+  return mode === "tokens" ? `${value.toLocaleString()} tok` : formatUsd(value);
+}

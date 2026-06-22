@@ -2,9 +2,13 @@
 export const CHART_COLORS = {
   Traditional: "hsl(0 65% 55%)",
   OmniScout: "#687FF3",
+  Exa: "hsl(262 70% 60%)",
+  Parallel: "hsl(160 55% 45%)",
   Hosted: "hsl(30 85% 55%)",
   Vendor: "hsl(160 55% 45%)",
   DIY: "hsl(262 70% 60%)",
+  Browserbase: "hsl(30 85% 55%)",
+  Playwright: "hsl(220 12% 52%)",
 } as const;
 
 export const chartTooltipStyle = {
