@@ -21,8 +21,8 @@
   ],
   "redirects": [
     {
-      "source": "/downloads/probe-zero-mini-v0.2.16.tar.gz",
-      "destination": "https://github.com/sriramramnath/omniscoutsite/releases/download/probe-zero-mini-v0.2.16/probe-zero-mini-v0.2.16.tar.gz",
+      "source": "/downloads/probe-zero-mini-v0.2.17.tar.gz",
+      "destination": "https://github.com/sriramramnath/omniscoutsite/releases/download/probe-zero-mini-v0.2.17/probe-zero-mini-v0.2.17.tar.gz",
       "permanent": false
     }
   ]
