@@ -9,6 +9,19 @@ export interface ChangelogRelease {
 
 export const changelogReleases: ChangelogRelease[] = [
   {
+    version: "0.2.17",
+    date: "2026-06-23",
+    label: "Beta",
+    sections: {
+      Fixed: [
+        "**Probe Zero Mini download** — omniscout install --probe-0-mini fetches weights from a public GitHub Release on omniscoutsite instead of a broken Hugging Face URL.",
+      ],
+      Changed: [
+        "**Probe artifact hosting** — release docs and packaging default to the public omniscoutsite release URL; omniscout.xyz/downloads/... redirects there.",
+      ],
+    },
+  },
+  {
     version: "0.2.15",
     date: "2026-06-20",
     label: "Beta",
