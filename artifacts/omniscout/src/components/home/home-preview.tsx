@@ -114,15 +114,6 @@ const SEARCH_BAR_COLORS: Record<string, string> = {
   OmniScout: CHART_COLORS.OmniScout,
 };
 
-const SECTIONS = [
-  { id: "token-savings", label: "Token Savings" },
-  { id: "see-it-in-action", label: "See It In Action" },
-  { id: "why-omniscout", label: "Why OmniScout" },
-  { id: "browser-automation", label: "Browser Automation" },
-  { id: "comparison", label: "Comparison" },
-  { id: "install", label: "Install" },
-] as const;
-
 function SectionFlowDivider() {
   return (
     <div className="flex justify-center py-2" aria-hidden>
@@ -264,7 +255,7 @@ function TokenSavingsSection() {
                         ? v < 1000
                           ? `${v}`
                           : `${(v / 1000).toFixed(1)}k`
-                        : `$${v.toFixed(4)}`
+                        : formatUsd(v)
                     }
                   />
                   <Tooltip
@@ -575,7 +566,7 @@ function ComparisonSection() {
                     tick={chartYAxisTick}
                     axisLine={false}
                     tickLine={false}
-                    tickFormatter={(v) => `$${v.toFixed(4)}`}
+                    tickFormatter={(v) => formatUsd(v)}
                   />
                   <Tooltip
                     contentStyle={chartTooltipStyle}
@@ -675,29 +666,6 @@ export const QUICK_SETUP_SECTION_ID = "install";
 export function HomePreview() {
   return (
     <div className="overflow-x-clip border-t border-border/30 bg-card/20">
-      {/* Section flow nav */}
-      <nav
-        aria-label="Page sections"
-        className="sticky top-[4.5rem] z-30 border-b border-border/30 bg-background/80 backdrop-blur-md sm:top-[5.5rem]"
-      >
-        <div className="mx-auto flex max-w-6xl gap-1 overflow-x-auto px-4 py-2.5 sm:gap-2 sm:px-5">
-          {SECTIONS.map((section, index) => (
-            <a
-              key={section.id}
-              href={`#${section.id}`}
-              className="flex shrink-0 items-center gap-1.5 rounded-full border border-border/40 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.16em] text-muted-foreground transition-colors hover:border-primary/30 hover:text-foreground"
-            >
-              {section.label}
-              {index < SECTIONS.length - 1 && (
-                <span className="text-primary/40" aria-hidden>
-                  ↓
-                </span>
-              )}
-            </a>
-          ))}
-        </div>
-      </nav>
-
       <div className="mx-auto w-full min-w-0 max-w-6xl px-4 sm:px-5">
         <TokenSavingsSection />
         <SectionFlowDivider />

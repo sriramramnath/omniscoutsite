@@ -25,17 +25,8 @@ export default function Home() {
             className="px-2 md:px-5"
             titleComponent={
               <div className="px-3 text-center">
-                <motion.div
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.55, delay: 0.05 }}
-                  className="mx-auto mb-6 inline-flex items-center rounded-full border border-border/60 bg-card/50 px-3 py-1 text-xs font-medium text-muted-foreground backdrop-blur-sm"
-                >
-                  Local browser control for AI agents
-                </motion.div>
-
                 <div className="mb-7 overflow-hidden">
-                  {["Give your agent", "a browser.", "Nothing in the cloud."].map((line, i) => (
+                  {["Give your AI agent", "a real browser."].map((line, i) => (
                     <motion.div
                       key={line}
                       initial={{ opacity: 0, y: 40, filter: "blur(8px)" }}

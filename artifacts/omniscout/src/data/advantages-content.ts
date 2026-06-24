@@ -9,9 +9,9 @@ export function llmCostFromTokens(tokens: number): number {
 }
 
 export function formatUsd(cost: number): string {
-  if (cost >= 0.01) return `$${cost.toFixed(4)}`;
-  if (cost >= 0.0001) return `$${cost.toFixed(5)}`;
-  return `$${cost.toFixed(6)}`;
+  const precision = cost >= 0.01 ? 4 : cost >= 0.0001 ? 5 : 6;
+  const value = cost.toFixed(precision).replace(/\.?0+$/, "");
+  return `$${value}`;
 }
 
 export function formatTokens(tokens: number): string {
@@ -20,7 +20,7 @@ export function formatTokens(tokens: number): string {
 
 export function tokenReduction(traditional: number, omniscout: number): string {
   const pct = ((traditional - omniscout) / traditional) * 100;
-  return `${pct >= 99.95 ? pct.toFixed(1) : Math.round(pct)}%`;
+  return `${Math.floor(pct)}%`;
 }
 
 export function tokenSavingsMultiplier(traditional: number, omniscout: number): string {
