@@ -14,6 +14,8 @@ type NavItem = {
   external?: boolean;
   image: string;
   imageAlt: string;
+  /** Default cover; use contain for logos and product art. */
+  imageFit?: "cover" | "contain";
 };
 
 type NavGroup = {
@@ -33,29 +35,30 @@ const navGroups: NavGroup[] = [
         label: "Features",
         description: "Browser control, search, extraction, and memory.",
         href: "/features",
-        image: "https://images.unsplash.com/photo-1753715613434-9c7cb58876b9?auto=format&fit=crop&w=1200&q=82",
-        imageAlt: "Developer working at a multi-monitor coding desk",
+        image: "/nav/features.jpg",
+        imageAlt: "Code editor on a monitor representing OmniScout's developer primitives",
       },
       {
         label: "Probe Zero",
         description: "Local answer engine with published gold-benchmark metrics.",
         href: "/probe-zero",
-        image: "https://images.unsplash.com/photo-1754548930550-be9fa88874f4?auto=format&fit=crop&w=1200&q=82",
-        imageAlt: "Dark coding workspace with illuminated monitors",
+        image: "/probezero.png",
+        imageAlt: "Probe Zero answer engine branding",
+        imageFit: "contain",
       },
       {
         label: "Use cases",
         description: "Research, monitoring, automation, and agent workflows.",
         href: "/use-cases",
-        image: "https://images.unsplash.com/photo-1754039985001-ccafee437736?auto=format&fit=crop&w=1200&q=82",
-        imageAlt: "Developer workspace with screens and a planning tablet",
+        image: "/nav/use-cases.jpg",
+        imageAlt: "Team planning workflows on a whiteboard",
       },
       {
         label: "Compare",
         description: "Local-first automation versus hosted browser stacks.",
         href: "/compare",
-        image: "https://images.unsplash.com/photo-1754548930550-be9fa88874f4?auto=format&fit=crop&w=1200&q=82",
-        imageAlt: "Dark coding workspace with illuminated monitors",
+        image: "/nav/compare.jpg",
+        imageAlt: "Team discussing options at a modern office table",
       },
     ],
   },
@@ -69,30 +72,30 @@ const navGroups: NavGroup[] = [
         description: "Commands, browser APIs, and integration details.",
         href: "https://docs.omniscout.xyz",
         external: true,
-        image: "https://images.unsplash.com/photo-1754548930550-be9fa88874f4?auto=format&fit=crop&w=1200&q=82",
-        imageAlt: "Dark coding workspace with illuminated monitors",
+        image: "/nav/docs.jpg",
+        imageAlt: "Dark developer workspace with illuminated monitors",
       },
       {
         label: "Blog",
         description: "Guides and field notes for browser-enabled agents.",
         href: "/blogs",
-        image: "https://images.unsplash.com/photo-1753715613434-9c7cb58876b9?auto=format&fit=crop&w=1200&q=82",
-        imageAlt: "Developer working at a multi-monitor coding desk",
+        image: "/nav/blog.jpg",
+        imageAlt: "Laptop on a desk, ready for writing",
       },
       {
         label: "Changelog",
         description: "New releases, fixes, and capability updates.",
         href: "/changelog",
-        image: "https://images.unsplash.com/photo-1754039985001-ccafee437736?auto=format&fit=crop&w=1200&q=82",
-        imageAlt: "Developer workspace with screens and a planning tablet",
+        image: "/nav/changelog.jpg",
+        imageAlt: "Analytics dashboard representing release metrics",
       },
       {
         label: "PyPI package",
         description: "View releases and install the Python package.",
         href: PYPI_URL,
         external: true,
-        image: "https://images.unsplash.com/photo-1754548930550-be9fa88874f4?auto=format&fit=crop&w=1200&q=82",
-        imageAlt: "Dark coding workspace with illuminated monitors",
+        image: "/nav/pypi.jpg",
+        imageAlt: "Laptop with code on screen",
       },
     ],
   },
@@ -105,15 +108,15 @@ const navGroups: NavGroup[] = [
         label: "Contact",
         description: "Project questions, collaborations, and support.",
         href: "/contact",
-        image: "https://images.unsplash.com/photo-1754039985001-ccafee437736?auto=format&fit=crop&w=1200&q=82",
-        imageAlt: "Developer workspace with screens and a planning tablet",
+        image: "/nav/contact.jpg",
+        imageAlt: "Developer at a laptop in a bright workspace",
       },
       {
         label: "GitHub",
         description: "Read the source, report issues, and contribute.",
         href: GITHUB_URL,
         external: true,
-        image: "https://images.unsplash.com/photo-1753715613434-9c7cb58876b9?auto=format&fit=crop&w=1200&q=82",
+        image: "/nav/github.jpg",
         imageAlt: "Developer working at a multi-monitor coding desk",
       },
     ],
@@ -354,7 +357,12 @@ export function Nav() {
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.24, ease: menuEase }}
-                    className="absolute inset-0 h-full w-full object-cover"
+                    className={cn(
+                      "absolute inset-0 h-full w-full",
+                      previewItem.imageFit === "contain"
+                        ? "object-contain p-6"
+                        : "object-cover",
+                    )}
                   />
                 </AnimatePresence>
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/15 to-transparent" />
