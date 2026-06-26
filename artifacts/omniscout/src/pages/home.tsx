@@ -4,6 +4,7 @@ import { Link } from "wouter";
 import { Nav } from "@/components/layout/nav";
 import { Footer } from "@/components/layout/footer";
 import { HeroCanvasBackground } from "@/components/layout/hero-canvas-background";
+import { HeroTitleGradient } from "@/components/layout/hero-title-gradient";
 import { HeroTerminal } from "@/components/layout/hero-terminal";
 import { ContainerScroll } from "@/components/ui/container-scroll-animation";
 import { HomePreview } from "@/components/home/home-preview";
@@ -37,12 +38,8 @@ export default function Home() {
                         ease: [0.25, 0.1, 0.25, 1],
                       }}
                     >
-                      <h1
-                        className={`text-4xl font-bold leading-[1.05] tracking-tight sm:text-5xl md:text-7xl lg:text-8xl ${
-                          i === 1 ? "text-primary" : "text-foreground"
-                        }`}
-                      >
-                        {line}
+                      <h1 className="text-4xl font-bold leading-[1.05] tracking-tight sm:text-5xl md:text-7xl lg:text-8xl">
+                        <HeroTitleGradient>{line}</HeroTitleGradient>
                       </h1>
                     </motion.div>
                   ))}

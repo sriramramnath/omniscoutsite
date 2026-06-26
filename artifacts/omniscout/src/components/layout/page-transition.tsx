@@ -7,6 +7,7 @@ import Advantages from "@/pages/advantages";
 import Guide from "@/pages/guide";
 import Compare from "@/pages/compare";
 import Features from "@/pages/features";
+import ProbeZero from "@/pages/probe-zero";
 import UseCases from "@/pages/use-cases";
 import Blogs from "@/pages/blogs";
 import BlogPost from "@/pages/blog-post";
@@ -40,6 +41,7 @@ export function PageTransition() {
           <Route path="/guide" component={Guide} />
           <Route path="/compare" component={Compare} />
           <Route path="/features" component={Features} />
+          <Route path="/probe-zero" component={ProbeZero} />
           <Route path="/use-cases" component={UseCases} />
           <Route path="/blogs" component={Blogs} />
           <Route path="/blogs/:slug" component={BlogPost} />

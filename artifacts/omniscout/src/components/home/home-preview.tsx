@@ -47,7 +47,7 @@ import {
   chartCursorFill,
   chartGridStroke,
   chartLegendStyle,
-  chartTooltipStyle,
+  chartTooltipProps,
   chartYAxisTick,
 } from "@/components/home/chart-styles";
 import { FadeUp, PageLinkButton, SectionHeader } from "@/components/home/shared";
@@ -259,7 +259,7 @@ function TokenSavingsSection() {
                     }
                   />
                   <Tooltip
-                    contentStyle={chartTooltipStyle}
+                    {...chartTooltipProps}
                     cursor={{ fill: chartCursorFill }}
                     formatter={(value: number) => [
                       formatChartValue(viewMode, value),
@@ -569,7 +569,7 @@ function ComparisonSection() {
                     tickFormatter={(v) => formatUsd(v)}
                   />
                   <Tooltip
-                    contentStyle={chartTooltipStyle}
+                    {...chartTooltipProps}
                     cursor={{ fill: chartCursorFill }}
                     formatter={(value: number, name: string) => [
                       formatUsd(value),

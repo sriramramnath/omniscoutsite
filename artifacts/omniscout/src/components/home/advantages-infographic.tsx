@@ -7,6 +7,7 @@ import {
   ADVANTAGES_TYPICAL_RESULTS,
   ADVANTAGES_VALUE_PROP,
 } from "@/data/advantages-content";
+import { HeroTitleGradient } from "@/components/layout/hero-title-gradient";
 import { cn } from "@/lib/utils";
 
 export function AdvantagesInfographic() {
@@ -16,8 +17,8 @@ export function AdvantagesInfographic() {
   return (
     <div className="space-y-10">
       <div className="text-center">
-        <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl">
-          {ADVANTAGES_HEADER.title}
+        <h1 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
+          <HeroTitleGradient>{ADVANTAGES_HEADER.title}</HeroTitleGradient>
         </h1>
         <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg">
           {ADVANTAGES_HEADER.subtitle}

@@ -3,6 +3,7 @@ import { motion, useInView } from "framer-motion";
 import { GitCommitHorizontal, Plus, RefreshCw, Wrench } from "lucide-react";
 import { Nav } from "@/components/layout/nav";
 import { Footer } from "@/components/layout/footer";
+import { HeroTitleGradient } from "@/components/layout/hero-title-gradient";
 import { PageHeroGlow } from "@/components/layout/page-hero-glow";
 import {
   Tabs,
@@ -194,7 +195,7 @@ export default function Changelog() {
               Changelog
             </div>
             <h1 className="mb-4 text-3xl sm:text-4xl md:text-5xl font-bold leading-tight tracking-tight break-words">
-              What shipped in each release
+              <HeroTitleGradient>What shipped in each release</HeroTitleGradient>
             </h1>
             <p className="mx-auto max-w-lg text-base sm:text-lg leading-relaxed text-muted-foreground">
               Version history for the omniscout Python package. Latest: v

@@ -17,6 +17,22 @@ export interface BlogPost {
 
 export const posts: BlogPost[] = [
   {
+    slug: "v0-3-0",
+    title: "OmniScout v0.3.0: Introducing Probe Zero",
+    excerpt:
+      "Meet Probe Zero, OmniScout's local answer engine. Up to 70% more accurate and 60% faster than Classic, plus interactive settings and a redesigned CLI.",
+    date: "2026-06-26",
+    thumbnail: "/probezero.png",
+    ogImage: "/probezero.png",
+    readingTime: "12 min read",
+    cta: {
+      title: "Explore Probe Zero",
+      subtitle: "Benchmarks, pipeline, and install steps",
+      href: "/probe-zero",
+      buttonLabel: "Probe Zero page",
+    },
+  },
+  {
     slug: "local-first-browser-for-ai-agents",
     title: "Building a Local-First Browser for AI Agents",
     excerpt:

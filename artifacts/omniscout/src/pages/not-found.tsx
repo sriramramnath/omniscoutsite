@@ -4,6 +4,7 @@ import { ArrowLeft, Compass, Home } from "lucide-react";
 import { Link } from "wouter";
 import { Nav } from "@/components/layout/nav";
 import { Footer } from "@/components/layout/footer";
+import { HeroTitleGradient } from "@/components/layout/hero-title-gradient";
 import { PageHeroGlow } from "@/components/layout/page-hero-glow";
 
 export default function NotFound() {
@@ -43,7 +44,7 @@ export default function NotFound() {
             transition={{ duration: 0.5, delay: 0.1 }}
             className="mb-4 text-4xl font-bold tracking-tight md:text-5xl"
           >
-            Page not found
+            <HeroTitleGradient>Page not found</HeroTitleGradient>
           </motion.h1>
 
           <motion.p

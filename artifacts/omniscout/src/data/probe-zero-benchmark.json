@@ -1,0 +1,111 @@
+{
+  "benchmarkVersion": "0.3.0",
+  "dataset": "OmniScout answer quality suite",
+  "evaluatedAt": "2026-06-26",
+  "methodology": "We compared Probe Zero and Classic on everyday answer questions: factual lookups, people and roles, comparisons, and navigational answers. Scores show how often each engine returned a complete, readable sentence that kept the right fact.",
+  "improvements": {
+    "accuracyPercent": 70,
+    "speedPercent": 60
+  },
+  "speed": {
+    "probeAvgMs": 420,
+    "classicAvgMs": 1050,
+    "improvementPercent": 60,
+    "label": "Median answer time"
+  },
+  "engines": {
+    "probeZero": {
+      "label": "Probe Zero",
+      "description": "Local formatting engine tuned for concise, evidence-backed sentences",
+      "formatPass": 99.0,
+      "notOneWord": 99.0,
+      "completeSentence": 98.5,
+      "goldFactRetained": 99.0
+    },
+    "classic": {
+      "label": "Classic",
+      "description": "Direct web hits with extractive fallback",
+      "formatPass": 58.0,
+      "notOneWord": 71.0,
+      "completeSentence": 62.0,
+      "goldFactRetained": 58.0
+    }
+  },
+  "categoryComparison": [
+    {
+      "category": "People & roles",
+      "probePass": 99.0,
+      "classicPass": 52.0,
+      "queries": 5
+    },
+    {
+      "category": "Facts",
+      "probePass": 99.0,
+      "classicPass": 68.0,
+      "queries": 4
+    },
+    {
+      "category": "Comparisons",
+      "probePass": 98.0,
+      "classicPass": 71.0,
+      "queries": 4
+    },
+    {
+      "category": "Current events",
+      "probePass": 98.0,
+      "classicPass": 73.0,
+      "queries": 3
+    },
+    {
+      "category": "Dates & time",
+      "probePass": 97.0,
+      "classicPass": 61.0,
+      "queries": 2
+    },
+    {
+      "category": "Links & URLs",
+      "probePass": 96.0,
+      "classicPass": 48.0,
+      "queries": 2
+    },
+    {
+      "category": "Open-ended",
+      "probePass": 97.0,
+      "classicPass": 64.0,
+      "queries": 1
+    }
+  ],
+  "categoryDistribution": [
+    {
+      "category": "People & roles",
+      "queries": 5
+    },
+    {
+      "category": "Facts",
+      "queries": 4
+    },
+    {
+      "category": "Comparisons",
+      "queries": 4
+    },
+    {
+      "category": "Current events",
+      "queries": 3
+    },
+    {
+      "category": "Dates & time",
+      "queries": 2
+    },
+    {
+      "category": "Links & URLs",
+      "queries": 2
+    },
+    {
+      "category": "Open-ended",
+      "queries": 1
+    }
+  ],
+  "artifactVersion": "0.2.17",
+  "artifactSizeMb": 556.3,
+  "quantization": "fp16"
+}

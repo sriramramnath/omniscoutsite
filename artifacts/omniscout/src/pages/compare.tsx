@@ -17,10 +17,12 @@ import {
 import { Check, X, Minus, ArrowRight, Terminal } from "lucide-react";
 import { Nav } from "@/components/layout/nav";
 import { Footer } from "@/components/layout/footer";
+import { HeroTitleGradient } from "@/components/layout/hero-title-gradient";
 import { PageHeroGlow } from "@/components/layout/page-hero-glow";
 import { Link } from "wouter";
 import { routePageMeta } from "@/config/page-meta";
 import { useDocumentMeta } from "@/hooks/use-document-meta";
+import { chartCursorFill, chartTooltipProps } from "@/components/home/chart-styles";
 
 /* ─── Helpers ───────────────────────────────────────────────────── */
 function FadeUp({
@@ -327,14 +329,6 @@ function CompareHeroPanel() {
   );
 }
 
-const customTooltipStyle = {
-  backgroundColor: "hsl(222 22% 7%)",
-  border: "1px solid hsl(222 16% 18%)",
-  borderRadius: "8px",
-  color: "hsl(210 20% 96%)",
-  fontSize: "12px",
-  fontFamily: "var(--app-font-mono)",
-};
 
 export default function Compare() {
   useDocumentMeta(routePageMeta["/compare"]);
@@ -359,7 +353,7 @@ export default function Compare() {
                 Comparison
               </div>
               <h1 className="text-4xl md:text-6xl font-bold tracking-tight leading-tight mb-6">
-                When to use
+                <HeroTitleGradient>When to use</HeroTitleGradient>
                 <br />
                 <span className="text-muted-foreground font-normal">
                   OmniScout.
@@ -559,8 +553,8 @@ export default function Compare() {
                       tickLine={false}
                     />
                     <Tooltip
-                      contentStyle={customTooltipStyle}
-                      cursor={{ fill: "hsl(222 16% 13%)" }}
+                      {...chartTooltipProps}
+                      cursor={{ fill: chartCursorFill }}
                     />
                     <Legend
                       wrapperStyle={{ fontSize: "11px", fontFamily: "var(--app-font-mono)", color: "hsl(220 12% 52%)", paddingTop: "12px" }}

@@ -3,6 +3,7 @@ import { motion, useInView } from "framer-motion";
 import { Github, Mail, Package } from "lucide-react";
 import { Nav } from "@/components/layout/nav";
 import { Footer } from "@/components/layout/footer";
+import { HeroTitleGradient } from "@/components/layout/hero-title-gradient";
 import { PageHeroGlow } from "@/components/layout/page-hero-glow";
 import { routePageMeta } from "@/config/page-meta";
 import { useDocumentMeta } from "@/hooks/use-document-meta";
@@ -51,7 +52,7 @@ export default function Contact() {
               Contact
             </div>
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-tight mb-6">
-              Get in touch
+              <HeroTitleGradient>Get in touch</HeroTitleGradient>
             </h1>
           </FadeUp>
         </div>

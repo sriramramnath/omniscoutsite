@@ -37,6 +37,13 @@ const navGroups: NavGroup[] = [
         imageAlt: "Developer working at a multi-monitor coding desk",
       },
       {
+        label: "Probe Zero",
+        description: "Local answer engine with published gold-benchmark metrics.",
+        href: "/probe-zero",
+        image: "https://images.unsplash.com/photo-1754548930550-be9fa88874f4?auto=format&fit=crop&w=1200&q=82",
+        imageAlt: "Dark coding workspace with illuminated monitors",
+      },
+      {
         label: "Use cases",
         description: "Research, monitoring, automation, and agent workflows.",
         href: "/use-cases",

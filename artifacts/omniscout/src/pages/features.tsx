@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { Nav } from "@/components/layout/nav";
 import { Footer } from "@/components/layout/footer";
+import { HeroTitleGradient } from "@/components/layout/hero-title-gradient";
 import { PageHeroGlow } from "@/components/layout/page-hero-glow";
 import { Link } from "wouter";
 import { cn } from "@/lib/utils";
@@ -175,7 +176,7 @@ export default function Features() {
               All features
             </div>
             <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-tight mb-6 break-words">
-              Every primitive
+              <HeroTitleGradient>Every primitive</HeroTitleGradient>
               <br />
               <span className="text-muted-foreground font-normal">
                 your agent needs.

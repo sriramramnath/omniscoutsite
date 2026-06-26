@@ -4,6 +4,7 @@ import { ArrowRight, Rss } from "lucide-react";
 import { Link } from "wouter";
 import { Nav } from "@/components/layout/nav";
 import { Footer } from "@/components/layout/footer";
+import { HeroTitleGradient } from "@/components/layout/hero-title-gradient";
 import { PageHeroGlow } from "@/components/layout/page-hero-glow";
 import { LandscapeThumbnail } from "@/components/blog/landscape-thumbnail";
 import { PostMeta } from "@/components/blog/post-meta";
@@ -125,7 +126,7 @@ export default function Blogs() {
               Blog
             </div>
             <h1 className="mb-4 text-3xl sm:text-4xl md:text-5xl font-bold leading-tight tracking-tight break-words">
-              Release notes &amp; updates
+              <HeroTitleGradient>Release notes &amp; updates</HeroTitleGradient>
             </h1>
             <p className="mx-auto max-w-lg text-base sm:text-lg leading-relaxed text-muted-foreground">
               What we ship, why it matters, and how to use it in your agent workflows.

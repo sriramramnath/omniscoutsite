@@ -9,6 +9,27 @@ export interface ChangelogRelease {
 
 export const changelogReleases: ChangelogRelease[] = [
   {
+    version: "0.3.0",
+    date: "2026-06-26",
+    label: "Beta",
+    sections: {
+      Added: [
+        "**Probe Zero** — local answer engine with a product page, comparison charts, and up to 70% better answer quality vs Classic.",
+        "**Interactive home launcher** — bare omniscout opens an arrow-key menu for common commands.",
+        "**Interactive settings UI** — choose default browser and answer engine (Classic or Probe Zero) in the terminal.",
+      ],
+      Changed: [
+        "**Probe Zero branding** — user-facing answer engine name is Probe Zero across the CLI, docs, and website.",
+        "**Answer output panels** — cyan-bordered Rich panels for human-mode answers across search, answer, research, graph, and extract.",
+        "**CLI banner** — Coder Mini ASCII art with a separate website links panel.",
+      ],
+      Fixed: [
+        "**Probe answer quality** — improved name extraction, source sanitization, and formatting fallback.",
+        "**Settings menu scroll** — inline redraw instead of Rich Live auto-refresh.",
+      ],
+    },
+  },
+  {
     version: "0.2.17",
     date: "2026-06-23",
     label: "Beta",

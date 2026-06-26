@@ -32,6 +32,7 @@ export function Footer() {
               heading: "Product",
               links: [
                 { label: "Features", href: "/features" },
+                { label: "Probe Zero", href: "/probe-zero" },
                 { label: "Compare", href: "/compare" },
                 { label: "Use Cases", href: "/use-cases" },
                 { label: "Blog", href: "/blogs" },

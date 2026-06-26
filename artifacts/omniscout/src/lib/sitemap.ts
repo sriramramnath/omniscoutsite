@@ -88,6 +88,7 @@ Install: \`pip install omniscout\` then \`omniscout install --skill\` to copy th
 
 - [Home](${base}/): Overview and quick install
 - [Features](${base}/features): Browser control, search, extract, research primitives
+- [Probe Zero](${base}/probe-zero): Local answer engine and gold-benchmark metrics
 - [Use cases](${base}/use-cases): Agent workflow examples
 - [Compare](${base}/compare): vs hosted browsers and vendor-integrated agents
 - [Changelog](${base}/changelog): Release history
@@ -125,6 +126,7 @@ omniscout daemon start
 
 - ${base}/
 - ${base}/features
+- ${base}/probe-zero
 - ${base}/use-cases
 - ${base}/compare
 - ${base}/changelog

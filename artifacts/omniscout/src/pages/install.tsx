@@ -4,6 +4,7 @@ import { Link } from "wouter";
 import { SetupGuideContent } from "@/components/home/setup-guide";
 import { Footer } from "@/components/layout/footer";
 import { Nav } from "@/components/layout/nav";
+import { HeroTitleGradient } from "@/components/layout/hero-title-gradient";
 import { PageHeroGlow } from "@/components/layout/page-hero-glow";
 import { routePageMeta } from "@/config/page-meta";
 import { useDocumentMeta } from "@/hooks/use-document-meta";
@@ -27,7 +28,7 @@ export default function Install() {
               Install
             </p>
             <h1 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-6xl">
-              Set up OmniScout once
+              <HeroTitleGradient>Set up OmniScout once</HeroTitleGradient>
             </h1>
             <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
               Follow the local install guide, then use OmniScout from Claude Code,

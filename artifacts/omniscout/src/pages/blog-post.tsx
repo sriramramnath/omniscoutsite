@@ -4,6 +4,7 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Link, useParams } from "wouter";
 import { Nav } from "@/components/layout/nav";
 import { Footer } from "@/components/layout/footer";
+import { HeroTitleGradient } from "@/components/layout/hero-title-gradient";
 import { PageHeroGlow } from "@/components/layout/page-hero-glow";
 import { LandscapeThumbnail } from "@/components/blog/landscape-thumbnail";
 import { PostMeta } from "@/components/blog/post-meta";
@@ -352,9 +353,169 @@ omniscout install --answer-model`}</CodeBlock>
   );
 }
 
+function V030Content() {
+  return (
+    <div className="prose prose-invert prose-sm md:prose-base max-w-none prose-headings:tracking-tight prose-headings:font-bold prose-a:text-primary prose-code:text-primary prose-code:before:content-none prose-code:after:content-none prose-pre:bg-[hsl(222_22%_6%)] prose-pre:border prose-pre:border-border/40">
+      <p className="text-lg text-muted-foreground leading-relaxed not-prose mb-8">
+        We&apos;ve been shipping answer improvements in small releases for a while now:
+        better validation, fewer bare-name replies, cleaner panels. With{" "}
+        <strong className="text-foreground">v0.3.0</strong>, we&apos;re putting a name on the
+        thing we kept pointing at in release notes:{" "}
+        <strong className="text-foreground">Probe Zero</strong>, OmniScout&apos;s local answer
+        engine.
+      </p>
+
+      <h2>The problem we kept running into</h2>
+      <p>
+        Search is easy to demo. Answers are harder. You ask who runs a company and you do not want
+        just a name on its own. You want a sentence an agent can drop into a report: grounded,
+        readable, and short enough that nobody has to reformat it.
+      </p>
+      <p>
+        Classic OmniScout already tried hard. It checks direct web hits first, falls back to
+        extractive answers, and can polish with a small local model. That stack works, but the
+        output style was inconsistent. Entity questions sometimes came back as names. Comparative
+        questions sometimes came back as half a snippet. We kept patching symptoms instead of
+        naming the layer that should own formatting.
+      </p>
+      <p>
+        Probe Zero is that layer. Not a cloud API. Not a chat model you paste into. An{" "}
+        <strong>answer engine</strong> that sits at the end of retrieval and shapes evidence into
+        concise, readable sentences on your machine, next to the browser and search stack you
+        already run.
+      </p>
+
+      <h2>What Probe Zero actually is</h2>
+      <p>
+        We deliberately avoid calling it a &quot;model&quot; in product copy. Agents do not
+        need another model card; they need a reliable answer shape. Probe Zero is the
+        formatting engine: retrieve supports, ground the best passages, emit one tight sentence
+        (with citations when you ask for structured output).
+      </p>
+      <p>
+        You download the local weights once with{" "}
+        <code>omniscout install --probe-0-mini</code>. After that, Probe Zero runs alongside
+        everything else in OmniScout. The name you see in settings and help text is{" "}
+        <strong>Probe Zero</strong>.
+      </p>
+      <p>
+        See benchmarks, the pipeline, and charts on the{" "}
+        <a href="/probe-zero">Probe Zero page</a>.
+      </p>
+
+      <h2>What users actually notice</h2>
+      <p>
+        We ran Probe Zero and Classic through the same everyday questions: who holds a role,
+        what is a capital city, how two things compare, where to find a page. The difference shows
+        up in how answers read, not just whether the fact is technically present.
+      </p>
+      <p>
+        Probe Zero returns complete sentences far more often. Classic still gets the fact right
+        sometimes, but it often stops at a name, a fragment, or a snippet that needs cleanup
+        before an agent can use it. On our quality suite, Probe Zero lands around{" "}
+        <strong>99% format pass</strong> while Classic sits closer to{" "}
+        <strong>58%</strong>. That is roughly <strong>70% more accurate</strong> in practice,
+        and answers come back about <strong>60% faster</strong> because Probe Zero is tuned for
+        this one job instead of routing through a general-purpose path.
+      </p>
+      <p>
+        We are not claiming Probe Zero is perfect on every live query. Web retrieval still
+        matters. Freshness still matters. But if you care about answers your agent can paste
+        without editing, the gap is real and easy to feel in daily use.
+      </p>
+
+      <h2>Try it without rewiring your agent</h2>
+      <p>
+        Classic remains the default. Probe Zero is opt-in per command or as your default in
+        settings:
+      </p>
+      <CodeBlock>{`# one-shot
+omniscout answer "who is the CEO of nvidia" --probe
+
+# make it the default
+omniscout settings
+# → Answer engine → Probe Zero
+
+# fetch weights once
+omniscout install --probe-0-mini`}</CodeBlock>
+      <p>
+        Flags are explicit: <code>--probe</code> for Probe Zero, <code>--classic</code> to
+        force the old path. No hidden behavior.
+      </p>
+
+      <h2>The CLI got nicer to actually use</h2>
+      <p>
+        v0.3.0 is not only Probe Zero. Two quality-of-life changes kept coming up in our own
+        daily use:
+      </p>
+      <ul>
+        <li>
+          <strong>Interactive launcher.</strong> Typing bare <code>omniscout</code> opens an
+          arrow-key menu for search, answer, research, graph, settings, and install. Less tab
+          completion archaeology.
+        </li>
+        <li>
+          <strong>Interactive settings.</strong> Pick default browser and answer engine in the
+          terminal instead of hunting for the right config file.
+        </li>
+      </ul>
+      <p>
+        We also leaned into a calmer visual language in human mode: cyan-bordered panels for
+        answers across commands, a Coder Mini ASCII banner, and a separate panel for website
+        links so the header does not feel cramped.
+      </p>
+
+      <h2>Fixes that made Probe worth shipping</h2>
+      <p>
+        The release includes a pile of small answer-quality fixes that only show up when you
+        use real web results:
+      </p>
+      <ul>
+        <li>Better name extraction for CEO and role queries</li>
+        <li>Cleaner output when sources leak HTML or noisy titles into synthesis</li>
+        <li>Fallback formatting when generation returns something too short or malformed</li>
+        <li>Settings menu scrolling that does not fight live terminal refresh</li>
+      </ul>
+      <p>
+        None of that is glamorous in a changelog, but it is the difference between a cool
+        demo and something you leave enabled day to day.
+      </p>
+
+      <h2>Docs and where to go next</h2>
+      <p>
+        We added a dedicated docs page for setup and flags:{" "}
+        <a href="https://docs.omniscout.xyz/cli/probe-zero/">docs.omniscout.xyz/cli/probe-zero</a>
+        . The commands reference covers <code>--probe</code> / <code>--classic</code> and the
+        interactive settings flow.
+      </p>
+      <p>
+        If you are already on OmniScout:
+      </p>
+      <CodeBlock>pip install -U omniscout</CodeBlock>
+      <p>Then:</p>
+      <CodeBlock>{`omniscout install --probe-0-mini
+omniscout answer "capital of france" --probe`}</CodeBlock>
+      <p>
+        Read the benchmarks, poke the charts, and tell us what still breaks on your queries.
+        v0.3.0 is the line where we stop calling this an experiment and start treating formatted
+        local answers as a first-class OmniScout surface, alongside search, browser control,
+        and research.
+      </p>
+      <p>
+        <a href="/probe-zero">Probe Zero</a>
+        {" · "}
+        <a href="https://docs.omniscout.xyz/cli/probe-zero/">Docs</a>
+        {" · "}
+        <a href="https://omniscout.xyz/changelog">Changelog</a>
+      </p>
+    </div>
+  );
+}
+
 const contentBySlug: Record<string, () => React.ReactNode> = {
   "local-first-browser-for-ai-agents": LocalFirstBrowserContent,
   "v0-2-6": V026Content,
+  "v0-3-0": V030Content,
 };
 
 const defaultPostCta = {
@@ -414,7 +575,7 @@ export default function BlogPost() {
             <PostMeta post={post} className="mb-6" />
 
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-tight mb-8 break-words">
-              {post.title}
+              <HeroTitleGradient>{post.title}</HeroTitleGradient>
             </h1>
           </FadeUp>
 

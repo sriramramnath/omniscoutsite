@@ -11,13 +11,35 @@ export const CHART_COLORS = {
   Playwright: "hsl(220 12% 52%)",
 } as const;
 
+const chartTooltipTextColor = "hsl(210 20% 96%)";
+
 export const chartTooltipStyle = {
   backgroundColor: "hsl(222 22% 7%)",
   border: "1px solid hsl(222 16% 18%)",
   borderRadius: "8px",
-  color: "hsl(210 20% 96%)",
+  color: chartTooltipTextColor,
   fontSize: "12px",
   fontFamily: "var(--app-font-mono)",
+} as const;
+
+/** Recharts sets label/item text to black unless overridden explicitly. */
+export const chartTooltipLabelStyle = {
+  color: chartTooltipTextColor,
+  fontSize: "12px",
+  fontFamily: "var(--app-font-mono)",
+} as const;
+
+export const chartTooltipItemStyle = {
+  color: chartTooltipTextColor,
+  fontSize: "12px",
+  fontFamily: "var(--app-font-mono)",
+} as const;
+
+/** Spread onto Recharts <Tooltip> for consistent dark-theme styling. */
+export const chartTooltipProps = {
+  contentStyle: chartTooltipStyle,
+  labelStyle: chartTooltipLabelStyle,
+  itemStyle: chartTooltipItemStyle,
 } as const;
 
 export const chartAxisTick = {

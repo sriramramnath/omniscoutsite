@@ -1,4 +1,11 @@
 {
+  "redirects": [
+    {
+      "source": "/technology",
+      "destination": "/probe-zero",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     {
       "source": "/(.*)",

@@ -37,6 +37,14 @@ export const routePageMeta: Record<string, PageMetaTags> = {
     type: "website",
     ...ogImage("/og/features.jpg"),
   },
+  "/probe-zero": {
+    title: "Probe Zero · OmniScout",
+    description:
+      "Probe Zero is OmniScout's local answer engine. Grounded web answers that run on your machine, up to 70% more accurate and 60% faster than Classic.",
+    url: "/probe-zero",
+    type: "website",
+    ...ogImage("/og/features.jpg"),
+  },
   "/install": {
     title: "Install · OmniScout",
     description:
