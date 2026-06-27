@@ -9,6 +9,24 @@ export interface ChangelogRelease {
 
 export const changelogReleases: ChangelogRelease[] = [
   {
+    version: "0.3.1",
+    date: "2026-06-27",
+    label: "Beta",
+    sections: {
+      Added: [
+        "**Exa-style structured output** — search --output-schema and extract --schema return validated JSON from a custom JSON Schema (multi-source NLP, no LLM).",
+        "**Evidence-first knowledge graphs** — page-type routing and sanitization for cleaner Company, Pricing, and Founders trees.",
+      ],
+      Changed: [
+        "**omniscout graph** — evidence extraction is the default; --llm is optional. Default --results is 5.",
+        "**Structured search** — skips slow DDG when a high-confidence pricing/about URL can be inferred from the query.",
+      ],
+      Fixed: [
+        "**Knowledge graph quality** — drops careers titles, marketing taglines, and URL junk from Company/Category.",
+      ],
+    },
+  },
+  {
     version: "0.3.0",
     date: "2026-06-26",
     label: "Beta",
