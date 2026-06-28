@@ -95,7 +95,7 @@ const sectionMeta: Record<
 > = {
   Added: {
     icon: <Plus className="h-3.5 w-3.5" />,
-    className: "text-emerald-400",
+    className: "text-emerald-600",
   },
   Changed: {
     icon: <RefreshCw className="h-3.5 w-3.5" />,
@@ -185,7 +185,7 @@ export default function Changelog() {
     <div className="min-h-screen bg-background text-foreground overflow-x-clip">
       <Nav />
 
-      <section className="relative overflow-hidden pt-28 pb-12 sm:pt-32 sm:pb-16">
+      <section className="relative overflow-hidden pt-14 pb-12 sm:pt-16 sm:pb-16">
         <PageHeroGlow />
 
         <div className="relative z-10 mx-auto max-w-4xl px-4 sm:px-5 min-w-0 text-center">

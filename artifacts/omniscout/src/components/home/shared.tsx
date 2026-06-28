@@ -35,15 +35,15 @@ export function SectionHeader({
   description?: string;
 }) {
   return (
-    <div className="mx-auto mb-8 max-w-2xl text-center">
-      <div className="mb-4 text-xs font-mono uppercase tracking-widest text-primary">
+    <div className="mx-auto mb-10 max-w-2xl text-center">
+      <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
         {tag}
-      </div>
-      <h2 className="mb-3 text-xl font-bold tracking-tight sm:text-2xl md:text-3xl">
+      </p>
+      <h2 className="mb-3 text-3xl font-semibold tracking-tight sm:text-4xl">
         {title}
       </h2>
       {description && (
-        <p className="text-sm leading-relaxed text-muted-foreground md:text-base">
+        <p className="text-base leading-relaxed text-muted-foreground md:text-lg">
           {description}
         </p>
       )}
@@ -61,10 +61,10 @@ export function PageLinkButton({
   return (
     <a
       href={href}
-      className="inline-flex min-h-11 items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-5 py-2.5 text-sm font-medium text-primary transition-colors hover:border-primary/50 hover:bg-primary/15"
+      className="inline-flex min-h-11 items-center gap-1 text-[17px] text-primary transition-opacity hover:opacity-80"
     >
       {children}
-      <span aria-hidden>→</span>
+      <span aria-hidden>›</span>
     </a>
   );
 }

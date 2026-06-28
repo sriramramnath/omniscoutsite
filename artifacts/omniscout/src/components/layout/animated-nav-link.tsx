@@ -27,8 +27,8 @@ export function AnimatedNavLink({
   const label = (
     <SlideRevealText
       active={active}
-      primary={<span className={active ? "text-white" : "text-zinc-400"}>{children}</span>}
-      secondary={<span className="text-white">{children}</span>}
+      primary={<span className={active ? "text-foreground" : "text-muted-foreground"}>{children}</span>}
+      secondary={<span className="text-foreground">{children}</span>}
     />
   );
 

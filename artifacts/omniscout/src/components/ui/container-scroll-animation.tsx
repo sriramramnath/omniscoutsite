@@ -97,9 +97,9 @@ function ScrollCard({
         boxShadow:
           "0 0 #0000004d, 0 9px 20px #0000004a, 0 37px 37px #00000042, 0 84px 50px #00000026, 0 149px 60px #0000000a, 0 233px 65px #00000003",
       }}
-      className="relative z-0 mx-auto mt-10 h-[28rem] w-full min-w-0 max-w-[min(100%,64rem)] border-4 border-[#6C6C6C] bg-[#222222] p-2 shadow-2xl rounded-[30px] md:mt-16 md:h-[38rem] md:p-6 lg:mt-20"
+      className="relative z-0 mx-auto mt-10 h-[28rem] w-full min-w-0 max-w-[min(100%,64rem)] border-4 border-border bg-secondary p-2 shadow-xl rounded-[30px] md:mt-16 md:h-[38rem] md:p-6 lg:mt-20"
     >
-      <div className="h-full w-full overflow-hidden rounded-2xl bg-zinc-950 md:rounded-2xl md:p-3">
+      <div className="h-full w-full overflow-hidden rounded-2xl bg-card md:rounded-2xl md:p-3">
         {children}
       </div>
     </motion.div>

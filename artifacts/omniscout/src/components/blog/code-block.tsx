@@ -12,16 +12,16 @@ async function getHighlighter(): Promise<HighlighterCore> {
         { createHighlighterCore },
         { createJavaScriptRegexEngine },
         bash,
-        githubDark,
+        githubLight,
       ] = await Promise.all([
         import("shiki/core"),
         import("shiki/engine/javascript"),
         import("shiki/dist/langs/bash.mjs"),
-        import("shiki/dist/themes/github-dark.mjs"),
+        import("shiki/dist/themes/github-light.mjs"),
       ]);
 
       return createHighlighterCore({
-        themes: [githubDark.default],
+        themes: [githubLight.default],
         langs: [bash.default],
         engine: createJavaScriptRegexEngine(),
       });
@@ -50,7 +50,7 @@ export function CodeBlock({
       .then((highlighter) =>
         highlighter.codeToHtml(code, {
           lang: language,
-          theme: "github-dark",
+          theme: "github-light",
         }),
       )
       .then((result) => {
@@ -78,11 +78,11 @@ export function CodeBlock({
   return (
     <div
       className={cn(
-        "not-prose relative my-4 overflow-hidden rounded-lg border border-border/40 bg-[hsl(222_22%_6%)]",
+        "not-prose relative my-4 overflow-hidden rounded-lg border border-border bg-card",
         className,
       )}
     >
-      <div className="flex items-center justify-between gap-3 border-b border-border/30 bg-[hsl(222_22%_5%)] px-3 py-2">
+      <div className="flex items-center justify-between gap-3 border-b border-border bg-secondary px-3 py-2">
         <span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground">
           {language}
         </span>
@@ -97,7 +97,7 @@ export function CodeBlock({
         >
           {copied ? (
             <>
-              <Check className="h-3.5 w-3.5 text-emerald-400" />
+              <Check className="h-3.5 w-3.5 text-emerald-600" />
               Copied
             </>
           ) : (
@@ -120,7 +120,7 @@ export function CodeBlock({
         />
       ) : (
         <pre className="overflow-x-auto p-4 text-[13px] leading-relaxed">
-          <code className="font-mono text-zinc-300">{code}</code>
+          <code className="font-mono text-foreground">{code}</code>
         </pre>
       )}
     </div>

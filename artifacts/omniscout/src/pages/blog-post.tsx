@@ -39,7 +39,7 @@ function FadeUp({
 
 function LocalFirstBrowserContent() {
   return (
-    <div className="prose prose-invert prose-sm md:prose-base max-w-none prose-headings:tracking-tight prose-headings:font-bold prose-a:text-primary prose-code:text-primary prose-code:before:content-none prose-code:after:content-none prose-pre:bg-[hsl(222_22%_6%)] prose-pre:border prose-pre:border-border/40">
+    <div className="prose prose-sm md:prose-base max-w-none prose-headings:tracking-tight prose-headings:font-bold prose-a:text-primary prose-code:text-primary prose-code:before:content-none prose-code:after:content-none .prose-pre:bg-secondary prose-pre:border prose-pre:border-border/40">
       <p className="text-lg text-muted-foreground leading-relaxed not-prose mb-8">
         Most AI agents can write code, reason through tasks, and plan complex
         workflows. The moment they need to interact with the web, things get
@@ -213,7 +213,7 @@ function LocalFirstBrowserContent() {
 
 function V026Content() {
   return (
-    <div className="prose prose-invert prose-sm md:prose-base max-w-none prose-headings:tracking-tight prose-headings:font-bold prose-a:text-primary prose-code:text-primary prose-code:before:content-none prose-code:after:content-none prose-pre:bg-[hsl(222_22%_6%)] prose-pre:border prose-pre:border-border/40">
+    <div className="prose prose-sm md:prose-base max-w-none prose-headings:tracking-tight prose-headings:font-bold prose-a:text-primary prose-code:text-primary prose-code:before:content-none prose-code:after:content-none .prose-pre:bg-secondary prose-pre:border prose-pre:border-border/40">
       <p className="text-lg text-muted-foreground leading-relaxed not-prose mb-8">
         Today marks a big milestone for OmniScout:{" "}
         <strong className="text-foreground">v0.2.6 is officially in beta.</strong>
@@ -355,7 +355,7 @@ omniscout install --answer-model`}</CodeBlock>
 
 function V030Content() {
   return (
-    <div className="prose prose-invert prose-sm md:prose-base max-w-none prose-headings:tracking-tight prose-headings:font-bold prose-a:text-primary prose-code:text-primary prose-code:before:content-none prose-code:after:content-none prose-pre:bg-[hsl(222_22%_6%)] prose-pre:border prose-pre:border-border/40">
+    <div className="prose prose-sm md:prose-base max-w-none prose-headings:tracking-tight prose-headings:font-bold prose-a:text-primary prose-code:text-primary prose-code:before:content-none prose-code:after:content-none .prose-pre:bg-secondary prose-pre:border prose-pre:border-border/40">
       <p className="text-lg text-muted-foreground leading-relaxed not-prose mb-8">
         We&apos;ve been shipping answer improvements in small releases for a while now:
         better validation, fewer bare-name replies, cleaner panels. With{" "}
@@ -559,7 +559,7 @@ export default function BlogPost() {
     <div className="min-h-screen bg-background text-foreground overflow-x-clip">
       <Nav />
 
-      <section className="relative overflow-hidden pt-28 pb-10 sm:pt-32">
+      <section className="relative overflow-hidden pt-14 pb-10 sm:pt-16">
         <PageHeroGlow />
 
         <div className="relative z-10 w-full max-w-3xl mx-auto px-4 sm:px-5 min-w-0">
@@ -613,7 +613,7 @@ export default function BlogPost() {
               href={cta.href ?? "https://docs.omniscout.xyz"}
               target="_blank"
               rel="noreferrer"
-              className="group inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-primary text-white text-sm font-medium hover:bg-primary/90 transition-all shadow-lg shadow-primary/25"
+              className="group inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-all shadow-lg shadow-primary/25"
             >
               {cta.buttonLabel ?? "Read the docs"}
               <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />

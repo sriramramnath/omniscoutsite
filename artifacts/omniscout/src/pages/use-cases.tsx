@@ -165,7 +165,7 @@ export default function UseCases() {
       <Nav />
 
       {/* Hero */}
-      <section className="relative overflow-hidden pt-28 pb-20 sm:pt-32">
+      <section className="relative overflow-hidden pt-14 pb-20 sm:pt-16">
         <PageHeroGlow />
 
         <div className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-5 min-w-0">
@@ -238,7 +238,7 @@ export default function UseCases() {
                         className="flex flex-col gap-1.5 px-4 py-3 border-b border-border/20 last:border-0 hover:bg-card/50 transition-colors min-w-0"
                       >
                         <div className="flex items-start gap-2 min-w-0">
-                          <CheckCircle className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0 mt-0.5" />
+                          <CheckCircle className="w-3.5 h-3.5 text-emerald-600 flex-shrink-0 mt-0.5" />
                           <code className="text-xs font-mono text-primary break-words min-w-0">
                             {step.step}
                           </code>
@@ -252,7 +252,7 @@ export default function UseCases() {
                 </div>
 
                 <div className={cn("min-w-0 w-full max-w-full order-1 lg:order-none mb-6 lg:mb-0", i % 2 !== 0 && "lg:order-1")}>
-                  <div className="relative w-full min-w-0 max-w-full rounded-xl overflow-hidden border border-border/30 shadow-lg sm:shadow-2xl sm:shadow-black/40">
+                  <div className="relative w-full min-w-0 max-w-full rounded-xl overflow-hidden border border-border shadow-lg sm:shadow-xl">
                     <img
                       src={uc.imageUrl}
                       alt={uc.tag}
@@ -296,7 +296,7 @@ export default function UseCases() {
                 href="https://docs.omniscout.xyz"
                 target="_blank"
                 rel="noreferrer"
-                className="group flex items-center gap-2 px-6 py-3 rounded-lg bg-primary text-white text-sm font-medium hover:bg-primary/90 transition-all shadow-lg shadow-primary/25"
+                className="group flex items-center gap-2 px-6 py-3 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-all shadow-lg shadow-primary/25"
                 data-testid="button-usecases-docs"
               >
                 Read the docs

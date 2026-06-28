@@ -16,7 +16,7 @@ export default function Install() {
     <div className="min-h-screen overflow-x-clip bg-background text-foreground">
       <Nav />
 
-      <section className="relative overflow-hidden pt-28 pb-12 sm:pt-32 sm:pb-16">
+      <section className="relative overflow-hidden pt-14 pb-12 sm:pt-16 sm:pb-16">
         <PageHeroGlow />
         <div className="relative z-10 mx-auto max-w-4xl px-4 text-center sm:px-5">
           <motion.div
@@ -37,7 +37,7 @@ export default function Install() {
             <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
               <a
                 href="#quick-setup"
-                className="inline-flex items-center gap-2 rounded-full bg-gradient-to-br from-zinc-100 to-zinc-300 px-5 py-2.5 text-sm font-semibold text-black transition-all hover:from-zinc-200 hover:to-zinc-400"
+                className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-all hover:bg-primary/90"
               >
                 Start guide
                 <ArrowRight className="h-4 w-4" />
@@ -53,7 +53,7 @@ export default function Install() {
         </div>
       </section>
 
-      <section id="quick-setup" className="scroll-mt-28 border-t border-border/30 bg-card/20 py-16 md:scroll-mt-32 md:py-24">
+      <section id="quick-setup" className="scroll-mt-16 border-t border-border/60 apple-section-alt py-16 md:scroll-mt-20 md:py-24">
         <div className="mx-auto w-full max-w-6xl px-4 sm:px-5">
           <SetupGuideContent />
         </div>

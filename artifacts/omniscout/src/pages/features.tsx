@@ -109,12 +109,12 @@ function FeatureBlock({
               ))}
             </ul>
             {code && (
-              <div className="rounded-lg border border-border/40 bg-[hsl(222_22%_6%)] overflow-hidden max-w-full">
-                <div className="flex items-center gap-1.5 px-4 py-2 border-b border-border/30 bg-[hsl(222_22%_5%)]">
+              <div className="rounded-lg border border-border bg-card overflow-hidden max-w-full">
+                <div className="flex items-center gap-1.5 px-4 py-2 border-b border-border bg-secondary">
                   <Terminal className="w-3 h-3 text-muted-foreground flex-shrink-0" />
                   <span className="text-xs font-mono text-muted-foreground">example</span>
                 </div>
-                <pre className="px-4 py-4 text-xs font-mono text-zinc-300 whitespace-pre-wrap break-words leading-6">
+                <pre className="px-4 py-4 text-xs font-mono text-foreground whitespace-pre-wrap break-words leading-6">
                   <code dangerouslySetInnerHTML={{ __html: code }} />
                 </pre>
               </div>
@@ -122,7 +122,7 @@ function FeatureBlock({
           </FadeUp>
 
           <FadeUp delay={0.15} className={cn("min-w-0 w-full max-w-full", reverse && "lg:order-1")}>
-            <div className="relative w-full min-w-0 max-w-full rounded-xl overflow-hidden border border-border/30 shadow-lg sm:shadow-2xl sm:shadow-black/40">
+            <div className="relative w-full min-w-0 max-w-full rounded-xl overflow-hidden border border-border shadow-lg sm:shadow-xl">
               <img
                 src={imageUrl}
                 alt={imageAlt}
@@ -167,7 +167,7 @@ export default function Features() {
       <Nav />
 
       {/* Hero */}
-      <section className="relative overflow-hidden pt-28 pb-20 sm:pt-32">
+      <section className="relative overflow-hidden pt-14 pb-20 sm:pt-16">
         <PageHeroGlow />
 
         <div className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-5 min-w-0 text-center">
@@ -203,9 +203,9 @@ export default function Features() {
           "omniscout warmup preloads the embed model in the daemon",
           "Domain and freshness filters; duplicate detection",
         ]}
-        code={`<span class="text-zinc-300">omniscout search </span><span class="text-emerald-300">"browser agents 2026"</span>
-<span class="text-zinc-300">omniscout answer </span><span class="text-emerald-300">"who is the president"</span>
-<span class="text-zinc-300">omniscout search </span><span class="text-emerald-300">"taskgroup"</span> <span class="text-zinc-300">--source memory</span>`}
+        code={`<span class="text-foreground">omniscout search </span><span class="text-emerald-700">"browser agents 2026"</span>
+<span class="text-foreground">omniscout answer </span><span class="text-emerald-700">"who is the president"</span>
+<span class="text-foreground">omniscout search </span><span class="text-emerald-700">"taskgroup"</span> <span class="text-foreground">--source memory</span>`}
         imageUrl="https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=900&q=80"
         imageAlt="Data visualization and search"
         icon={<Search className="w-5 h-5" />}
@@ -239,9 +239,9 @@ export default function Features() {
           "Content cached under $OMNISCOUT_DATA_DIR/cache/pages/",
           "Smart NL extract (e.g. \"pricing table\") is planned — not shipped",
         ]}
-        code={`<span class="text-zinc-300">omniscout extract </span><span class="text-emerald-300">https://example.com</span>
-<span class="text-zinc-300">omniscout extract </span><span class="text-emerald-300">https://example.com</span> <span class="text-zinc-300">--format markdown</span>
-<span class="text-zinc-300">omniscout extract @e42</span>  <span class="text-zinc-600"># from latest snapshot</span>`}
+        code={`<span class="text-foreground">omniscout extract </span><span class="text-emerald-700">https://example.com</span>
+<span class="text-foreground">omniscout extract </span><span class="text-emerald-700">https://example.com</span> <span class="text-foreground">--format markdown</span>
+<span class="text-foreground">omniscout extract @e42</span>  <span class="text-muted-foreground"># from latest snapshot</span>`}
         imageUrl="https://images.unsplash.com/photo-1518770660439-4636190af475?w=900&q=80"
         imageAlt="Data extraction visualization"
         icon={<Code2 className="w-5 h-5" />}
@@ -387,7 +387,7 @@ export default function Features() {
             </p>
             <Link
               href="/compare"
-              className="group inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-primary text-white text-sm font-medium hover:bg-primary/90 transition-all shadow-lg shadow-primary/25"
+              className="group inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-all shadow-lg shadow-primary/25"
               data-testid="link-features-compare"
             >
               View comparison

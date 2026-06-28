@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 
 const PYPI_URL = "https://pypi.org/project/omniscout/";
 const GITHUB_URL = "https://github.com/sriramramnath";
+const OMNIFINANCE_URL = "https://finance.omniscout.xyz";
 
 type NavItem = {
   label: string;
@@ -118,6 +119,15 @@ const navGroups: NavGroup[] = [
         image: "/nav/github.jpg",
         imageAlt: "Simple Icons GitHub logo on an aurora gradient background",
       },
+      {
+        label: "Omnifinance",
+        description: "Live financial data and market intelligence.",
+        href: OMNIFINANCE_URL,
+        external: true,
+        image: "/favicon.svg",
+        imageAlt: "OmniScout logo",
+        imageFit: "contain",
+      },
     ],
   },
 ];
@@ -171,9 +181,7 @@ export function Nav() {
   const [openGroupId, setOpenGroupId] = useState<string | null>(null);
   const [previewHref, setPreviewHref] = useState(navGroups[0].items[0].href);
   const [location] = useLocation();
-  const shapeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const closeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const [pillRounded, setPillRounded] = useState(true);
 
   useEffect(() => {
     setOpen(false);
@@ -187,18 +195,6 @@ export function Nav() {
     window.addEventListener("keydown", handleEscape);
     return () => window.removeEventListener("keydown", handleEscape);
   }, []);
-
-  useEffect(() => {
-    if (shapeTimeoutRef.current) clearTimeout(shapeTimeoutRef.current);
-    if (open) {
-      setPillRounded(false);
-    } else {
-      shapeTimeoutRef.current = setTimeout(() => setPillRounded(true), 280);
-    }
-    return () => {
-      if (shapeTimeoutRef.current) clearTimeout(shapeTimeoutRef.current);
-    };
-  }, [open]);
 
   useEffect(
     () => () => {
@@ -232,16 +228,13 @@ export function Nav() {
     <motion.header
       layout
       transition={{ layout: { duration: 0.35, ease: menuEase } }}
-      className={cn(
-        "fixed top-4 left-1/2 z-50 flex w-[calc(100%-1.5rem)] max-w-6xl -translate-x-1/2 flex-col items-stretch",
-        "border border-[#333] bg-[#111318]/95 px-4 py-2.5 backdrop-blur-md sm:top-6 sm:w-[calc(100%-2rem)] sm:px-5",
-        pillRounded ? "rounded-full" : "rounded-2xl",
-      )}
+      className="fixed inset-x-0 top-0 z-50 border-b border-black/[0.08] bg-background/80 backdrop-blur-xl backdrop-saturate-150"
       onMouseEnter={cancelClose}
       onMouseLeave={scheduleClose}
       data-testid="nav-main"
     >
-      <div className="flex w-full min-w-0 items-center justify-between gap-2 sm:gap-4">
+      <div className="relative mx-auto w-full max-w-[1024px] px-4 sm:px-6">
+      <div className="flex w-full min-w-0 items-center justify-between gap-2 sm:gap-4 h-11">
         <Link
           href="/"
           className="flex min-w-0 flex-shrink items-center gap-1.5 sm:gap-2"
@@ -260,7 +253,7 @@ export function Nav() {
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-1 md:flex" aria-label="Primary navigation">
+        <nav className="hidden items-center gap-0.5 md:flex" aria-label="Primary navigation">
           {navGroups.map((group) => {
             const groupOpen = group.id === openGroupId;
             const groupActive = group.items.some((item) => isActive(item.href));
@@ -269,10 +262,10 @@ export function Nav() {
                 key={group.id}
                 type="button"
                 className={cn(
-                  "flex items-center gap-1 rounded-full px-3 py-2 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/70",
+                  "flex items-center gap-0.5 rounded-md px-2.5 py-1.5 text-xs transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50",
                   groupOpen || groupActive
-                    ? "bg-white/10 text-white"
-                    : "text-zinc-400 hover:bg-white/5 hover:text-white",
+                    ? "text-foreground"
+                    : "text-muted-foreground hover:text-foreground",
                 )}
                 aria-expanded={groupOpen}
                 aria-controls={`nav-panel-${group.id}`}
@@ -297,7 +290,7 @@ export function Nav() {
             target="_blank"
             rel="noreferrer"
             aria-label="GitHub repository"
-            className="hidden items-center justify-center rounded-full border border-[#333] bg-[#1f1f1f] p-2 text-zinc-400 transition-colors duration-200 hover:border-white/50 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/70 sm:flex"
+            className="hidden items-center justify-center rounded-full p-2 text-muted-foreground transition-colors duration-200 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 sm:flex"
             data-testid="link-github-nav"
           >
             <Github className="h-4 w-4" />
@@ -308,14 +301,14 @@ export function Nav() {
             className="group relative hidden sm:inline-block"
             data-testid="button-nav-cta"
           >
-            <span className="relative z-10 inline-flex items-center rounded-full bg-zinc-100 px-4 py-2 text-xs font-semibold text-black transition-colors duration-200 hover:bg-white">
+            <span className="relative z-10 inline-flex items-center rounded-full bg-primary px-3.5 py-1 text-xs font-normal text-primary-foreground transition-opacity hover:opacity-90">
               Get started
             </span>
           </Link>
 
           <button
             type="button"
-            className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full text-zinc-400 transition-colors hover:bg-white/5 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/70 md:hidden"
+            className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 md:hidden"
             onClick={() => setOpen((value) => !value)}
             aria-expanded={open}
             aria-controls="mobile-nav-menu"
@@ -342,11 +335,11 @@ export function Nav() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -6, scale: 0.99 }}
             transition={{ duration: 0.22, ease: menuEase }}
-            className="absolute inset-x-0 top-full hidden pt-2 md:block"
+            className="absolute inset-x-0 top-full hidden pt-1 md:block"
             onMouseEnter={cancelClose}
           >
-            <div className="grid min-h-[300px] grid-cols-[0.9fr_1.1fr] gap-3 rounded-xl border border-white/10 bg-[#111318] p-3">
-              <div className="relative min-h-0 overflow-hidden rounded-lg bg-zinc-900">
+            <div className="grid min-h-[300px] grid-cols-[0.9fr_1.1fr] gap-3 rounded-2xl border border-border/60 bg-card p-3 shadow-lg">
+              <div className="relative min-h-0 overflow-hidden rounded-lg bg-secondary">
                 <AnimatePresence mode="wait">
                   <motion.img
                     key={previewItem.image}
@@ -364,19 +357,19 @@ export function Nav() {
                     )}
                   />
                 </AnimatePresence>
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/15 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
                 <div className="absolute inset-x-0 bottom-0 p-5">
                   <p className="text-lg font-semibold text-white">{previewItem.label}</p>
-                  <p className="mt-1 max-w-sm text-sm leading-relaxed text-zinc-300">
+                  <p className="mt-1 max-w-sm text-sm leading-relaxed text-white/80">
                     {previewItem.description}
                   </p>
                 </div>
               </div>
 
               <div className="flex flex-col p-3">
-                <div className="mb-4 border-b border-white/10 pb-4">
-                  <p className="text-base font-semibold text-white">{activeGroup.label}</p>
-                  <p className="mt-1 text-sm text-zinc-400">{activeGroup.summary}</p>
+                <div className="mb-4 border-b border-border pb-4">
+                  <p className="text-base font-semibold text-foreground">{activeGroup.label}</p>
+                  <p className="mt-1 text-sm text-muted-foreground">{activeGroup.summary}</p>
                 </div>
                 <div className="flex flex-1 flex-col justify-center gap-1">
                   {activeGroup.items.map((item) => (
@@ -384,15 +377,15 @@ export function Nav() {
                       <NavDestination
                         item={item}
                         className={cn(
-                          "flex items-center justify-between rounded-lg px-3 py-3 text-base font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/70",
+                          "flex items-center justify-between rounded-lg px-3 py-3 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50",
                           previewItem.href === item.href
-                            ? "bg-white/8 text-white"
-                            : "text-zinc-300 hover:bg-white/5 hover:text-white",
+                            ? "bg-secondary text-foreground"
+                            : "text-muted-foreground hover:bg-secondary/70 hover:text-foreground",
                         )}
                         onFocus={() => setPreviewHref(item.href)}
                         onMouseEnter={() => setPreviewHref(item.href)}
                       />
-                      <ArrowUpRight className="pointer-events-none absolute top-1/2 right-3 h-4 w-4 -translate-y-1/2 text-zinc-500 transition-colors group-hover/row:text-white" aria-hidden />
+                      <ArrowUpRight className="pointer-events-none absolute top-1/2 right-3 h-4 w-4 -translate-y-1/2 text-muted-foreground transition-colors group-hover/row:text-foreground" aria-hidden />
                     </div>
                   ))}
                 </div>
@@ -418,12 +411,12 @@ export function Nav() {
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: -6, opacity: 0 }}
               transition={{ duration: 0.28, ease: menuEase }}
-              className="mt-3 max-h-[70dvh] overflow-y-auto border-t border-[#333]/80 pt-4 pb-1"
+              className="mt-2 max-h-[70dvh] overflow-y-auto border-t border-border/60 pt-4 pb-1 md:hidden"
               aria-label="Mobile navigation"
             >
               {navGroups.map((group) => (
                 <div key={group.id} className="mb-4 last:mb-1">
-                  <p className="mb-1 px-2 font-mono text-[10px] uppercase tracking-[0.18em] text-zinc-500">
+                  <p className="mb-1 px-2 text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">
                     {group.label}
                   </p>
                   {group.items.map((item) => (
@@ -432,7 +425,7 @@ export function Nav() {
                       item={item}
                       className={cn(
                         "block w-full rounded-lg px-2 py-2.5 text-left text-sm transition-colors",
-                        isActive(item.href) ? "bg-white/8 text-white" : "text-zinc-300 hover:bg-white/5 hover:text-white",
+                        isActive(item.href) ? "text-foreground" : "text-muted-foreground hover:text-foreground",
                       )}
                       onClick={() => setOpen(false)}
                     />
@@ -440,10 +433,10 @@ export function Nav() {
                 </div>
               ))}
             </motion.nav>
-            <div className="mt-2 border-t border-[#333]/60 pt-4 pb-1">
+            <div className="mt-2 border-t border-border/60 pt-4 pb-3">
               <Link
                 href="/install"
-                className="block w-full rounded-full bg-zinc-100 py-2.5 text-center text-xs font-semibold text-black"
+                className="block w-full rounded-full bg-primary py-2.5 text-center text-xs font-normal text-primary-foreground"
                 onClick={() => setOpen(false)}
               >
                 Get started
@@ -452,6 +445,7 @@ export function Nav() {
           </motion.div>
         )}
       </AnimatePresence>
+      </div>
     </motion.header>
   );
 }

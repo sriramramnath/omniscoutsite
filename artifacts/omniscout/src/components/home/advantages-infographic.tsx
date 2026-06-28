@@ -1,214 +1,180 @@
-import { useState } from "react";
+import type { LucideIcon } from "lucide-react";
 import {
-  ADVANTAGES_ANALOGY,
-  ADVANTAGES_FOOTER,
+  BarChart3,
+  Coins,
+  FileText,
+  Gauge,
+  Globe,
+  Headphones,
+  Shield,
+} from "lucide-react";
+import {
   ADVANTAGES_HEADER,
   ADVANTAGES_SCENARIOS,
-  ADVANTAGES_TYPICAL_RESULTS,
   ADVANTAGES_VALUE_PROP,
+  ADVANTAGES_WHY_IT_MATTERS,
 } from "@/data/advantages-content";
-import { HeroTitleGradient } from "@/components/layout/hero-title-gradient";
 import { cn } from "@/lib/utils";
 
-export function AdvantagesInfographic() {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const activeRow = ADVANTAGES_SCENARIOS[activeIndex];
+const WHY_ICONS: Record<(typeof ADVANTAGES_WHY_IT_MATTERS)[number]["tone"], LucideIcon> = {
+  blue: Coins,
+  green: Gauge,
+  purple: FileText,
+  orange: Shield,
+};
 
+const WHY_ICON_STYLES: Record<(typeof ADVANTAGES_WHY_IT_MATTERS)[number]["tone"], string> = {
+  blue: "bg-blue-50 text-blue-600",
+  green: "bg-emerald-50 text-emerald-600",
+  purple: "bg-violet-50 text-violet-600",
+  orange: "bg-orange-50 text-orange-600",
+};
+
+function ScenarioIcon({ icon }: { icon: string }) {
+  if (icon === "🇺🇸") {
+    return <span className="text-base leading-none" aria-hidden>🇺🇸</span>;
+  }
+  if (icon === "chart") {
+    return <BarChart3 className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden />;
+  }
+  return <Headphones className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden />;
+}
+
+function ComparisonImage({
+  src,
+  alt,
+  width,
+  height,
+}: {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+}) {
   return (
-    <div className="space-y-10">
-      <div className="text-center">
-        <h1 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
-          <HeroTitleGradient>{ADVANTAGES_HEADER.title}</HeroTitleGradient>
-        </h1>
-        <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg">
-          {ADVANTAGES_HEADER.subtitle}
-        </p>
+    <figure className="mx-auto w-full max-w-[1024px] overflow-hidden rounded-2xl bg-background shadow-sm">
+      <img
+        src={src}
+        alt={alt}
+        width={width}
+        height={height}
+        className="h-auto w-full"
+        loading="lazy"
+        decoding="async"
+      />
+    </figure>
+  );
+}
+
+export function AdvantagesInfographic() {
+  return (
+    <article className="mx-auto w-full space-y-12 sm:space-y-16">
+      <header className="text-center">
+        <h2 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl md:text-5xl">
+          {ADVANTAGES_HEADER.titleLead}{" "}
+          <span className="text-foreground">{ADVANTAGES_HEADER.titleAccent}</span>
+        </h2>
+      </header>
+
+      <div className="space-y-8">
+        <ComparisonImage
+          src="/without-omniscout.png"
+          alt="Without OmniScout: LLM reads many search results, higher token usage and cost"
+          width={1024}
+          height={682}
+        />
+        <ComparisonImage
+          src="/with-omniscout.png"
+          alt="With OmniScout: only the answer is sent to the LLM, up to 95% lower token usage"
+          width={1024}
+          height={682}
+        />
       </div>
 
-      {/* Comparative examples */}
-      <div className="overflow-hidden rounded-[1.5rem] border border-border/50 bg-card">
-        <div className="hidden border-b border-border/50 bg-background/40 px-5 py-3 sm:grid sm:grid-cols-[1.2fr_1fr_1fr_0.7fr_0.9fr] sm:gap-3 sm:text-[10px] sm:font-mono sm:uppercase sm:tracking-[0.2em] sm:text-muted-foreground">
-          <div>User Question</div>
-          <div>Traditional AI Search</div>
-          <div>OmniScout Answer</div>
-          <div>Token Reduction</div>
-          <div>Example Savings</div>
+      <section className="overflow-hidden rounded-2xl bg-background shadow-sm">
+        <div className="flex items-center justify-center gap-2 border-b border-border/60 px-4 py-4">
+          <Globe className="h-4 w-4 text-muted-foreground" aria-hidden />
+          <h3 className="text-xs font-semibold uppercase tracking-wide text-foreground">
+            Real-world examples
+          </h3>
         </div>
 
-        <div className="flex flex-wrap gap-2 border-b border-border/50 px-4 py-4 sm:px-5">
-          {ADVANTAGES_SCENARIOS.map((row, index) => (
-            <button
-              key={row.question}
-              type="button"
-              onClick={() => setActiveIndex(index)}
-              aria-pressed={index === activeIndex}
-              className={cn(
-                "rounded-full border px-3.5 py-2 text-xs transition-colors",
-                index === activeIndex
-                  ? "border-foreground bg-foreground text-background"
-                  : "border-border/70 bg-background/50 text-muted-foreground hover:text-foreground",
-              )}
-            >
-              Scenario {index + 1}
-            </button>
-          ))}
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[720px] border-collapse text-left text-sm">
+            <thead>
+              <tr className="border-b border-border/60 bg-secondary/80 text-[11px] uppercase tracking-wide text-muted-foreground">
+                <th className="px-4 py-3 font-medium">User Question</th>
+                <th className="px-4 py-3 font-medium">Traditional AI Search</th>
+                <th className="px-4 py-3 font-medium">With OmniScout</th>
+                <th className="px-4 py-3 font-medium">Token Reduction</th>
+                <th className="px-4 py-3 font-medium">Example Savings</th>
+              </tr>
+            </thead>
+            <tbody>
+              {ADVANTAGES_SCENARIOS.map((row) => (
+                <tr key={row.question} className="border-b border-border/40 last:border-0">
+                  <td className="px-4 py-4 font-medium text-foreground">
+                    <div className="flex items-start gap-2">
+                      <ScenarioIcon icon={row.icon} />
+                      <span>{row.question}</span>
+                    </div>
+                  </td>
+                  <td className="px-4 py-4 text-muted-foreground">
+                    ~{row.traditionalTokens.toLocaleString()} tokens
+                  </td>
+                  <td className="px-4 py-4 font-medium text-primary">
+                    ~{row.omniscoutTokens} tokens
+                  </td>
+                  <td className="px-4 py-4 font-semibold text-emerald-600">{row.reduction}</td>
+                  <td className="px-4 py-4 font-medium text-emerald-700">{row.savings}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
+      </section>
 
-        <div className="sm:hidden">
-          <div className="grid gap-0">
-            <div className="border-b border-border/40 px-5 py-5">
-              <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.24em] text-muted-foreground">
-                User Question
-              </p>
-              <p className="text-base font-semibold leading-snug text-foreground">
-                {activeRow.question}
-              </p>
-            </div>
-            <div className="border-b border-border/40 px-5 py-5">
-              <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.24em] text-muted-foreground">
-                Traditional AI Search
-              </p>
-              <p className="text-sm leading-relaxed text-muted-foreground">
-                {activeRow.traditional}
-              </p>
-            </div>
-            <div className="border-b border-border/40 bg-primary/[0.04] px-5 py-5">
-              <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.24em] text-primary">
-                OmniScout Answer
-              </p>
-              <p className="text-sm leading-relaxed text-foreground">{activeRow.omniscout}</p>
-            </div>
-            <div className="border-b border-border/40 px-5 py-5">
-              <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.24em] text-muted-foreground">
-                Token Reduction
-              </p>
-              <p className="text-3xl font-semibold text-primary">{activeRow.reduction}</p>
-              <p className="mt-1 text-xs text-muted-foreground">fewer tokens</p>
-            </div>
-            <div className="px-5 py-5">
-              <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.24em] text-muted-foreground">
-                Example Savings
-              </p>
-              <p className="text-sm font-medium text-emerald-400">{activeRow.savings}</p>
-            </div>
-          </div>
-        </div>
-
-        <div className="hidden sm:block">
-          {ADVANTAGES_SCENARIOS.map((row) => (
-            <div
-              key={row.question}
-              className="grid grid-cols-[1.2fr_1fr_1fr_0.7fr_0.9fr] gap-3 border-t border-border/40 px-5 py-4 text-sm not-last:border-border/30"
-            >
-              <div className="font-medium text-foreground">{row.question}</div>
-              <div className="text-muted-foreground">{row.traditional}</div>
-              <div className="text-foreground">{row.omniscout}</div>
-              <div className="font-semibold text-primary">{row.reduction}</div>
-              <div className="text-emerald-400">{row.savings}</div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Simple analogy flowchart */}
-      <div className="grid gap-4 md:grid-cols-2">
-        <div className="rounded-2xl border border-red-500/25 bg-red-500/[0.06] p-5 sm:p-6">
-          <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-red-300">
-            {ADVANTAGES_ANALOGY.without.label}
-          </p>
-          <div className="mt-5 space-y-3">
-            {ADVANTAGES_ANALOGY.without.steps.map((step, index) => (
-              <div key={step} className="flex items-center gap-3">
-                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-red-500/15 text-xs font-semibold text-red-300">
-                  {index + 1}
-                </span>
-                <span className="text-sm text-foreground/90">{step}</span>
-                {index < ADVANTAGES_ANALOGY.without.steps.length - 1 && (
-                  <span className="ml-auto hidden text-red-300/60 sm:inline" aria-hidden>
-                    ↓
-                  </span>
-                )}
-              </div>
-            ))}
-          </div>
-          <p className="mt-5 rounded-xl border border-red-500/20 bg-background/40 px-4 py-3 text-sm font-medium text-red-200">
-            {ADVANTAGES_ANALOGY.without.outcome}
-          </p>
-        </div>
-
-        <div className="rounded-2xl border border-emerald-500/25 bg-emerald-500/[0.06] p-5 sm:p-6">
-          <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-emerald-300">
-            {ADVANTAGES_ANALOGY.with.label}
-          </p>
-          <div className="mt-5 space-y-3">
-            {ADVANTAGES_ANALOGY.with.steps.map((step, index) => (
-              <div key={step} className="flex items-center gap-3">
-                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-emerald-500/15 text-xs font-semibold text-emerald-300">
-                  {index + 1}
-                </span>
-                <span className="text-sm text-foreground/90">{step}</span>
-                {index < ADVANTAGES_ANALOGY.with.steps.length - 1 && (
-                  <span className="ml-auto hidden text-emerald-300/60 sm:inline" aria-hidden>
-                    ↓
-                  </span>
-                )}
-              </div>
-            ))}
-          </div>
-          <p className="mt-5 rounded-xl border border-emerald-500/20 bg-background/40 px-4 py-3 text-sm font-medium text-emerald-200">
-            {ADVANTAGES_ANALOGY.with.outcome}
-          </p>
-        </div>
-      </div>
-
-      {/* Typical results + value prop */}
-      <div className="overflow-hidden rounded-[1.5rem] border border-border/50 bg-card">
-        <div className="grid md:grid-cols-[1.35fr_0.65fr]">
-          <div className="border-b border-border/50 md:border-b-0 md:border-r">
-            <div className="hidden border-b border-border/50 px-5 py-3 sm:grid sm:grid-cols-3 sm:text-[10px] sm:font-mono sm:uppercase sm:tracking-[0.24em] sm:text-muted-foreground">
-              <div>Metric</div>
-              <div>Traditional Search + LLM</div>
-              <div className="text-primary">OmniScout</div>
-            </div>
-            {ADVANTAGES_TYPICAL_RESULTS.map((row) => (
+      <section>
+        <h3 className="mb-8 text-center text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+          Why it matters
+        </h3>
+        <div className="grid gap-4 sm:grid-cols-2">
+          {ADVANTAGES_WHY_IT_MATTERS.map(({ title, description, tone }) => {
+            const Icon = WHY_ICONS[tone];
+            return (
               <div
-                key={row.metric}
-                className="grid gap-2 border-b border-border/35 px-5 py-4 last:border-b-0 sm:grid-cols-3 sm:items-center"
+                key={title}
+                className="flex gap-4 rounded-2xl bg-background p-5 shadow-sm"
               >
-                <div className="font-medium text-foreground">{row.metric}</div>
-                <div className="text-sm text-muted-foreground sm:text-base">
-                  {row.traditional}
+                <div
+                  className={cn(
+                    "flex h-10 w-10 shrink-0 items-center justify-center rounded-full",
+                    WHY_ICON_STYLES[tone],
+                  )}
+                >
+                  <Icon className="h-5 w-5" aria-hidden />
                 </div>
-                <div className="text-sm font-semibold text-primary sm:text-base">
-                  {row.omniscout}
+                <div>
+                  <p className="text-[15px] font-semibold text-foreground">{title}</p>
+                  <p className="mt-1 text-[15px] leading-relaxed text-muted-foreground">
+                    {description}
+                  </p>
                 </div>
               </div>
-            ))}
-          </div>
-
-          <div className="flex flex-col justify-center bg-primary/[0.05] p-6">
-            <p className="text-xl font-bold leading-tight text-foreground sm:text-2xl">
-              {ADVANTAGES_VALUE_PROP.headline}
-            </p>
-            <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-              {ADVANTAGES_VALUE_PROP.body}
-            </p>
-          </div>
+            );
+          })}
         </div>
+      </section>
 
-        <div className="border-t border-border/50 px-5 py-4 text-center text-sm text-muted-foreground">
-          {ADVANTAGES_FOOTER.split("70–95%").map((part, i) =>
-            i === 0 ? (
-              <span key={i}>
-                {part}
-                <span className="font-semibold text-foreground">70–95%</span>
-              </span>
-            ) : (
-              <span key={i}>{part}</span>
-            ),
-          )}
+      <footer className="rounded-2xl bg-background px-6 py-8 text-center shadow-sm sm:px-8">
+        <div className="mx-auto flex max-w-2xl flex-col items-center gap-4">
+          <img src="/favicon.svg" alt="" width={40} height={40} className="h-10 w-10" />
+          <p className="text-[15px] leading-relaxed text-muted-foreground">
+            <span className="font-semibold text-foreground">{ADVANTAGES_VALUE_PROP.headline}</span>{" "}
+            {ADVANTAGES_VALUE_PROP.body}
+          </p>
         </div>
-      </div>
-    </div>
+      </footer>
+    </article>
   );
 }

@@ -12,7 +12,7 @@ export default function Guide() {
     <div className="min-h-[100dvh] bg-background text-foreground selection:bg-primary/25 overflow-x-clip">
       <Nav />
 
-      <section className="relative overflow-hidden pt-28 pb-20 md:pt-32 md:pb-28">
+      <section className="relative overflow-hidden pt-14 pb-20 md:pt-16 md:pb-28">
         <PageHeroGlow />
         <div className="relative z-10 mx-auto w-full max-w-6xl px-4 sm:px-5">
           <SetupGuideContent />

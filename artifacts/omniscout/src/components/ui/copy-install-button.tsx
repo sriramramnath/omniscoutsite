@@ -55,8 +55,8 @@ export function CopyInstallButton({
         : widths.full + padX + iconGap + iconW
       : undefined;
 
-  const muted = "text-zinc-400";
-  const bright = "text-white";
+  const muted = "text-muted-foreground";
+  const bright = "text-foreground";
 
   return (
     <>
@@ -79,9 +79,9 @@ export function CopyInstallButton({
         animate={{ width: targetWidth ?? "auto" }}
         transition={{ duration: 0.55, ease: WIDTH_EASE }}
         className={cn(
-          "group inline-flex items-center gap-2.5 overflow-hidden rounded-full border border-[#333]",
-          "bg-[rgba(31,31,31,0.62)] px-4 py-2.5 text-sm backdrop-blur-sm",
-          "transition-colors duration-200 hover:border-white/50",
+          "group inline-flex items-center gap-2.5 overflow-hidden rounded-full border border-border",
+          "bg-card px-4 py-2.5 text-sm shadow-sm backdrop-blur-sm",
+          "transition-colors duration-200 hover:border-primary/30",
           className,
         )}
         style={targetWidth ? { width: targetWidth } : undefined}
@@ -101,22 +101,22 @@ export function CopyInstallButton({
             </code>
           }
           secondary={
-            <code className="whitespace-nowrap font-mono text-xs text-white">
+            <code className="whitespace-nowrap font-mono text-xs text-foreground">
               {showCopiedLabel ? "Copied!" : INSTALL_CMD}
             </code>
           }
         />
         <span className="relative h-4 w-4 shrink-0">
           {showCopiedLabel ? (
-            <Check className="h-4 w-4 text-emerald-400" aria-hidden />
+            <Check className="h-4 w-4 text-emerald-600" aria-hidden />
           ) : (
             <>
               <Copy
-                className="absolute inset-0 h-4 w-4 text-zinc-400 opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-hover:text-white"
+                className="absolute inset-0 h-4 w-4 text-muted-foreground opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-hover:text-foreground"
                 aria-hidden
               />
               <span
-                className="block h-4 w-4 text-zinc-500 transition-opacity duration-200 group-hover:opacity-0"
+                className="block h-4 w-4 text-muted-foreground transition-opacity duration-200 group-hover:opacity-0"
                 aria-hidden
               >
                 →

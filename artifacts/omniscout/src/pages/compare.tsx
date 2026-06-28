@@ -233,8 +233,8 @@ function Cell({ val }: { val: CellValue }) {
     );
   return (
     <div className="flex items-center justify-center">
-      <span className="w-5 h-5 rounded-full bg-zinc-800 flex items-center justify-center">
-        <X className="w-3 h-3 text-zinc-600" />
+      <span className="w-5 h-5 rounded-full bg-muted flex items-center justify-center">
+        <X className="w-3 h-3 text-muted-foreground" />
       </span>
     </div>
   );
@@ -280,8 +280,8 @@ const heroStackOptions = [
 
 function CompareHeroPanel() {
   return (
-    <div className="rounded-xl border border-border/50 bg-[hsl(222_22%_6%)] overflow-hidden shadow-2xl shadow-black/40">
-      <div className="flex items-center gap-2 px-4 py-3 border-b border-border/40 bg-[hsl(222_22%_5%)]">
+    <div className="rounded-xl border border-border bg-card overflow-hidden shadow-lg">
+      <div className="flex items-center gap-2 px-4 py-3 border-b border-border bg-secondary">
         <Terminal className="w-3.5 h-3.5 text-muted-foreground" />
         <span className="text-xs font-mono text-muted-foreground">
           stack at a glance
@@ -343,7 +343,7 @@ export default function Compare() {
       <Nav />
 
       {/* Hero */}
-      <section className="relative overflow-hidden pt-28 pb-20 sm:pt-32">
+      <section className="relative overflow-hidden pt-14 pb-20 sm:pt-16">
         <PageHeroGlow />
 
         <div className="relative z-10 max-w-6xl mx-auto px-5">
@@ -440,7 +440,7 @@ export default function Compare() {
                   <ResponsiveContainer width="100%" height={340}>
                     <RadarChart data={radarData}>
                       <PolarGrid
-                        stroke="hsl(222 16% 18%)"
+                        stroke="hsl(220 14% 88%)"
                         strokeDasharray="3 3"
                       />
                       <PolarAngleAxis
@@ -537,7 +537,7 @@ export default function Compare() {
                   >
                     <CartesianGrid
                       strokeDasharray="3 3"
-                      stroke="hsl(222 16% 13%)"
+                      stroke="hsl(220 14% 88%)"
                       vertical={false}
                     />
                     <XAxis
@@ -689,7 +689,7 @@ export default function Compare() {
                 <Minus className="w-3 h-3 text-yellow-400" /> Partial
               </span>
               <span className="flex items-center gap-1.5">
-                <X className="w-3 h-3 text-zinc-600" /> Not supported
+                <X className="w-3 h-3 text-muted-foreground" /> Not supported
               </span>
             </div>
           </FadeUp>
@@ -711,7 +711,7 @@ export default function Compare() {
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
               <Link
                 href="/"
-                className="group flex items-center gap-2 px-6 py-3 rounded-lg bg-primary text-white text-sm font-medium hover:bg-primary/90 transition-all shadow-lg shadow-primary/25"
+                className="group flex items-center gap-2 px-6 py-3 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-all shadow-lg shadow-primary/25"
                 data-testid="button-compare-cta"
               >
                 Get started

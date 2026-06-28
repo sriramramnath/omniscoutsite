@@ -11,11 +11,11 @@ export const CHART_COLORS = {
   Playwright: "hsl(220 12% 52%)",
 } as const;
 
-const chartTooltipTextColor = "hsl(210 20% 96%)";
+const chartTooltipTextColor = "hsl(222 25% 12%)";
 
 export const chartTooltipStyle = {
-  backgroundColor: "hsl(222 22% 7%)",
-  border: "1px solid hsl(222 16% 18%)",
+  backgroundColor: "hsl(0 0% 100%)",
+  border: "1px solid hsl(220 14% 88%)",
   borderRadius: "8px",
   color: chartTooltipTextColor,
   fontSize: "12px",
@@ -61,5 +61,5 @@ export const chartLegendStyle = {
   paddingTop: "12px",
 } as const;
 
-export const chartGridStroke = "hsl(222 16% 13%)";
-export const chartCursorFill = "hsl(222 16% 13%)";
+export const chartGridStroke = "hsl(220 14% 90%)";
+export const chartCursorFill = "hsl(210 16% 94%)";

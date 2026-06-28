@@ -7,11 +7,11 @@ const PYPI_URL = "https://pypi.org/project/omniscout/";
 
 export function Footer() {
   return (
-    <footer className="border-t border-border/30 bg-card/20 py-16">
-      <div className="max-w-6xl mx-auto px-5">
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-10 mb-12">
+    <footer className="border-t border-border/60 bg-secondary py-12">
+      <div className="mx-auto max-w-[980px] px-6">
+        <div className="mb-10 grid grid-cols-2 gap-8 md:grid-cols-5 md:gap-10">
           <div className="col-span-2">
-            <Link href="/" className="flex items-center gap-2 mb-4 w-fit" aria-label="OmniScout home">
+            <Link href="/" className="mb-3 flex w-fit items-center gap-2" aria-label="OmniScout home">
               <img
                 src="/favicon.svg"
                 alt=""
@@ -19,12 +19,11 @@ export function Footer() {
                 height={20}
                 className="h-5 w-5 flex-shrink-0"
               />
-              <span className="font-semibold text-sm">OmniScout</span>
+              <span className="text-sm font-semibold">OmniScout</span>
             </Link>
-            <p className="text-xs text-muted-foreground leading-relaxed max-w-xs font-mono">
-              Local-first browser automation and research
-              <br />
-              infrastructure for AI agents. CLI in, JSON out.
+            <p className="max-w-xs text-xs leading-relaxed text-muted-foreground">
+              Local-first browser automation and research infrastructure for AI agents.
+              CLI in, JSON out.
             </p>
           </div>
           {[
@@ -58,10 +57,10 @@ export function Footer() {
             },
           ].map(({ heading, links }) => (
             <div key={heading}>
-              <div className="text-xs font-semibold text-foreground mb-4 uppercase tracking-wider">
+              <div className="mb-3 text-[11px] font-semibold uppercase tracking-wide text-foreground">
                 {heading}
               </div>
-              <ul className="space-y-2.5">
+              <ul className="space-y-2">
                 {links.map(({ label, href }) => (
                   <li key={label}>
                     {href.startsWith("http") ? (
@@ -69,14 +68,14 @@ export function Footer() {
                         href={href}
                         target="_blank"
                         rel="noreferrer"
-                        className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+                        className="text-xs text-muted-foreground transition-colors hover:text-foreground"
                       >
                         {label}
                       </a>
                     ) : (
                       <Link
                         href={href}
-                        className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+                        className="text-xs text-muted-foreground transition-colors hover:text-foreground"
                       >
                         {label}
                       </Link>
@@ -88,36 +87,36 @@ export function Footer() {
           ))}
         </div>
 
-        <div className="gradient-divider mb-8" />
+        <div className="gradient-divider mb-6" />
 
-        <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-muted-foreground font-mono">
-          <span>© 2026 OmniScout</span>
+        <div className="flex flex-col items-center justify-between gap-4 text-xs text-muted-foreground md:flex-row">
+          <span>Copyright © 2026 OmniScout. All rights reserved.</span>
           <div className="flex flex-wrap items-center gap-5">
             <a
               href={PYPI_URL}
               target="_blank"
               rel="noreferrer"
-              className="hover:text-foreground transition-colors flex items-center gap-1.5"
+              className="flex items-center gap-1.5 transition-colors hover:text-foreground"
               data-testid="link-footer-pypi"
             >
-              <Package className="w-3.5 h-3.5" />
+              <Package className="h-3.5 w-3.5" />
               PyPI · v{latestChangelogVersion}
             </a>
             <a
               href="https://github.com/sriramramnath/omniscout"
               target="_blank"
               rel="noreferrer"
-              className="hover:text-foreground transition-colors flex items-center gap-1.5"
+              className="flex items-center gap-1.5 transition-colors hover:text-foreground"
               data-testid="link-footer-github"
             >
-              <Github className="w-3.5 h-3.5" />
+              <Github className="h-3.5 w-3.5" />
               GitHub
             </a>
             <a
               href="https://x.com/r__sriram"
               target="_blank"
               rel="noreferrer"
-              className="flex items-center gap-1.5 hover:text-foreground transition-colors"
+              className="flex items-center gap-1.5 transition-colors hover:text-foreground"
               data-testid="link-footer-x"
             >
               <SiX className="h-3.5 w-3.5" aria-hidden />

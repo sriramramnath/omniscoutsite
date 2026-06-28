@@ -99,7 +99,7 @@ function ChartCard({
 }) {
   return (
     <FadeUp className={className}>
-      <div className="overflow-hidden rounded-2xl border border-border/40 bg-[hsl(222_22%_6%)]/80 p-5 sm:p-6">
+      <div className="overflow-hidden rounded-2xl border border-border bg-card p-5 sm:p-6">
         <div className="mb-6">
           <h3 className="text-lg font-semibold tracking-tight">{title}</h3>
           <p className="mt-1 text-sm text-muted-foreground">{subtitle}</p>
@@ -135,7 +135,7 @@ function HeroBenchmarkCard() {
   return (
     <div ref={ref} className="relative mx-auto max-w-md">
       <div className="absolute -inset-8 rounded-full bg-primary/10 blur-3xl" aria-hidden />
-      <div className="relative overflow-hidden rounded-3xl border border-primary/20 bg-[hsl(222_22%_6%)]/90 shadow-2xl shadow-primary/10">
+      <div className="relative overflow-hidden rounded-3xl border border-primary/20 bg-card shadow-xl shadow-primary/10">
         <div
           className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_0%,rgba(104,127,243,0.12),transparent_65%)]"
           aria-hidden
@@ -313,7 +313,7 @@ export default function ProbeZero() {
     <div className="min-h-screen overflow-x-clip bg-background text-foreground">
       <Nav />
 
-      <section className="relative min-h-[78vh] overflow-hidden pt-28 pb-20 sm:pt-32">
+      <section className="relative min-h-[78vh] overflow-hidden pt-14 pb-20 sm:pt-16">
         <PageHeroGlow />
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_55%_at_50%_-5%,rgba(104,127,243,0.14),transparent_60%)]" />
         <div className="relative z-10 mx-auto max-w-6xl px-4 sm:px-5">
@@ -527,12 +527,12 @@ export default function ProbeZero() {
             </FadeUp>
 
             <FadeUp delay={0.1}>
-              <div className="overflow-hidden rounded-2xl border border-border/40 bg-[hsl(222_22%_6%)]">
-                <div className="flex items-center gap-2 border-b border-border/30 bg-[hsl(222_22%_5%)] px-4 py-2.5">
+              <div className="overflow-hidden rounded-2xl border border-border bg-card">
+                <div className="flex items-center gap-2 border-b border-border bg-secondary px-4 py-2.5">
                   <Terminal className="h-3.5 w-3.5 text-muted-foreground" />
                   <span className="font-mono text-xs text-muted-foreground">terminal</span>
                 </div>
-                <pre className="overflow-x-auto px-4 py-5 font-mono text-xs leading-6 text-zinc-300">
+                <pre className="overflow-x-auto px-4 py-5 font-mono text-xs leading-6 text-foreground">
 {`# Use Probe Zero for one answer
 omniscout answer "who is the CEO of nvidia" --probe
 

@@ -41,7 +41,7 @@ function FeaturedPost({ post }: { post: BlogPost }) {
     <FadeUp delay={0.08}>
       <Link href={`/blogs/${post.slug}`} className="group block min-w-0">
         <article
-          className="relative overflow-hidden rounded-2xl border border-border/40 bg-card/30 shadow-xl shadow-black/20 transition-all duration-300 hover:border-primary/25 hover:shadow-primary/5"
+          className="relative overflow-hidden rounded-2xl border border-border bg-card shadow-lg transition-all duration-300 hover:border-primary/25 hover:shadow-primary/5"
           data-testid="blog-card-featured"
         >
           <div className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 transition-opacity duration-500 group-hover:opacity-100 bg-gradient-to-br from-primary/15 via-transparent to-primary/5" />
@@ -116,7 +116,7 @@ export default function Blogs() {
     <div className="min-h-screen bg-background text-foreground overflow-x-clip">
       <Nav />
 
-      <section className="relative overflow-hidden pt-28 pb-12 sm:pt-32 sm:pb-16">
+      <section className="relative overflow-hidden pt-14 pb-12 sm:pt-16 sm:pb-16">
         <PageHeroGlow />
 
         <div className="relative z-10 mx-auto max-w-3xl px-4 sm:px-5 min-w-0 text-center">

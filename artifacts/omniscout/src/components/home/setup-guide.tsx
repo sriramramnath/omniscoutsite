@@ -107,7 +107,7 @@ function StepCard({
       <div
         className={cn(
           "mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-sm font-semibold",
-          variant === "done" && "bg-emerald-500/15 text-emerald-400",
+          variant === "done" && "bg-emerald-100 text-emerald-700",
           variant === "warn" && "bg-amber-500/15 text-amber-400",
           variant === "default" && "bg-primary/10 text-primary",
         )}
@@ -238,14 +238,14 @@ export function SetupGuideContent() {
           description="Each command installs one thing. The whole process takes about 2–5 minutes depending on your internet speed."
         />
 
-        <div className="mb-6 rounded-xl border border-emerald-500/25 bg-emerald-500/5 p-5">
-          <p className="mb-4 text-sm font-semibold text-emerald-300">
+        <div className="mb-6 rounded-xl border border-emerald-200 bg-emerald-50 p-5">
+          <p className="mb-4 text-sm font-semibold text-emerald-800">
             The 3 commands — type these in order
           </p>
           <div className="space-y-2">
             {INSTALL_COMMANDS.map((cmd, i) => (
               <div key={cmd} className="flex items-center gap-2">
-                <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-500/20 text-[11px] font-semibold text-emerald-300">
+                <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-200 text-[11px] font-semibold text-emerald-900">
                   {i + 1}
                 </span>
                 <CopyableCommand command={cmd} variant="inline" />
@@ -344,7 +344,7 @@ export function SetupGuideContent() {
             title="OmniScout starts your browser silently in the background"
             description="Your Chrome or Edge opens without appearing on your screen. You will not see any window pop up."
           >
-            <span className="mt-2 inline-flex items-center gap-1.5 rounded-md border border-red-500/30 bg-red-500/10 px-2 py-1 text-[11px] font-medium text-red-300">
+            <span className="mt-2 inline-flex items-center gap-1.5 rounded-md border border-red-200 bg-red-50 px-2 py-1 text-[11px] font-medium text-red-700">
               <EyeOff className="h-3 w-3" aria-hidden />
               invisible to you
             </span>
@@ -483,7 +483,7 @@ export function SetupGuideContent() {
                     >
                       <p className="text-xs font-semibold text-primary">{store}</p>
                       <p className="text-xs text-muted-foreground">{detail}</p>
-                      <p className="mt-0.5 text-sm font-semibold text-emerald-400">
+                      <p className="mt-0.5 text-sm font-semibold text-emerald-700">
                         {price}
                       </p>
                     </div>

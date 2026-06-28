@@ -43,7 +43,7 @@ export default function Contact() {
     <div className="min-h-screen bg-background text-foreground overflow-x-clip">
       <Nav />
 
-      <section className="relative overflow-hidden pt-28 pb-12 sm:pt-32 sm:pb-16">
+      <section className="relative overflow-hidden pt-14 pb-12 sm:pt-16 sm:pb-16">
         <PageHeroGlow />
 
         <div className="relative z-10 mx-auto max-w-4xl px-4 sm:px-5 min-w-0 text-center">
@@ -61,7 +61,7 @@ export default function Contact() {
       <section className="pb-24 border-t border-border/30">
         <div className="mx-auto max-w-2xl px-4 sm:px-5 min-w-0">
           <FadeUp delay={0.08}>
-            <article className="rounded-2xl border border-border/40 bg-card/30 p-6 sm:p-10 shadow-xl shadow-black/10">
+            <article className="rounded-2xl border border-border bg-card p-6 sm:p-10 shadow-lg">
               <div className="space-y-5 text-muted-foreground leading-relaxed">
                 <p className="text-foreground text-base sm:text-lg">
                   Hi, I&apos;m{" "}

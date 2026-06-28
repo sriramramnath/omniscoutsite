@@ -20,104 +20,119 @@ export function formatTokens(tokens: number): string {
 
 export function tokenReduction(traditional: number, omniscout: number): string {
   const pct = ((traditional - omniscout) / traditional) * 100;
-  return `${Math.floor(pct)}%`;
+  const rounded = Math.round(pct * 10) / 10;
+  return rounded % 1 === 0 ? `${Math.floor(rounded)}%` : `${rounded}%`;
 }
 
-export function tokenSavingsMultiplier(traditional: number, omniscout: number): string {
-  const mult = traditional / omniscout;
-  return `${Math.round(mult)}x fewer tokens`;
-}
-
-/** Exact content from the "How OmniScout Reduces AI Costs" infographic. */
+/** Infographic copy — matches the token-savings visual. */
 export const ADVANTAGES_HEADER = {
-  title: "How OmniScout Reduces AI Costs",
-  subtitle: "Get precise answers. Use fewer tokens. Save more.",
+  titleLead: "How OmniScout Reduces",
+  titleAccent: "LLM Token Usage",
+  subtitle:
+    "With OmniScout, it either uses its own API or OmniScout silently opens a browser in background to find the answer, reducing LLM token usage.",
+  subtitleHighlight: "OmniScout silently opens a browser in background",
+} as const;
+
+export const ADVANTAGES_COMPARISON = {
+  without: {
+    label: "WITHOUT OMNISCOUT",
+    tagline: "LLM reads many search results",
+    steps: [
+      { label: "User Question" },
+      { label: "AI Search" },
+      { label: "Many Results", detail: "(1,000 – 5,000 tokens)", badge: "10+" },
+      { label: "LLM Reads Everything", isLlm: true },
+      { label: "Higher Token Usage & Cost", isOutcome: true },
+    ],
+    stats: {
+      inputTokens: "1,000 – 5,000+ to LLM",
+      responseSpeed: "Slower",
+      llmCost: "Higher",
+    },
+  },
+  with: {
+    label: "WITH OMNISCOUT",
+    tagline: "Only the answer is sent to LLM",
+    steps: [
+      { label: "User Question" },
+      { label: "OmniScout", isOmniScout: true },
+      {
+        label: "Finds the answer",
+        branch: {
+          api: "Uses OmniScout API",
+          browser: "OmniScout silently opens browser in background",
+        },
+      },
+      { label: "Answer Only", detail: "(20 – 200 tokens)", isAnswer: true },
+      { label: "LLM Gets Only What It Needs", isLlm: true },
+      { label: "Up to 95% Lower Token Usage & Cost", isOutcome: true },
+    ],
+    stats: {
+      inputTokens: "20 – 200 to LLM",
+      responseSpeed: "Faster",
+      llmCost: "Up to 95% Lower",
+    },
+  },
 } as const;
 
 export const ADVANTAGES_SCENARIOS = [
   {
     question: "Who is the President of the United States?",
-    traditional:
-      "AI reads multiple search results (~1,500 tokens) before answering.",
-    omniscout: 'Returns "Donald Trump" (~4 tokens).',
+    icon: "🇺🇸",
     traditionalTokens: 1500,
-    omniscoutTokens: 4,
+    omniscoutTokens: 50,
+    reduction: "97%",
+    savings: "20x – 30x fewer tokens",
   },
   {
     question: "What is Apple's current stock price?",
-    traditional:
-      "AI reads finance websites and market snippets (~2,000 tokens).",
-    omniscout: "Returns the latest price (~10 tokens).",
+    icon: "chart",
     traditionalTokens: 2000,
-    omniscoutTokens: 10,
+    omniscoutTokens: 50,
+    reduction: "97%",
+    savings: "20x – 40x fewer tokens",
   },
   {
     question: "What is the return policy? (Support Bot)",
-    traditional:
-      "AI reads several knowledge-base articles (~4,000 tokens).",
-    omniscout: "Extracts the policy statement (~12 tokens).",
+    icon: "headphones",
     traditionalTokens: 4000,
-    omniscoutTokens: 12,
+    omniscoutTokens: 100,
+    reduction: "97.5%",
+    savings: "40x fewer tokens",
   },
 ].map((row) => ({
   ...row,
-  reduction: tokenReduction(row.traditionalTokens, row.omniscoutTokens),
-  savings: tokenSavingsMultiplier(row.traditionalTokens, row.omniscoutTokens),
   traditionalCost: llmCostFromTokens(row.traditionalTokens),
   omniscoutCost: llmCostFromTokens(row.omniscoutTokens),
 }));
 
-export const ADVANTAGES_ANALOGY = {
-  without: {
-    label: "Without OmniScout",
-    steps: [
-      "Ask a question",
-      "AI reads 10 web pages",
-      "AI finds the answer",
-    ],
-    outcome: "Higher token usage and cost.",
-  },
-  with: {
-    label: "With OmniScout",
-    steps: [
-      "Ask a question",
-      "OmniScout finds the answer first",
-      "AI reads only the answer",
-    ],
-    outcome: "Up to 95% lower token usage.",
-  },
-} as const;
-
-export const ADVANTAGES_TYPICAL_RESULTS = [
+export const ADVANTAGES_WHY_IT_MATTERS = [
   {
-    metric: "Input Tokens",
-    traditional: "1,000 – 5,000",
-    omniscout: "4 – 200",
+    title: "More accurate response with live data from authentic websites",
+    description: "Instead of your LLM's previous year knowledge.",
+    tone: "blue" as const,
   },
   {
-    metric: "Response Speed",
-    traditional: "Slower",
-    omniscout: "Faster",
+    title: "Faster Responses",
+    description: "Less to read, quicker answers.",
+    tone: "green" as const,
   },
   {
-    metric: "LLM Cost",
-    traditional: "Higher",
-    omniscout: "Up to 99% lower",
+    title: "More Room for Important Context",
+    description: "Save context window for what matters.",
+    tone: "purple" as const,
   },
   {
-    metric: "Context Window Usage",
-    traditional: "High",
-    omniscout: "Minimal",
+    title: "Private & Silent",
+    description: "Your queries and data never reach our cloud.",
+    tone: "orange" as const,
   },
 ] as const;
 
 export const ADVANTAGES_VALUE_PROP = {
-  headline: "Save up to 95% on LLM token costs.",
-  body: "OmniScout finds and extracts the precise answer before it reaches your LLM—so you send less context, spend less, and get answers faster.",
+  headline: "Smarter Search. Lower Costs. Better AI.",
+  body: "OmniScout finds the answer first, so your LLM does less and performs more.",
 } as const;
-
-export const ADVANTAGES_FOOTER =
-  "Typical users see 70–95% fewer LLM tokens for search-heavy workflows.";
 
 export type CostViewMode = "tokens" | "cost";
 
@@ -132,7 +147,6 @@ export function getScenarioChartValue(
   return kind === "traditional" ? row.traditionalCost : row.omniscoutCost;
 }
 
-/** Chart-friendly data for token/cost toggle. */
 export function buildTokenChartData(mode: CostViewMode) {
   return ADVANTAGES_SCENARIOS.map((row) => ({
     name: row.question.split("?")[0].slice(0, 22) + "…",
